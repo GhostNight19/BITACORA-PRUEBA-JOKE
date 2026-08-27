@@ -1,10 +1,10 @@
 /* ============================================================
    Service Worker - Bitácora EFE Sur
-   Versión 8: actualiza el HTML y las pautas diarias desde internet
+   Versión 9: siempre busca la versión nueva del HTML y de las pautas
    y conserva una copia para poder seguir usando la app sin señal.
    ============================================================ */
 
-const CACHE = 'bitacora-efe-v8';
+const CACHE = 'bitacora-efe-v9';
 
 // Archivos que componen la aplicación. Todos existen en el repositorio.
 const ASSETS = [
@@ -54,9 +54,11 @@ self.addEventListener('fetch', (event) => {
   }
 
   // Las páginas se consultan primero en internet para recibir las mejoras nuevas.
+  // Se pide con cache: reload para saltarse el caché del navegador: si no, GitHub
+  // Pages puede seguir entregando la versión anterior hasta diez minutos.
   if (request.mode === 'navigate') {
     event.respondWith(
-      fetch(request)
+      fetch(request.url, { cache: 'reload' })
         .then((response) => {
           const copy = response.clone();
           caches.open(CACHE).then((cache) => cache.put(request, copy));
