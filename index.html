@@ -274,6 +274,69 @@
             .pauta-sec, .pauta-archivo { width: 100%; }
             .pauta-rango { margin-left: 0; width: 100%; }
         }
+
+        /* ===== PREVENCIONES · BOLETÍN DE VÍA ===== */
+        .prev-btn { background-color: #b4232f; color: #fff; }
+
+        /* Franja de aviso, justo bajo el reloj */
+        .prev-aviso { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: center; max-width: 980px; margin: 0 auto 12px; padding: 11px 14px; border-radius: 12px; border-left: 7px solid #6a7891; background: #eef2f7; color: #172033; box-shadow: 0 4px 14px rgba(23,32,51,0.12); }
+        .prev-aviso.nivel-1 { border-left-color: #b4232f; background: #fdecec; color: #6e1219; }
+        .prev-aviso.nivel-2 { border-left-color: #d97706; background: #fff5e6; color: #7c4708; }
+        .prev-aviso.nivel-3 { border-left-color: #0b5ed7; background: #eaf2ff; color: #123c86; }
+        .prev-aviso.nivel-4 { border-left-color: #6a7891; background: #f2f5f9; color: #3a475e; }
+        .prev-aviso.dentro { animation: prev-latido 1.4s ease-in-out infinite; }
+        .prev-aviso-izq { text-align: center; min-width: 86px; }
+        .prev-aviso-dist { display: block; font-size: 1.55rem; font-weight: 900; line-height: 1.05; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+        .prev-aviso-nivel { display: block; margin-top: 2px; font-size: 0.66rem; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.75; }
+        .prev-aviso-der { min-width: 0; }
+        .prev-aviso-restr { font-size: 1.08rem; font-weight: 900; line-height: 1.25; }
+        .prev-aviso-via { margin-left: 7px; padding: 2px 7px; border-radius: 999px; background: rgba(0,0,0,0.09); font-size: 0.7rem; font-weight: 850; vertical-align: middle; }
+        .prev-aviso-km { margin-top: 3px; font-size: 0.8rem; font-weight: 700; opacity: 0.85; overflow-wrap: anywhere; }
+
+        @media (prefers-reduced-motion: no-preference) {
+            @keyframes prev-latido { 0%, 100% { box-shadow: 0 4px 14px rgba(23,32,51,0.12); } 50% { box-shadow: 0 0 0 5px rgba(180,35,47,0.22); } }
+        }
+
+        /* Panel */
+        .prev-form { grid-template-columns: 1fr; }
+        .prev-form .plan-fila { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+        .prev-estado { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; padding: 10px 12px; border-radius: 10px; background: #f4f7fc; border: 1px solid #e3eaf4; color: #37455e; font-size: 0.85rem; font-weight: 700; }
+        .prev-chip { padding: 3px 10px; border-radius: 999px; font-size: 0.74rem; font-weight: 900; letter-spacing: 0.03em; }
+        .prev-chip.ok { background: #e7f7ee; color: #0a5b36; }
+        .prev-chip.off { background: #eef2f7; color: #55637a; }
+        .prev-chip.manual { background: #efe7fd; color: #4c1d95; }
+        .prev-acciones { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 9px; }
+        .prev-accion { min-height: 46px; padding: 0 14px; border: 0; border-radius: 9px; font-weight: 850; font-size: 0.9rem; cursor: pointer; }
+        .prev-accion.iniciar { background: var(--verde); color: #fff; }
+        .prev-accion.detener { background: #b4232f; color: #fff; }
+        .prev-accion.prueba { background: #fff; color: #2b3d5c; border: 2px solid #cbd7e6; }
+        .prev-accion.prueba.encendida { background: #efe7fd; border-color: #6f42c1; color: #4c1d95; }
+
+        .prev-item { margin-bottom: 10px; padding: 11px 13px; background: #fff; border: 1px solid #dde5ef; border-left: 5px solid #6a7891; border-radius: 10px; box-shadow: 0 2px 8px rgba(23,32,51,0.06); }
+        .prev-item.nivel-1 { border-left-color: #b4232f; }
+        .prev-item.nivel-2 { border-left-color: #d97706; }
+        .prev-item.nivel-3 { border-left-color: #0b5ed7; }
+        .prev-item.dentro { background: #fffaf3; }
+        .prev-item-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .prev-restr { font-size: 1.02rem; font-weight: 900; color: #0f1c33; }
+        .prev-via { padding: 3px 9px; border-radius: 999px; background: #eef2f7; color: #46536a; font-size: 0.74rem; font-weight: 850; }
+        .prev-via.prev-via-v1 { background: #e7f0ff; color: #14459c; }
+        .prev-via.prev-via-v2 { background: #fdeceF; color: #8d1d3f; }
+        .prev-via.prev-via-ambas { background: #e7f7ee; color: #0a5b36; }
+        .prev-via.prev-via-v4 { background: #efe7fd; color: #4c1d95; }
+        .prev-dist { margin-left: auto; padding: 3px 10px; border-radius: 999px; background: #0f1c33; color: #fff; font-size: 0.78rem; font-weight: 900; font-variant-numeric: tabular-nums; white-space: nowrap; }
+        .prev-item-km { margin-top: 5px; color: #55637a; font-size: 0.79rem; font-weight: 750; overflow-wrap: anywhere; }
+        .prev-item-desc { margin-top: 6px; color: #37455e; font-size: 0.83rem; font-weight: 650; line-height: 1.42; overflow-wrap: anywhere; }
+        .prev-item-extra { margin-top: 5px; color: #7c4708; font-size: 0.76rem; font-weight: 800; }
+        .prev-sinubic { display: inline-block; margin-left: 6px; padding: 1px 7px; border-radius: 999px; background: #f2f5f9; color: #6a7891; font-size: 0.7rem; font-weight: 800; }
+
+        @media (max-width: 720px) {
+            .prev-aviso { margin-bottom: 9px; padding: 10px 12px; gap: 10px; border-radius: 11px; }
+            .prev-aviso-izq { min-width: 72px; }
+            .prev-aviso-dist { font-size: 1.32rem; }
+            .prev-aviso-restr { font-size: 1rem; }
+            .prev-acciones { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
@@ -295,10 +358,14 @@
         </div>
     </section>
 
+    <!-- Prevención más próxima: aparece sola cuando queda algo dentro de 500 m -->
+    <div id="prev-aviso" class="prev-aviso" role="status" aria-live="polite" hidden></div>
+
     <div class="main-controls">
         <button class="btn add-btn" onclick="addService()">+ Nuevo Servicio</button>
         <button class="btn plan-btn" onclick="abrirPlanificador()">🧭 Planificar Viaje</button>
         <button class="btn pauta-btn" onclick="abrirPauta()">👤 Mis Turnos</button>
+        <button class="btn prev-btn" onclick="abrirPrevenciones()">⚠️ Prevenciones</button>
         <button class="btn delete-all-btn" onclick="borrarTodo()">🗑️ Borrar Todo</button>
         <button class="btn pdf-btn" onclick="descargarBitacoraPDF()">📄 Descargar Bitácora</button>
 
@@ -403,6 +470,52 @@
         </div>
 
         <div class="plan-cuerpo" id="pauta-resultados" aria-live="polite"></div>
+    </div>
+</div>
+
+<!-- ===== Prevenciones: boletín de vía + ubicación por GPS ===== -->
+<div id="prev-overlay" class="plan-overlay" role="dialog" aria-modal="true" aria-labelledby="prev-titulo" hidden>
+    <div class="plan-panel" role="document">
+        <div class="plan-head">
+            <div>
+                <h3 id="prev-titulo">⚠️ Prevenciones</h3>
+                <small>Boletín de vía C · aviso por ubicación</small>
+            </div>
+            <button type="button" class="plan-cerrar" onclick="cerrarPrevenciones()" aria-label="Cerrar prevenciones">✕</button>
+        </div>
+
+        <div class="plan-form prev-form">
+            <div id="prev-cabecera"></div>
+
+            <div class="prev-acciones">
+                <button type="button" class="prev-accion iniciar" onclick="prevIniciarGPS()">📍 Seguir mi ubicación</button>
+                <button type="button" class="prev-accion detener" onclick="prevDetenerGPS()">⏹ Detener</button>
+                <button type="button" class="prev-accion prueba" id="prev-btn-prueba" onclick="prevModoPrueba()">🧪 Modo prueba</button>
+            </div>
+
+            <div class="plan-fila">
+                <div class="plan-campo">
+                    <label for="prev-linea">Línea (prueba)</label>
+                    <select id="prev-linea" onchange="prevPruebaCambio()">
+                        <option value="L2">L2 · Concepción–Coronel</option>
+                        <option value="L1">L1 · Hualqui–Talcahuano</option>
+                    </select>
+                </div>
+                <div class="plan-campo">
+                    <label for="prev-pk">PK</label>
+                    <input type="number" id="prev-pk" step="0.05" value="0" oninput="prevPruebaCambio()">
+                </div>
+                <div class="plan-campo">
+                    <label for="prev-sentido">Sentido</label>
+                    <select id="prev-sentido" onchange="prevPruebaCambio()">
+                        <option value="1">PK creciente (L2: vía 1)</option>
+                        <option value="-1">PK decreciente (L2: vía 2)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="plan-cuerpo" id="prev-resultados" aria-live="polite"></div>
     </div>
 </div>
 
@@ -3510,6 +3623,611 @@ document.addEventListener('click', function (e) {
     const caja = document.getElementById('pauta-sugerencias');
     if (!caja || caja.hidden) return;
     if (!e.target.closest('.pauta-auto')) caja.hidden = true;
+});
+
+/* Trazado ferroviario muestreado (km, lat, lon), tomado de SyncroRed.
+   L1 = San Rosendo -> Talcahuano (PK 0 en San Rosendo).
+   L2 = Concepcion -> Coronel (PK 0 en Concepcion, Coronel en el 27,43). */
+const PREV_TRAZADO = {"L1":[[0.0,-37.264921,-72.720859],[0.5,-37.264666,-72.726462],[1.0,-37.261279,-72.73011],[1.5,-37.258187,-72.734142],[2.0,-37.254448,-72.737227],[2.5,-37.250044,-72.73664],[3.0,-37.245654,-72.735539],[3.5,-37.241162,-72.735317],[4.0,-37.236947,-72.737077],[4.5,-37.233662,-72.740925],[5.0,-37.230311,-72.744651],[5.5,-37.226527,-72.747678],[6.0,-37.222329,-72.74967],[6.5,-37.218735,-72.752972],[7.0,-37.216631,-72.75793],[7.5,-37.213104,-72.761278],[8.0,-37.209121,-72.763817],[8.5,-37.205434,-72.767046],[9.0,-37.202336,-72.771131],[9.5,-37.199329,-72.775325],[10.0,-37.198066,-72.78069],[10.5,-37.199719,-72.78558],[11.0,-37.200636,-72.79076],[11.5,-37.202965,-72.795561],[12.0,-37.205895,-72.799676],[12.5,-37.205713,-72.805209],[13.0,-37.202285,-72.808695],[13.5,-37.198582,-72.811897],[14.0,-37.194831,-72.815009],[14.5,-37.193338,-72.819943],[15.0,-37.194306,-72.825045],[15.5,-37.195757,-72.830097],[16.0,-37.196356,-72.835575],[16.5,-37.196747,-72.841167],[17.0,-37.1953,-72.84642],[17.5,-37.193034,-72.851295],[18.0,-37.190567,-72.85601],[18.5,-37.188405,-72.860949],[19.0,-37.184736,-72.864164],[19.5,-37.181364,-72.867819],[20.0,-37.178457,-72.872052],[20.5,-37.175576,-72.876319],[21.0,-37.174015,-72.881524],[21.5,-37.173239,-72.887016],[22.0,-37.17178,-72.892241],[22.5,-37.169358,-72.896898],[23.0,-37.166877,-72.901198],[23.5,-37.165271,-72.906411],[24.0,-37.162716,-72.910986],[24.5,-37.161125,-72.916092],[25.0,-37.15687,-72.916749],[25.5,-37.152495,-72.917758],[26.0,-37.148918,-72.921113],[26.5,-37.146163,-72.925483],[27.0,-37.143766,-72.930173],[27.5,-37.139697,-72.932519],[28.0,-37.135514,-72.934587],[28.5,-37.131329,-72.936651],[29.0,-37.127145,-72.938716],[29.5,-37.12296,-72.940781],[30.0,-37.118778,-72.942853],[30.5,-37.114598,-72.94493],[31.0,-37.11045,-72.947098],[31.5,-37.10681,-72.950353],[32.0,-37.102436,-72.951647],[32.5,-37.098045,-72.95286],[33.0,-37.093654,-72.954074],[33.5,-37.089262,-72.955287],[34.0,-37.084871,-72.9565],[34.5,-37.08048,-72.957712],[35.0,-37.076167,-72.959252],[35.5,-37.072109,-72.96168],[36.0,-37.067829,-72.963283],[36.5,-37.063335,-72.963327],[37.0,-37.058838,-72.963271],[37.5,-37.054342,-72.963263],[38.0,-37.04989,-72.962716],[38.5,-37.04564,-72.964137],[39.0,-37.041539,-72.966446],[39.5,-37.037088,-72.967021],[40.0,-37.032679,-72.967622],[40.5,-37.028984,-72.970692],[41.0,-37.024781,-72.972398],[41.5,-37.020304,-72.972895],[42.0,-37.015866,-72.973738],[42.5,-37.011458,-72.972642],[43.0,-37.007153,-72.971338],[43.5,-37.004271,-72.967059],[44.0,-37.00096,-72.963447],[44.5,-36.998655,-72.958613],[45.0,-36.996085,-72.954005],[45.5,-36.992875,-72.95009],[46.0,-36.989516,-72.946385],[46.5,-36.987203,-72.941678],[47.0,-36.983005,-72.940222],[47.5,-36.978665,-72.941698],[48.0,-36.974215,-72.942367],[48.5,-36.970014,-72.944188],[49.0,-36.967794,-72.949018],[49.5,-36.964855,-72.953148],[50.0,-36.965949,-72.958208],[50.5,-36.967669,-72.963337],[51.0,-36.968682,-72.968753],[51.5,-36.970124,-72.974058],[52.0,-36.970196,-72.979677],[52.5,-36.969542,-72.985232],[53.0,-36.968503,-72.990695],[53.5,-36.967116,-72.996028],[54.0,-36.965655,-73.001338],[54.5,-36.964436,-73.006731],[55.0,-36.960525,-73.008486],[55.5,-36.956361,-73.010382],[56.0,-36.952721,-73.013385],[56.5,-36.948354,-73.012139],[57.0,-36.94402,-73.010641],[57.5,-36.939656,-73.010837],[58.0,-36.935434,-73.012774],[58.5,-36.931651,-73.015737],[59.0,-36.928094,-73.019178],[59.5,-36.924534,-73.022615],[60.0,-36.920618,-73.025371],[60.5,-36.916658,-73.028035],[61.0,-36.912679,-73.030654],[61.5,-36.908349,-73.03149],[62.0,-36.903869,-73.031005],[62.5,-36.899466,-73.031977],[63.0,-36.895191,-73.03365],[63.5,-36.891233,-73.036083],[64.0,-36.886913,-73.037371],[64.5,-36.882464,-73.038006],[65.0,-36.877983,-73.038457],[65.5,-36.87413,-73.04125],[66.0,-36.86987,-73.042409],[66.5,-36.865485,-73.043613],[67.0,-36.861627,-73.04645],[67.5,-36.858075,-73.049794],[68.0,-36.853635,-73.050439],[68.5,-36.849275,-73.051814],[69.0,-36.844916,-73.053189],[69.5,-36.840614,-73.054786],[70.0,-36.836308,-73.056356],[70.5,-36.83254,-73.059237],[71.0,-36.828645,-73.061992],[71.5,-36.824423,-73.0636],[72.0,-36.820332,-73.065898],[72.5,-36.81589,-73.06645],[73.0,-36.811456,-73.066884],[73.5,-36.808351,-73.070856],[74.0,-36.805568,-73.075267],[74.5,-36.802016,-73.07858],[75.0,-36.797971,-73.081031],[75.5,-36.793925,-73.083482],[76.0,-36.789742,-73.085452],[76.5,-36.78525,-73.08556],[77.0,-36.780753,-73.085539],[77.5,-36.776257,-73.08551],[78.0,-36.77176,-73.085482],[78.5,-36.767291,-73.08591],[79.0,-36.763111,-73.087947],[79.5,-36.759022,-73.090282],[80.0,-36.754933,-73.092617],[80.5,-36.750844,-73.094951],[81.0,-36.746755,-73.097286],[81.5,-36.742708,-73.099725],[82.0,-36.739097,-73.10306],[82.5,-36.735578,-73.106552],[83.0,-36.732045,-73.110023],[83.5,-36.728508,-73.113463],[84.0,-36.725094,-73.11711],[84.5,-36.720804,-73.118491],[85.0,-36.716321,-73.118488],[85.5,-36.712377,-73.115826]],"L2":[[0.0,-36.824786,-73.06365],[0.5,-36.829032,-73.061722],[1.0,-36.830856,-73.0658],[1.5,-36.832141,-73.071214],[2.0,-36.833426,-73.076628],[2.5,-36.834711,-73.082042],[3.0,-36.835996,-73.087456],[3.5,-36.837281,-73.09287],[4.0,-36.83842,-73.098305],[4.5,-36.838122,-73.103942],[5.0,-36.837824,-73.10958],[5.5,-36.837526,-73.115217],[6.0,-36.838966,-73.120108],[6.5,-36.841972,-73.124327],[7.0,-36.844977,-73.128546],[7.5,-36.848609,-73.131389],[8.0,-36.853045,-73.132465],[8.5,-36.857483,-73.133529],[9.0,-36.861924,-73.134585],[9.5,-36.866365,-73.135641],[10.0,-36.870802,-73.136711],[10.5,-36.875239,-73.137786],[11.0,-36.879675,-73.138862],[11.5,-36.884113,-73.139936],[12.0,-36.888553,-73.141005],[12.5,-36.892994,-73.142074],[13.0,-36.897434,-73.143143],[13.5,-36.901873,-73.144212],[14.0,-36.906311,-73.145282],[14.5,-36.910749,-73.146351],[15.0,-36.915188,-73.14742],[15.5,-36.919626,-73.148489],[16.0,-36.924064,-73.149559],[16.5,-36.928502,-73.150628],[17.0,-36.932941,-73.151697],[17.5,-36.937379,-73.152767],[18.0,-36.941817,-73.153836],[18.5,-36.946255,-73.154905],[19.0,-36.950694,-73.155974],[19.5,-36.955134,-73.157033],[20.0,-36.959578,-73.158066],[20.5,-36.964022,-73.1591],[21.0,-36.968466,-73.160133],[21.5,-36.97291,-73.161166],[22.0,-36.977354,-73.162199],[22.5,-36.981825,-73.162929],[23.0,-36.986342,-73.163113],[23.5,-36.990859,-73.163089],[24.0,-36.995377,-73.16291],[24.5,-36.999854,-73.162385],[25.0,-37.004222,-73.160936],[25.5,-37.00859,-73.159487],[26.0,-37.012946,-73.157996],[26.5,-37.017004,-73.155498],[27.0,-37.021061,-73.153],[27.43,-37.024551,-73.150851]]};
+const PREV_ESTACIONES = {"L1":[["San Rosendo",-37.263557,-72.727845],["Buenuraqui",-37.202907,-72.770344],["Gomero",-37.196404,-72.835418],["Talcamavida",-37.165018,-72.906828],["Los Acacios",-37.155883,-72.916824],["Valle Chanco",-37.137311,-72.933732],["Unihue",-37.119256,-72.942669],["San Miguel",-37.078782,-72.958202],["Quilacoya",-37.054493,-72.963406],["Hualqui",-36.980477,-72.941045],["Omer Huet",-36.966332,-72.99848],["La Leonera",-36.951096,-73.013076],["Manquimavida",-36.938442,-73.011356],["Pedro Medina",-36.925686,-73.021468],["Chiguayante",-36.915296,-73.02889],["Concepcion",-36.830032,-73.061144],["Lorenzo Arenas",-36.808188,-73.071128],["UTFSM",-36.783753,-73.085601],["Los Condores",-36.756576,-73.091729],["Hospital las Higueras",-36.739494,-73.102709],["El Arenal",-36.725385,-73.116805],["Mercado",-36.711932,-73.115553]],"L2":[["Concepcion",-36.829805,-73.061371],["Juan Pablo II",-36.838448,-73.097786],["Diagonal Biobio",-36.837385,-73.117889],["Alborada",-36.846666,-73.130917],["Costa Mar",-36.854774,-73.132885],["El Parque",-36.867803,-73.135984],["Lomas Coloradas",-36.882727,-73.139602],["Silva Henriquez",-36.898491,-73.143398],["Hito Galvarino",-36.953863,-73.156738],["Los Canelos",-36.980216,-73.162864],["Huinca",-36.988284,-73.163192],["Cristo Redentor",-36.998666,-73.162779],["Laguna Quinenco",-37.012783,-73.158096],["Coronel",-37.024551,-73.150851]]};
+
+/* =========================================================================
+   PREVENCIONES · BOLETÍN DE VÍA C
+   Lee el boletín del día y contesta una sola pregunta mientras se conduce:
+   "¿qué prevención viene ahora y a cuántos metros?".
+
+   Cómo se ubica el tren: el GPS entrega lat/lon, y esa coordenada se proyecta
+   sobre el trazado (una polilínea con su kilometraje) para obtener el PK. Con
+   dos posiciones seguidas se sabe si el PK sube o baja, y de ahí la vía:
+   en L2, PK subiendo = Concepción→Coronel = VÍA 1; PK bajando = VÍA 2.
+
+   Qué se muestra: solo lo vigente a esta hora, solo lo que aplica a la vía por
+   la que se circula, y de todo eso lo más grave que quede dentro de 500 m.
+   ========================================================================= */
+
+const PREV_ARCHIVO   = 'prevenciones/boletin.json';
+const PREV_AVISO_M   = 500;    // metros de anticipación del aviso
+const PREV_VIA_MAX_M = 400;    // más lejos que esto de la vía, el GPS no sirve
+const PREV_LISTA_KM  = 15;     // cuántos km hacia adelante lista el panel
+const PREV_EMPALME_L1 = 71.0;  // PK de L1 donde nace el ramal a Coronel (Concepción)
+const PREV_ARENAL_PK  = 84.0;  // desde aquí a Mercado se circula por la vía 4
+const PREV_TRAMO_MAX = 15;     // un tramo más largo que esto no es un punto que avisar
+// El boletín CTC cubre Hualqui–Talcahuano en L1. Un PK bajo el 40 en esa
+// sección no es de L1: es de otro eje (Industrias Derivadas, variantes), que
+// comparte la numeración pero no la geografía.
+const PREV_RANGO = { L1: [40, 86], L2: [0, 28.5] };
+
+let PREV_BOLETINES = [];
+let PREV_GPS = {
+    watchId: null, lat: null, lon: null, precision: null,
+    linea: '', pk: null, distVia: null, sentido: 0, ts: 0, error: ''
+};
+let PREV_HISTORIA = [];        // últimos PK, para deducir el sentido
+let PREV_MANUAL = { activo: false, linea: 'L2', pk: 0, sentido: 1 };
+let PREV_ULTIMO_AVISO = '';
+
+/* ------------------------------------------------------------------ texto -- */
+
+function prevNorm(txt) {
+    return String(txt == null ? '' : txt)
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .toUpperCase().replace(/\s+/g, ' ').trim();
+}
+
+// "46 P. 10" -> 46.10 (km + poste/100) ; "3,3" -> 3.3 ; "59" -> 59
+// El poste va en centésimas de kilómetro: es la misma convención del boletín,
+// donde "27 P. 41" cae justo en Coronel (PK 27,43).
+function prevKm(txt) {
+    const s = String(txt == null ? '' : txt).trim();
+    if (!s) return null;
+    const poste = s.match(/^(\d+)\s*P\.?\s*(\d+)/i);
+    if (poste) return parseInt(poste[1], 10) + parseInt(poste[2], 10) / 100;
+    const dec = s.match(/^(\d+(?:[.,]\d+)?)/);
+    return dec ? parseFloat(dec[1].replace(',', '.')) : null;
+}
+
+function prevHoraMin(txt) {
+    const m = String(txt || '').match(/(\d{1,2})[:.](\d{2})/);
+    return m ? parseInt(m[1], 10) * 60 + parseInt(m[2], 10) : null;
+}
+
+function prevFechaISO(txt) {
+    const m = String(txt || '').match(/(20\d{2})-(\d{2})-(\d{2})/);
+    return m ? m[0] : '';
+}
+
+/* ------------------------------------------------------------ clasificar -- */
+
+// Vía por la que aplica la prevención.
+//   V1 / V2  : vía de circulación según el sentido de marcha
+//   V4       : vía única El Arenal–Mercado, y la vía 4 de acceso al ramal en
+//              Concepción; en ambos casos se circula por ella en los dos sentidos
+//   AMBAS    : ambas vías, todas, principal, y lo que es del tramo (puente, cruce)
+//   OTRA     : patio, desviador, enlace, variante, vías de servicio
+function prevVia(txt) {
+    const t = prevNorm(txt);
+    if (/^VIA\s*1$/.test(t)) return 'V1';
+    if (/^VIA\s*2$/.test(t)) return 'V2';
+    if (/^VIA\s*4$/.test(t)) return 'V4';
+    if (/^(AMBAS VIAS|TODAS|PRINCIPAL|PUENTE|CRUCE)$/.test(t)) return 'AMBAS';
+    return 'OTRA';
+}
+
+// Gravedad: 1 crítica (<=15 km/h) · 2 alta (<=30) · 3 media · 4 solo toque pito.
+function prevGravedad(restriccion) {
+    const t = prevNorm(restriccion);
+    const vel = (t.match(/(\d+)\s*KM\/H/g) || []).map(x => parseInt(x, 10));
+    if (vel.length) {
+        const v = Math.min.apply(null, vel);
+        return { nivel: v <= 15 ? 1 : v <= 30 ? 2 : 3, velocidad: v };
+    }
+    if (/SIN TRAFICO|PROHIBICION|NO DESPACHAR|BAJADA DE PANTOGRAFO/.test(t)) {
+        return { nivel: 3, velocidad: null };
+    }
+    return { nivel: 4, velocidad: null };   // toque pito y avisos sin velocidad
+}
+
+const PREV_NIVEL_TXT = { 1: 'Crítica', 2: 'Alta', 3: 'Media', 4: 'Aviso' };
+
+/* ------------------------------------------------------------ interpretar -- */
+
+// Un boletín trae dos secciones. La de Hualqui–Talcahuano usa el kilometraje de
+// L1; la de Concepción–Coronel usa el de L2, salvo los primeros registros, que
+// arrancan con el PK 69/70/71 del eje compartido en Concepción y terminan con
+// el PK propio del ramal. Esos quedan como dos tramos.
+function prevInterpretarBoletin(hoja) {
+    const filas = (hoja && hoja.filas) || [];
+    const celda = (f, i) => String((f && f[i]) || '').trim();
+    const prevenciones = [];
+    let linea = '';
+
+    filas.forEach(function (f) {
+        const texto = prevNorm((f || []).join(' '));
+        if (texto.indexOf('NOTIFICACION DE FAENAS') >= 0) {
+            if (texto.indexOf('TALCAHUANO') >= 0) linea = 'L1';
+            else if (texto.indexOf('CORONEL') >= 0) linea = 'L2';
+            return;
+        }
+        if (!linea || !/^\d+$/.test(celda(f, 0))) return;
+
+        const kmA = prevKm(celda(f, 4));
+        const kmB = prevKm(celda(f, 5));
+        if (kmA === null && kmB === null) return;
+
+        const grav = prevGravedad(celda(f, 6));
+        const p = {
+            n: celda(f, 0),
+            linea: linea,
+            bloque: [celda(f, 1), celda(f, 2)].filter(Boolean).join(' – '),
+            viaTexto: celda(f, 3),
+            via: prevVia(celda(f, 3)),
+            kmTexto: celda(f, 4) + (celda(f, 5) ? ' a ' + celda(f, 5) : ''),
+            restriccion: celda(f, 6),
+            descripcion: celda(f, 7),
+            horaIni: celda(f, 8).slice(0, 5),
+            horaFin: celda(f, 9).slice(0, 5),
+            minIni: prevHoraMin(celda(f, 8)),
+            minFin: prevHoraMin(celda(f, 9)),
+            fechaIni: prevFechaISO(celda(f, 10)),
+            fechaFin: prevFechaISO(celda(f, 11)),
+            coordinado: celda(f, 12),
+            nivel: grav.nivel,
+            velocidad: grav.velocidad,
+            tramos: []
+        };
+
+        // ¿Cada extremo a qué eje pertenece? En la sección de Coronel, un PK
+        // sobre 40 solo puede ser del eje de Concepción (L1).
+        const eje = (km) => (linea === 'L2' && km !== null && km > 40) ? 'L1' : linea;
+        const ejeA = eje(kmA), ejeB = eje(kmB);
+
+        if (kmA !== null && kmB !== null && ejeA !== ejeB) {
+            // Sale de Concepción por el eje L1 y entra al ramal por el de L2.
+            p.tramos.push({ linea: ejeA, desde: kmA, hasta: PREV_EMPALME_L1 });
+            p.tramos.push({ linea: ejeB, desde: 0, hasta: kmB });
+            p.mixto = true;
+        } else {
+            const a = kmA === null ? kmB : kmA;
+            const b = kmB === null ? kmA : kmB;
+            p.tramos.push({ linea: ejeA || linea, desde: Math.min(a, b), hasta: Math.max(a, b) });
+        }
+
+        // Un tramo sirve para avisar por GPS solo si cae de verdad en el sector
+        // de esa línea. Las variantes y el ramal de Industrias Derivadas llevan
+        // su propio kilometraje: se listan, pero no se ubican en el mapa.
+        const ajeno = /VARIANTE/.test(prevNorm(p.viaTexto)) ||
+                      /INDUSTRIAS DERIVADAS/.test(prevNorm(p.bloque));
+        p.tramos.forEach(function (t) {
+            const r = PREV_RANGO[t.linea];
+            t.geo = !ajeno && !!r &&
+                    t.desde >= r[0] && t.hasta <= r[1] &&
+                    (t.hasta - t.desde) <= PREV_TRAMO_MAX;
+        });
+        p.geo = p.tramos.some(t => t.geo);
+        p.ajeno = ajeno;
+
+        prevenciones.push(p);
+    });
+
+    return {
+        fecha: hoja.fecha,
+        folio: hoja.folio || '',
+        archivo: hoja.archivo || '',
+        prevenciones: prevenciones
+    };
+}
+
+/* --------------------------------------------------------------- vigencia -- */
+
+// Hora y fecha de Chile continental, reutilizando el reloj de la bitácora.
+function prevAhoraChile() {
+    const partes = Object.fromEntries(
+        formatoHoraChile.formatToParts(new Date())
+            .filter(p => p.type !== 'literal').map(p => [p.type, p.value])
+    );
+    return {
+        minutos: parseInt(partes.hour, 10) * 60 + parseInt(partes.minute, 10),
+        fecha: fechaArchivoChile(),
+        texto: partes.hour + ':' + partes.minute
+    };
+}
+
+function prevVigente(p, ahora) {
+    if (p.fechaIni && ahora.fecha < p.fechaIni) return false;
+    if (p.fechaFin && ahora.fecha > p.fechaFin) return false;
+    if (p.minIni === null || p.minFin === null) return true;
+    const m = ahora.minutos;
+    if (p.minFin >= p.minIni) return m >= p.minIni && m <= p.minFin;
+    return m >= p.minIni || m <= p.minFin;   // ventana que cruza medianoche
+}
+
+// La vía se deduce del sentido de marcha, y es la misma idea en las dos líneas:
+//   L1  Hualqui -> El Arenal .... PK creciente  -> vía 1
+//       El Arenal -> Hualqui .... PK decreciente -> vía 2
+//       El Arenal -> Mercado .... vía 4 (única, en los dos sentidos)
+//   L2  Concepción -> Coronel ... PK creciente  -> vía 1
+//       Coronel -> Concepción ... PK decreciente -> vía 2
+// Sin sentido definido (tren detenido, primera posición) no se filtra nada.
+function prevViaAplica(p, linea, sentido) {
+    if (p.via === 'AMBAS' || p.via === 'OTRA' || p.via === 'V4') return true;
+    if (!sentido) return true;
+    return (sentido > 0 && p.via === 'V1') || (sentido < 0 && p.via === 'V2');
+}
+
+// Por qué vía se está circulando, para mostrarlo en el panel.
+function prevViaDeMarcha(linea, pk, sentido) {
+    if (linea === 'L1' && pk >= PREV_ARENAL_PK) return '4';
+    if (!sentido) return '';
+    return sentido > 0 ? '1' : '2';
+}
+
+/* -------------------------------------------------------- posición · GPS -- */
+
+// Proyecta la coordenada sobre cada segmento del trazado y devuelve el PK del
+// punto más cercano, junto con lo lejos que se está de la vía.
+function prevProyectar(linea, lat, lon) {
+    const pts = PREV_TRAZADO[linea];
+    if (!pts) return null;
+    const mLat = 111320, mLon = 111320 * Math.cos(lat * Math.PI / 180);
+    let mejor = null;
+
+    for (let i = 0; i < pts.length - 1; i++) {
+        const x0 = (pts[i][2] - lon) * mLon,     y0 = (pts[i][1] - lat) * mLat;
+        const x1 = (pts[i + 1][2] - lon) * mLon, y1 = (pts[i + 1][1] - lat) * mLat;
+        const dx = x1 - x0, dy = y1 - y0;
+        const largo = dx * dx + dy * dy;
+        let t = largo ? -(x0 * dx + y0 * dy) / largo : 0;
+        t = Math.max(0, Math.min(1, t));
+        const d = Math.hypot(x0 + t * dx, y0 + t * dy);
+        if (!mejor || d < mejor.dist) {
+            mejor = { dist: d, pk: pts[i][0] + t * (pts[i + 1][0] - pts[i][0]) };
+        }
+    }
+    return mejor;
+}
+
+// Concepción es el punto donde L1 y L2 se tocan: ahí las dos proyecciones dan
+// casi lo mismo. Se mantiene la línea en la que ya se venía salvo que la otra
+// quede claramente más cerca.
+function prevUbicar(lat, lon) {
+    const a = prevProyectar('L1', lat, lon);
+    const b = prevProyectar('L2', lat, lon);
+    if (!a && !b) return null;
+    let elegida = (!b || (a && a.dist <= b.dist)) ? 'L1' : 'L2';
+    const otra = elegida === 'L1' ? b : a;
+    const esta = elegida === 'L1' ? a : b;
+    if (PREV_GPS.linea && PREV_GPS.linea !== elegida && otra && esta &&
+        (esta.dist + 100) > otra.dist) {
+        elegida = PREV_GPS.linea;
+    }
+    const r = elegida === 'L1' ? a : b;
+    return { linea: elegida, pk: r.pk, dist: r.dist };
+}
+
+function prevRegistrarPosicion(linea, pk, ts) {
+    PREV_HISTORIA.push({ linea: linea, pk: pk, ts: ts });
+    if (PREV_HISTORIA.length > 6) PREV_HISTORIA.shift();
+
+    const mismos = PREV_HISTORIA.filter(h => h.linea === linea);
+    if (mismos.length < 2) return PREV_GPS.sentido;
+    const d = mismos[mismos.length - 1].pk - mismos[0].pk;
+    if (Math.abs(d) < 0.05) return PREV_GPS.sentido;   // detenido: se conserva
+    return d > 0 ? 1 : -1;
+}
+
+function prevIniciarGPS() {
+    if (!navigator.geolocation) {
+        PREV_GPS.error = 'Este equipo no entrega ubicación.';
+        prevRenderizar();
+        return;
+    }
+    if (PREV_GPS.watchId !== null) return;
+
+    PREV_MANUAL.activo = false;
+    PREV_GPS.error = '';
+    PREV_GPS.watchId = navigator.geolocation.watchPosition(
+        function (pos) {
+            const lat = pos.coords.latitude, lon = pos.coords.longitude;
+            const u = prevUbicar(lat, lon);
+            PREV_GPS.lat = lat; PREV_GPS.lon = lon;
+            PREV_GPS.precision = pos.coords.accuracy;
+            PREV_GPS.ts = Date.now();
+            PREV_GPS.error = '';
+            if (u) {
+                PREV_GPS.sentido = prevRegistrarPosicion(u.linea, u.pk, PREV_GPS.ts);
+                PREV_GPS.linea = u.linea;
+                PREV_GPS.pk = u.pk;
+                PREV_GPS.distVia = u.dist;
+            }
+            prevActualizar();
+        },
+        function (err) {
+            PREV_GPS.error = err.code === 1
+                ? 'Falta permiso de ubicación. Actívalo para el sitio y vuelve a intentar.'
+                : 'No se pudo obtener la ubicación (' + (err.message || err.code) + ').';
+            prevRenderizar();
+        },
+        { enableHighAccuracy: true, maximumAge: 2000, timeout: 15000 }
+    );
+    prevRenderizar();
+}
+
+function prevDetenerGPS() {
+    if (PREV_GPS.watchId !== null) navigator.geolocation.clearWatch(PREV_GPS.watchId);
+    PREV_GPS.watchId = null;
+    PREV_HISTORIA = [];
+    prevActualizar();
+}
+
+function prevPosicionActual() {
+    if (PREV_MANUAL.activo) {
+        return { linea: PREV_MANUAL.linea, pk: PREV_MANUAL.pk,
+                 sentido: PREV_MANUAL.sentido, dist: 0, manual: true };
+    }
+    if (PREV_GPS.pk === null) return null;
+    return { linea: PREV_GPS.linea, pk: PREV_GPS.pk,
+             sentido: PREV_GPS.sentido, dist: PREV_GPS.distVia, manual: false };
+}
+
+/* ------------------------------------------------------------ proximidad -- */
+
+// Distancia en metros hasta el tramo, según el sentido de marcha.
+// 0 = ya se está dentro ; null = queda atrás o no aplica.
+function prevDistanciaA(p, pos) {
+    let mejor = null;
+    p.tramos.forEach(function (t) {
+        if (!t.geo || t.linea !== pos.linea) return;
+        if (pos.pk >= t.desde && pos.pk <= t.hasta) { mejor = 0; return; }
+        const sentido = pos.sentido || 1;
+        const delta = sentido > 0 ? (t.desde - pos.pk) : (pos.pk - t.hasta);
+        if (delta < 0) return;                       // ya quedó atrás
+        const m = delta * 1000;
+        if (mejor === null || m < mejor) mejor = m;
+    });
+    return mejor;
+}
+
+// Las de patio, desvío o enlace no compiten de igual a igual con las de vía:
+// entran a la lista, pero un paso a paso de patio no debe tapar un 30 km/h.
+function prevRango(p) { return p.nivel + (p.via === 'OTRA' ? 1 : 0); }
+
+function prevCandidatas(pos, ahora, alcanceKm) {
+    const bol = prevBoletinActivo();
+    if (!bol || !pos) return [];
+    const lim = (alcanceKm || PREV_LISTA_KM) * 1000;
+
+    return bol.prevenciones
+        .filter(p => prevVigente(p, ahora))
+        .filter(p => prevViaAplica(p, pos.linea, pos.sentido))
+        .map(function (p) {
+            const d = prevDistanciaA(p, pos);
+            return d === null ? null : Object.assign({ metros: d }, p);
+        })
+        .filter(p => p && p.metros <= lim)
+        .sort((a, b) => a.metros - b.metros);
+}
+
+function prevMasImportanteCerca(pos, ahora) {
+    return prevCandidatas(pos, ahora, PREV_AVISO_M / 1000)
+        .sort((a, b) => prevRango(a) - prevRango(b) || a.metros - b.metros)[0] || null;
+}
+
+/* ---------------------------------------------------------------- pantalla -- */
+
+function prevBoletinActivo() {
+    if (!PREV_BOLETINES.length) return null;
+    const hoy = fechaArchivoChile();
+    return PREV_BOLETINES.find(b => b.fecha === hoy) || PREV_BOLETINES[PREV_BOLETINES.length - 1];
+}
+
+function prevMetrosTxt(m) {
+    if (m === 0) return 'EN ZONA';
+    return m < 1000 ? Math.round(m / 10) * 10 + ' m' : (m / 1000).toFixed(1) + ' km';
+}
+
+function prevRestriccionCorta(p) {
+    if (p.velocidad !== null) return p.velocidad + ' km/h';
+    const t = prevNorm(p.restriccion);
+    if (/TOQUE PITO/.test(t)) return 'Toque pito';
+    return p.restriccion.split(/[,\n]/)[0].trim() || 'Restricción';
+}
+
+// La franja bajo el reloj: solo aparece cuando hay algo dentro de 500 m.
+function prevActualizar() {
+    const franja = document.getElementById('prev-aviso');
+    if (!franja) return;
+
+    const pos = prevPosicionActual();
+    const ahora = prevAhoraChile();
+    const p = pos ? prevMasImportanteCerca(pos, ahora) : null;
+
+    if (!p) {
+        franja.hidden = true;
+        franja.innerHTML = '';
+        PREV_ULTIMO_AVISO = '';
+    } else {
+        const clave = p.n + '|' + (p.metros === 0 ? 'dentro' : 'cerca');
+        franja.className = 'prev-aviso nivel-' + p.nivel + (p.metros === 0 ? ' dentro' : '');
+        franja.innerHTML =
+            `<div class="prev-aviso-izq">
+                <span class="prev-aviso-dist">${escHtml(prevMetrosTxt(p.metros))}</span>
+                <span class="prev-aviso-nivel">${escHtml(PREV_NIVEL_TXT[p.nivel])}</span>
+             </div>
+             <div class="prev-aviso-der">
+                <div class="prev-aviso-restr">${escHtml(prevRestriccionCorta(p))}
+                    <span class="prev-aviso-via">${escHtml(p.viaTexto || '')}</span></div>
+                <div class="prev-aviso-km">PK ${escHtml(p.kmTexto)} · ${escHtml(p.bloque)}</div>
+             </div>`;
+        franja.hidden = false;
+        if (clave !== PREV_ULTIMO_AVISO) { PREV_ULTIMO_AVISO = clave; prevVibrar(p.nivel); }
+    }
+
+    if (document.getElementById('prev-overlay').classList.contains('abierto')) prevRenderizar();
+}
+
+function prevVibrar(nivel) {
+    if (!navigator.vibrate) return;
+    try { navigator.vibrate(nivel <= 2 ? [180, 90, 180] : 120); } catch (e) {}
+}
+
+function prevTarjeta(p) {
+    const dist = p.metros === undefined ? '' :
+        `<span class="prev-dist">${escHtml(prevMetrosTxt(p.metros))}</span>`;
+    return `
+        <div class="prev-item nivel-${p.nivel}${p.metros === 0 ? ' dentro' : ''}">
+            <div class="prev-item-top">
+                <span class="prev-restr">${escHtml(prevRestriccionCorta(p))}</span>
+                <span class="prev-via prev-via-${p.via.toLowerCase()}">${escHtml(p.viaTexto || '—')}</span>
+                ${dist}
+            </div>
+            <div class="prev-item-km">PK ${escHtml(p.kmTexto)} · ${escHtml(p.bloque)}
+                · ${escHtml(p.horaIni)}–${escHtml(p.horaFin)}
+                ${p.geo ? '' : '<span class="prev-sinubic">sin ubicación en el trazado</span>'}</div>
+            ${p.descripcion ? `<div class="prev-item-desc">${escHtml(p.descripcion)}</div>` : ''}
+            ${p.restriccion && p.velocidad !== null && /TOQUE PITO/.test(prevNorm(p.restriccion))
+                ? `<div class="prev-item-extra">+ toque pito</div>` : ''}
+        </div>`;
+}
+
+function prevRenderizar() {
+    const caja = document.getElementById('prev-resultados');
+    const cab = document.getElementById('prev-cabecera');
+    if (!caja) return;
+
+    const bol = prevBoletinActivo();
+    if (!bol) {
+        if (cab) cab.innerHTML = '';
+        caja.innerHTML = `<div class="plan-vacio">No se pudo cargar el boletín.<br>
+            Revisa que tengas señal y vuelve a abrir la aplicación.</div>`;
+        return;
+    }
+
+    const pos = prevPosicionActual();
+    const ahora = prevAhoraChile();
+    const vigentes = bol.prevenciones.filter(p => prevVigente(p, ahora));
+
+    if (cab) {
+        const estado = PREV_MANUAL.activo
+            ? `<span class="prev-chip manual">Modo prueba</span>`
+            : PREV_GPS.watchId !== null
+                ? `<span class="prev-chip ok">GPS activo</span>`
+                : `<span class="prev-chip off">GPS apagado</span>`;
+        const ubic = pos
+            ? `${pos.linea} · PK ${pos.pk.toFixed(2)} · ${pos.sentido > 0 ? 'PK creciente' : pos.sentido < 0 ? 'PK decreciente' : 'sentido por definir'}
+               ${prevViaDeMarcha(pos.linea, pos.pk, pos.sentido)
+                    ? ' · <strong>VÍA ' + prevViaDeMarcha(pos.linea, pos.pk, pos.sentido) + '</strong>' : ''}
+               ${!pos.manual && pos.dist !== null ? ' · a ' + Math.round(pos.dist) + ' m de la vía' : ''}`
+            : 'Sin posición todavía';
+        cab.innerHTML = `<div class="prev-estado">${estado}<span>${ubic}</span></div>` +
+            (PREV_GPS.error ? `<div class="pauta-aviso error">${escHtml(PREV_GPS.error)}</div>` : '') +
+            (pos && !pos.manual && pos.dist > PREV_VIA_MAX_M
+                ? `<div class="pauta-aviso info">Estás a ${Math.round(pos.dist)} m de la vía: la ubicación no es confiable para avisar.</div>`
+                : '');
+    }
+
+    let html = `<p class="plan-hint">Boletín folio <strong>${escHtml(bol.folio)}</strong> ·
+        ${escHtml(bol.fecha)} · ${bol.prevenciones.length} prevenciones,
+        <strong>${vigentes.length} vigentes</strong> a las ${escHtml(ahora.texto)}</p>`;
+
+    if (pos) {
+        const cerca = prevCandidatas(pos, ahora, PREV_LISTA_KM);
+        html += `<div class="plan-seccion-titulo">Lo que viene (${PREV_LISTA_KM} km)</div>`;
+        html += cerca.length
+            ? cerca.map(prevTarjeta).join('')
+            : `<div class="plan-vacio">No hay prevenciones vigentes en los próximos ${PREV_LISTA_KM} km.</div>`;
+    }
+
+    const resto = vigentes.filter(p => p.linea === 'L1');
+    const resto2 = vigentes.filter(p => p.linea === 'L2');
+    html += `<div class="plan-seccion-titulo">Todas las vigentes · L1 Hualqui–Talcahuano (${resto.length})</div>`;
+    html += resto.length ? resto.map(prevTarjeta).join('') : `<div class="plan-vacio">Ninguna.</div>`;
+    html += `<div class="plan-seccion-titulo">Todas las vigentes · L2 Concepción–Coronel (${resto2.length})</div>`;
+    html += resto2.length ? resto2.map(prevTarjeta).join('') : `<div class="plan-vacio">Ninguna.</div>`;
+
+    html += `<div class="pauta-pie">Se muestran solo las prevenciones dentro de su horario y fecha,
+        y las de la vía por la que se circula (vía 1 o 2 según el sentido; la 4 entre El Arenal y Mercado).
+        El aviso bajo el reloj entrega la más grave dentro de ${PREV_AVISO_M} m en el sentido de marcha.
+        Las de patio, desvío, enlace o variante se listan, pero no desplazan a una restricción de vía.<br>
+        Esto es una ayuda: el boletín de vía sigue siendo el documento válido.</div>`;
+
+    caja.innerHTML = html;
+}
+
+/* ------------------------------------------------------------- modo prueba -- */
+
+function prevModoPrueba() {
+    PREV_MANUAL.activo = !PREV_MANUAL.activo;
+    if (PREV_MANUAL.activo) prevDetenerGPS();
+    prevActualizar();
+    prevRenderizar();
+}
+
+function prevPruebaCambio() {
+    const l = document.getElementById('prev-linea');
+    const k = document.getElementById('prev-pk');
+    const s = document.getElementById('prev-sentido');
+    if (l) PREV_MANUAL.linea = l.value;
+    if (k) PREV_MANUAL.pk = parseFloat(k.value) || 0;
+    if (s) PREV_MANUAL.sentido = parseInt(s.value, 10) || 1;
+    PREV_MANUAL.activo = true;
+    prevActualizar();
+    prevRenderizar();
+}
+
+/* ------------------------------------------------------------ abrir/cerrar -- */
+
+function abrirPrevenciones() {
+    const overlay = document.getElementById('prev-overlay');
+    overlay.hidden = false;
+    overlay.classList.add('abierto');
+    document.body.classList.add('plan-abierto');
+    prevRenderizar();
+}
+
+function cerrarPrevenciones() {
+    const overlay = document.getElementById('prev-overlay');
+    overlay.classList.remove('abierto');
+    overlay.hidden = true;
+    if (!document.getElementById('plan-overlay').classList.contains('abierto') &&
+        !document.getElementById('pauta-overlay').classList.contains('abierto')) {
+        document.body.classList.remove('plan-abierto');
+    }
+}
+
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && document.getElementById('prev-overlay').classList.contains('abierto')) {
+        cerrarPrevenciones();
+    }
+});
+document.getElementById('prev-overlay').addEventListener('click', function (e) {
+    if (e.target === this) cerrarPrevenciones();
+});
+
+/* ---------------------------------------------------------------- arranque -- */
+
+async function prevCargarBoletin() {
+    try {
+        const r = await fetch(PREV_ARCHIVO, { cache: 'no-cache' });
+        if (!r.ok) return false;
+        const j = await r.json();
+        const hojas = Array.isArray(j.boletines) ? j.boletines : [];
+        PREV_BOLETINES = hojas
+            .filter(h => h && h.fecha && Array.isArray(h.filas))
+            .map(prevInterpretarBoletin)
+            .sort((a, b) => a.fecha.localeCompare(b.fecha));
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+window.addEventListener('load', function () {
+    prevCargarBoletin().then(function () {
+        prevActualizar();
+        if (document.getElementById('prev-overlay').classList.contains('abierto')) prevRenderizar();
+    });
+    // La vigencia depende de la hora: se revisa cada minuto aunque no haya GPS.
+    setInterval(prevActualizar, 60000);
 });
 
 /* ------------------------------ pareja dentro del planificador de viajes -- */
