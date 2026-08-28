@@ -279,12 +279,14 @@
         .prev-btn { background-color: #b4232f; color: #fff; }
 
         /* Franja de aviso, justo bajo el reloj */
-        .prev-aviso { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: center; max-width: 980px; margin: 0 auto 12px; padding: 11px 14px; border-radius: 12px; border-left: 7px solid #6a7891; background: #eef2f7; color: #172033; box-shadow: 0 4px 14px rgba(23,32,51,0.12); }
+        .prev-aviso { position: sticky; top: var(--prev-top, 104px); z-index: 890; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: center; max-width: 980px; margin: 0 auto 12px; padding: 11px 14px; border-radius: 12px; border-left: 7px solid #6a7891; background: #eef2f7; color: #172033; box-shadow: 0 4px 14px rgba(23,32,51,0.12); }
         .prev-aviso.nivel-1 { border-left-color: #b4232f; background: #fdecec; color: #6e1219; }
         .prev-aviso.nivel-2 { border-left-color: #d97706; background: #fff5e6; color: #7c4708; }
         .prev-aviso.nivel-3 { border-left-color: #0b5ed7; background: #eaf2ff; color: #123c86; }
         .prev-aviso.nivel-4 { border-left-color: #6a7891; background: #f2f5f9; color: #3a475e; }
         .prev-aviso.dentro { animation: prev-latido 1.4s ease-in-out infinite; }
+        .prev-aviso.pasada { opacity: 0.82; border-left-style: dashed; }
+        .prev-aviso.pasada .prev-aviso-dist { font-size: 1.25rem; }
         .prev-aviso-izq { text-align: center; min-width: 86px; }
         .prev-aviso-dist { display: block; font-size: 1.55rem; font-weight: 900; line-height: 1.05; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
         .prev-aviso-nivel { display: block; margin-top: 2px; font-size: 0.66rem; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.75; }
@@ -292,6 +294,7 @@
         .prev-aviso-restr { font-size: 1.08rem; font-weight: 900; line-height: 1.25; }
         .prev-aviso-via { margin-left: 7px; padding: 2px 7px; border-radius: 999px; background: rgba(0,0,0,0.09); font-size: 0.7rem; font-weight: 850; vertical-align: middle; }
         .prev-aviso-km { margin-top: 3px; font-size: 0.8rem; font-weight: 700; opacity: 0.85; overflow-wrap: anywhere; }
+        .prev-aviso-viejo { margin-top: 5px; padding: 3px 8px; border-radius: 7px; background: rgba(180,35,47,0.14); color: #7d1620; font-size: 0.74rem; font-weight: 900; display: inline-block; }
 
         @media (prefers-reduced-motion: no-preference) {
             @keyframes prev-latido { 0%, 100% { box-shadow: 0 4px 14px rgba(23,32,51,0.12); } 50% { box-shadow: 0 0 0 5px rgba(180,35,47,0.22); } }
@@ -3647,6 +3650,7 @@ const PREV_ESTACIONES = {"L1":[["San Rosendo",-37.263557,-72.727845],["Buenuraqu
 
 const PREV_ARCHIVO   = 'prevenciones/boletin.json';
 const PREV_AVISO_M   = 500;    // metros de anticipación del aviso
+const PREV_PASADA_M  = 300;    // cuánto sigue a la vista después de salir de la zona
 const PREV_VIA_MAX_M = 400;    // más lejos que esto de la vía, el GPS no sirve
 const PREV_LISTA_KM  = 15;     // cuántos km hacia adelante lista el panel
 const PREV_EMPALME_L1 = 71.0;  // PK de L1 donde nace el ramal a Coronel (Concepción)
@@ -3971,26 +3975,46 @@ function prevPosicionActual() {
 
 /* ------------------------------------------------------------ proximidad -- */
 
-// Distancia en metros hasta el tramo, según el sentido de marcha.
-// 0 = ya se está dentro ; null = queda atrás o no aplica.
+// Dónde queda el tramo respecto del tren, según el sentido de marcha:
+//   'antes'  : todavía no se llega, faltan N metros
+//   'dentro' : se está circulando dentro de la zona
+//   'pasada' : ya se salió, hace N metros
+// Devuelve null si el tramo no es de esta línea o no se puede ubicar.
 function prevDistanciaA(p, pos) {
+    const sentido = pos.sentido || 1;
     let mejor = null;
+
     p.tramos.forEach(function (t) {
         if (!t.geo || t.linea !== pos.linea) return;
-        if (pos.pk >= t.desde && pos.pk <= t.hasta) { mejor = 0; return; }
-        const sentido = pos.sentido || 1;
-        const delta = sentido > 0 ? (t.desde - pos.pk) : (pos.pk - t.hasta);
-        if (delta < 0) return;                       // ya quedó atrás
-        const m = delta * 1000;
-        if (mejor === null || m < mejor) mejor = m;
+
+        let estado, km;
+        if (pos.pk >= t.desde && pos.pk <= t.hasta) {
+            estado = 'dentro'; km = 0;
+        } else if (sentido > 0) {
+            estado = pos.pk < t.desde ? 'antes' : 'pasada';
+            km = estado === 'antes' ? t.desde - pos.pk : pos.pk - t.hasta;
+        } else {
+            estado = pos.pk > t.hasta ? 'antes' : 'pasada';
+            km = estado === 'antes' ? pos.pk - t.hasta : t.desde - pos.pk;
+        }
+
+        const cand = { metros: Math.round(km * 1000), estado: estado };
+        if (!mejor || PREV_ORDEN_ESTADO[cand.estado] < PREV_ORDEN_ESTADO[mejor.estado] ||
+            (cand.estado === mejor.estado && cand.metros < mejor.metros)) {
+            mejor = cand;
+        }
     });
     return mejor;
 }
+
+const PREV_ORDEN_ESTADO = { dentro: 0, antes: 1, pasada: 2 };
 
 // Las de patio, desvío o enlace no compiten de igual a igual con las de vía:
 // entran a la lista, pero un paso a paso de patio no debe tapar un 30 km/h.
 function prevRango(p) { return p.nivel + (p.via === 'OTRA' ? 1 : 0); }
 
+// Lo que el tren tiene por delante (o encima). Las ya pasadas no entran acá:
+// el listado del panel es "lo que viene".
 function prevCandidatas(pos, ahora, alcanceKm) {
     const bol = prevBoletinActivo();
     if (!bol || !pos) return [];
@@ -4001,14 +4025,36 @@ function prevCandidatas(pos, ahora, alcanceKm) {
         .filter(p => prevViaAplica(p, pos.linea, pos.sentido))
         .map(function (p) {
             const d = prevDistanciaA(p, pos);
-            return d === null ? null : Object.assign({ metros: d }, p);
+            return d ? Object.assign({ metros: d.metros, estado: d.estado }, p) : null;
         })
-        .filter(p => p && p.metros <= lim)
+        .filter(p => p && p.estado !== 'pasada' && p.metros <= lim)
         .sort((a, b) => a.metros - b.metros);
 }
 
+// Las que se acaban de dejar atrás, mientras no se alejen más de 300 m.
+function prevReciénPasadas(pos, ahora) {
+    const bol = prevBoletinActivo();
+    if (!bol || !pos) return [];
+
+    return bol.prevenciones
+        .filter(p => prevVigente(p, ahora))
+        .filter(p => prevViaAplica(p, pos.linea, pos.sentido))
+        .map(function (p) {
+            const d = prevDistanciaA(p, pos);
+            return d ? Object.assign({ metros: d.metros, estado: d.estado }, p) : null;
+        })
+        .filter(p => p && p.estado === 'pasada' && p.metros <= PREV_PASADA_M);
+}
+
+// La que se muestra bajo el reloj: lo más grave que se tenga encima o dentro de
+// 500 m. Si no hay nada por delante, se deja a la vista la que se acaba de
+// pasar, hasta alejarse 300 m de ella.
 function prevMasImportanteCerca(pos, ahora) {
-    return prevCandidatas(pos, ahora, PREV_AVISO_M / 1000)
+    const adelante = prevCandidatas(pos, ahora, PREV_AVISO_M / 1000)
+        .sort((a, b) => prevRango(a) - prevRango(b) || a.metros - b.metros);
+    if (adelante.length) return adelante[0];
+
+    return prevReciénPasadas(pos, ahora)
         .sort((a, b) => prevRango(a) - prevRango(b) || a.metros - b.metros)[0] || null;
 }
 
@@ -4020,9 +4066,24 @@ function prevBoletinActivo() {
     return PREV_BOLETINES.find(b => b.fecha === hoy) || PREV_BOLETINES[PREV_BOLETINES.length - 1];
 }
 
-function prevMetrosTxt(m) {
-    if (m === 0) return 'EN ZONA';
-    return m < 1000 ? Math.round(m / 10) * 10 + ' m' : (m / 1000).toFixed(1) + ' km';
+// Si no hay boletín de hoy se usa el último que haya, pero eso tiene que
+// quedar a la vista: un boletín de ayer puede traer faenas que ya terminaron
+// y no traer las de hoy.
+function prevBoletinEsDeHoy() {
+    const bol = prevBoletinActivo();
+    return !!bol && bol.fecha === fechaArchivoChile();
+}
+
+function prevFechaBonita(iso) {
+    const d = new Date(iso + 'T12:00:00');
+    const txt = new Intl.DateTimeFormat('es-CL', { weekday: 'long', day: 'numeric', month: 'long' }).format(d);
+    return txt.charAt(0).toUpperCase() + txt.slice(1);
+}
+
+function prevMetrosTxt(m, estado) {
+    if (estado === 'dentro' || m === 0) return 'EN ZONA';
+    const txt = m < 1000 ? Math.round(m / 10) * 10 + ' m' : (m / 1000).toFixed(1) + ' km';
+    return estado === 'pasada' ? '◀ ' + txt : txt;
 }
 
 function prevRestriccionCorta(p) {
@@ -4046,24 +4107,46 @@ function prevActualizar() {
         franja.innerHTML = '';
         PREV_ULTIMO_AVISO = '';
     } else {
-        const clave = p.n + '|' + (p.metros === 0 ? 'dentro' : 'cerca');
-        franja.className = 'prev-aviso nivel-' + p.nivel + (p.metros === 0 ? ' dentro' : '');
+        const clave = p.n + '|' + p.estado;
+        franja.className = 'prev-aviso nivel-' + p.nivel +
+            (p.estado === 'dentro' ? ' dentro' : p.estado === 'pasada' ? ' pasada' : '');
         franja.innerHTML =
             `<div class="prev-aviso-izq">
-                <span class="prev-aviso-dist">${escHtml(prevMetrosTxt(p.metros))}</span>
-                <span class="prev-aviso-nivel">${escHtml(PREV_NIVEL_TXT[p.nivel])}</span>
+                <span class="prev-aviso-dist">${escHtml(prevMetrosTxt(p.metros, p.estado))}</span>
+                <span class="prev-aviso-nivel">${escHtml(p.estado === 'pasada' ? 'Pasada' : PREV_NIVEL_TXT[p.nivel])}</span>
              </div>
              <div class="prev-aviso-der">
                 <div class="prev-aviso-restr">${escHtml(prevRestriccionCorta(p))}
                     <span class="prev-aviso-via">${escHtml(p.viaTexto || '')}</span></div>
                 <div class="prev-aviso-km">PK ${escHtml(p.kmTexto)} · ${escHtml(p.bloque)}</div>
+                ${prevBoletinEsDeHoy() ? '' :
+                    `<div class="prev-aviso-viejo">⚠ Boletín del ${escHtml(prevFechaBonita(prevBoletinActivo().fecha))}, no es el de hoy</div>`}
              </div>`;
         franja.hidden = false;
-        if (clave !== PREV_ULTIMO_AVISO) { PREV_ULTIMO_AVISO = clave; prevVibrar(p.nivel); }
+        prevAjustarTope();
+        // Solo vibra al entrar una prevención nueva, no al salir de una.
+        if (clave !== PREV_ULTIMO_AVISO) {
+            if (p.estado !== 'pasada') prevVibrar(p.nivel);
+            PREV_ULTIMO_AVISO = clave;
+        }
     }
 
     if (document.getElementById('prev-overlay').classList.contains('abierto')) prevRenderizar();
 }
+
+// La franja queda pegada justo debajo del reloj, que también es pegajoso.
+// El alto del reloj cambia entre celular y computador, así que se mide.
+function prevAjustarTope() {
+    const reloj = document.querySelector('.clock-dock');
+    if (!reloj) return;
+    const cs = getComputedStyle(reloj);
+    const arriba = parseFloat(cs.top) || 0;
+    document.documentElement.style.setProperty(
+        '--prev-top', Math.round(arriba + reloj.offsetHeight + 6) + 'px');
+}
+
+window.addEventListener('resize', prevAjustarTope);
+window.addEventListener('orientationchange', prevAjustarTope);
 
 function prevVibrar(nivel) {
     if (!navigator.vibrate) return;
@@ -4072,9 +4155,9 @@ function prevVibrar(nivel) {
 
 function prevTarjeta(p) {
     const dist = p.metros === undefined ? '' :
-        `<span class="prev-dist">${escHtml(prevMetrosTxt(p.metros))}</span>`;
+        `<span class="prev-dist">${escHtml(prevMetrosTxt(p.metros, p.estado))}</span>`;
     return `
-        <div class="prev-item nivel-${p.nivel}${p.metros === 0 ? ' dentro' : ''}">
+        <div class="prev-item nivel-${p.nivel}${p.estado === 'dentro' ? ' dentro' : ''}">
             <div class="prev-item-top">
                 <span class="prev-restr">${escHtml(prevRestriccionCorta(p))}</span>
                 <span class="prev-via prev-via-${p.via.toLowerCase()}">${escHtml(p.viaTexto || '—')}</span>
@@ -4125,7 +4208,13 @@ function prevRenderizar() {
                 : '');
     }
 
-    let html = `<p class="plan-hint">Boletín folio <strong>${escHtml(bol.folio)}</strong> ·
+    let html = prevBoletinEsDeHoy() ? '' :
+        `<div class="pauta-aviso error">⚠️ El boletín cargado es del
+         <strong>${escHtml(prevFechaBonita(bol.fecha))}</strong>, y hoy es
+         ${escHtml(prevFechaBonita(ahora.fecha))}. Puede tener faenas que ya terminaron y
+         no traer las de hoy. Sube el boletín del día al repositorio.</div>`;
+
+    html += `<p class="plan-hint">Boletín folio <strong>${escHtml(bol.folio)}</strong> ·
         ${escHtml(bol.fecha)} · ${bol.prevenciones.length} prevenciones,
         <strong>${vigentes.length} vigentes</strong> a las ${escHtml(ahora.texto)}</p>`;
 
@@ -4222,6 +4311,7 @@ async function prevCargarBoletin() {
 }
 
 window.addEventListener('load', function () {
+    prevAjustarTope();
     prevCargarBoletin().then(function () {
         prevActualizar();
         if (document.getElementById('prev-overlay').classList.contains('abierto')) prevRenderizar();

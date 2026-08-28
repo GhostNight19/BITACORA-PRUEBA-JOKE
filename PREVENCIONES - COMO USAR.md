@@ -30,8 +30,24 @@ son trabajos con vía fuera de servicio, no prevenciones de circulación.
 **El aviso bajo el reloj.** Aparece solo cuando queda una prevención dentro de
 **500 m** en el sentido de marcha. Muestra la distancia, la gravedad, la
 restricción, la vía y el PK. Se pinta según la gravedad (rojo ≤15 km/h, naranjo
-≤30, azul otras restricciones, gris los avisos de solo toque pito) y late
-mientras se está dentro de la zona. Vibra el teléfono al aparecer.
+≤30, azul otras restricciones, gris los avisos de solo toque pito).
+
+Va pegado al reloj: **al desplazar la pantalla los dos quedan a la vista**, la
+franja siempre justo debajo. Su posición se calcula sola, porque el reloj no
+mide lo mismo en el celular que en el computador.
+
+El aviso pasa por tres momentos:
+
+| Momento | Se ve | |
+|---|---|---|
+| Se acerca | `420 m` | cuenta hacia atrás desde los 500 m |
+| Se está dentro | `EN ZONA` | la franja late |
+| Ya se pasó | `◀ 170 m` | atenuada y con el borde punteado |
+
+Después de **300 m** de haber salido de la zona, desaparece. Si en el intertanto
+aparece otra prevención por delante, esa toma el lugar de inmediato: la que
+quedó atrás nunca tapa a la que viene. El teléfono vibra al entrar una
+prevención nueva, no al salir de una.
 
 **El panel ⚠️ Prevenciones.** Dónde está el tren (línea, PK, sentido y vía), lo
 que viene en los próximos 15 km, y el listado completo de lo vigente en L1 y L2.
