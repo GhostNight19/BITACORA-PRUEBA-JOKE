@@ -257,6 +257,12 @@
         .pauta-cargar.todo { margin: 0 0 14px; background: var(--azul-efe); }
         .pauta-cargar.todo:hover { background: #0043c4; }
         .pauta-chip { padding: 3px 9px; border-radius: 999px; background: #efe7fd; color: #4c1d95; font-weight: 900; font-size: 0.75rem; }
+        /* Aviso flotante al volver a la bitácora con los servicios cargados */
+        .pauta-toast { position: fixed; left: 12px; right: 12px; bottom: calc(env(safe-area-inset-bottom, 0px) + 18px); z-index: 1400; width: fit-content; max-width: min(540px, calc(100vw - 24px)); margin: 0 auto; padding: 13px 18px; border-radius: 12px; background: #0d2c1e; color: #d8f5e6; font-weight: 800; font-size: 0.92rem; line-height: 1.4; text-align: center; box-shadow: 0 14px 34px rgba(6, 20, 45, 0.38); transform: translateY(150%); opacity: 0; transition: transform 0.28s ease, opacity 0.28s ease; pointer-events: none; }
+        .pauta-toast.visible { transform: translateY(0); opacity: 1; }
+        .train-card.recien-cargada { animation: destello-tarjeta 1.6s ease-out 1; }
+        @keyframes destello-tarjeta { 0%, 100% { box-shadow: 0 2px 5px rgba(0,0,0,0.1); } 30% { box-shadow: 0 0 0 4px rgba(111, 66, 193, 0.45); } }
+
         .pauta-pie { margin-top: 16px; padding-top: 12px; border-top: 1px dashed #cbd7e6; color: #6a7891; font-size: 0.78rem; font-weight: 700; line-height: 1.5; }
 
         /* Pareja de turno mostrada dentro del planificador de viajes */
@@ -390,12 +396,10 @@
                 <button type="button" class="plan-buscar" onclick="pautaRenderizar()">🔍 Ver turnos</button>
             </div>
 
-            <div class="plan-fila">
-                <label class="pauta-archivo">📁 Cargar pauta (Excel)
-                    <input type="file" id="pauta-archivo" accept=".xlsx,.xlsm,.json" multiple onchange="pautaSubirArchivos(this)">
-                </label>
-                <button type="button" class="pauta-sec" onclick="pautaExportarJSON()" title="Genera el archivo pautas/pautas.json para subir al repositorio">⬇️ Exportar pautas.json</button>
-            </div>
+            <!-- Las pautas llegan solas desde pautas/pautas.json, así que aquí no
+                 hay nada que cargar. Las funciones de subir un Excel a mano y de
+                 exportar el pautas.json siguen en el código (pautaSubirArchivos y
+                 pautaExportarJSON) por si alguna vez hace falta volver a mostrarlas. -->
         </div>
 
         <div class="plan-cuerpo" id="pauta-resultados" aria-live="polite"></div>
@@ -3294,9 +3298,8 @@ function pautaRenderizar() {
     if (!caja) return;
 
     if (!PAUTAS.length) {
-        caja.innerHTML = `<div class="plan-vacio">Todavía no hay pautas cargadas.<br>
-            Usa <strong>📁 Cargar pauta (Excel)</strong> para abrir la planilla del día,
-            o publica <strong>pautas/pautas.json</strong> en el repositorio para que se carguen solas.</div>`;
+        caja.innerHTML = `<div class="plan-vacio">No se pudieron cargar las pautas.<br>
+            Revisa que tengas señal y vuelve a abrir la aplicación.</div>`;
         return;
     }
 
@@ -3340,7 +3343,7 @@ function pautaRenderizar() {
 
 function pautaPieHTML(pauta) {
     return `<div class="pauta-pie">Pauta del ${escHtml(pauta.titulo)}${pauta.archivo ? ' · ' + escHtml(pauta.archivo) : ''} · ${pauta.turnos.length} turnos leídos.<br>
-        Los servicios se cargan minimizados y se siguen pudiendo escribir y corregir a mano.</div>`;
+        Al cargar los servicios se vuelve solo a la bitácora. Quedan minimizados y se siguen pudiendo escribir y corregir a mano.</div>`;
 }
 
 /* -------------------------------------------------- volcar a la bitácora -- */
@@ -3403,12 +3406,13 @@ function pautaCargarTurno(iPauta, iTurno) {
     const entrada = pautaTurnosDe(pauta, pautaNombreResuelto()).find(e => e.idx === iTurno);
     const rol = entrada ? entrada.rol : 'Maquinista';
 
+    const primerId = serviceCount + 1;
     let sinHorario = 0;
     turno.trenes.forEach(function (n) {
         if (!pautaCrearTarjetaServicio(pauta, turno, rol, n)) sinHorario++;
     });
     guardarEstado();
-    pautaAvisoCarga(turno.trenes.length, sinHorario);
+    pautaVolverALaBitacora(turno.trenes.length, sinHorario, primerId);
 }
 
 function pautaCargarTodo(iPauta) {
@@ -3417,6 +3421,7 @@ function pautaCargarTodo(iPauta) {
     const entradas = pautaTurnosDe(pauta, pautaNombreResuelto());
     if (!entradas.length) return;
 
+    const primerId = serviceCount + 1;
     let total = 0, sinHorario = 0;
     entradas.forEach(function (e) {
         e.turno.trenes.forEach(function (n) {
@@ -3425,18 +3430,46 @@ function pautaCargarTodo(iPauta) {
         });
     });
     guardarEstado();
-    pautaAvisoCarga(total, sinHorario);
+    pautaVolverALaBitacora(total, sinHorario, primerId);
 }
 
-function pautaAvisoCarga(total, sinHorario) {
-    const caja = document.getElementById('pauta-resultados');
-    if (!caja) return;
-    const detalle = sinHorario
-        ? ` ${sinHorario} sin horarios guardados: quedaron en blanco para escribirlos a mano.`
-        : '';
-    caja.insertAdjacentHTML('afterbegin',
-        `<div class="pauta-aviso ok">✅ ${total} ${total === 1 ? 'servicio cargado' : 'servicios cargados'} en la bitácora, minimizados.${escHtml(detalle)}<br>Cierra esta ventana para verlos.</div>`);
-    caja.scrollTop = 0;
+// Cargar los servicios devuelve a la bitácora: se cierra la ventana, la vista
+// baja hasta la primera tarjeta nueva y un aviso confirma lo que se cargó.
+function pautaVolverALaBitacora(total, sinHorario, primerId) {
+    cerrarPauta();
+
+    const card = document.getElementById(`card-${primerId}`);
+    if (card) {
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        for (let id = primerId; id <= serviceCount; id++) {
+            const nueva = document.getElementById(`card-${id}`);
+            if (nueva) {
+                nueva.classList.add('recien-cargada');
+                setTimeout(function () { nueva.classList.remove('recien-cargada'); }, 1800);
+            }
+        }
+    }
+
+    const detalle = sinHorario ? ` · ${sinHorario} sin horarios guardados` : '';
+    pautaToast(`✅ ${total} ${total === 1 ? 'servicio cargado' : 'servicios cargados'} y minimizados${detalle}`);
+}
+
+let pautaToastTimer = null;
+
+function pautaToast(texto) {
+    let aviso = document.getElementById('pauta-toast');
+    if (!aviso) {
+        aviso = document.createElement('div');
+        aviso.id = 'pauta-toast';
+        aviso.className = 'pauta-toast';
+        aviso.setAttribute('role', 'status');
+        document.body.appendChild(aviso);
+    }
+    aviso.textContent = texto;
+    void aviso.offsetWidth;   // fuerza el cálculo para que la transición se vea
+    aviso.classList.add('visible');
+    clearTimeout(pautaToastTimer);
+    pautaToastTimer = setTimeout(function () { aviso.classList.remove('visible'); }, 6000);
 }
 
 /* ---------------------------------------------------------- abrir/cerrar -- */
