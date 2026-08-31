@@ -1,10 +1,10 @@
 /* ============================================================
    Service Worker - Bitácora EFE Sur
-   Versión 11: HTML, pautas, boletín y gráfico siempre desde internet
+   Versión 12: HTML, pautas, boletín, gráfico y dotación desde internet
    y conserva una copia para poder seguir usando la app sin señal.
    ============================================================ */
 
-const CACHE = 'bitacora-efe-v11';
+const CACHE = 'bitacora-efe-v12';
 
 // Archivos que componen la aplicación. Todos existen en el repositorio.
 const ASSETS = [
@@ -13,7 +13,8 @@ const ASSETS = [
   './icon-512.png',
   './pautas/pautas.json',
   './prevenciones/boletin.json',
-  './grafico/grafico.json'
+  './grafico/grafico.json',
+  './personal/personal.json'
 ];
 
 self.addEventListener('install', (event) => {
@@ -44,7 +45,8 @@ self.addEventListener('fetch', (event) => {
   // guardada solo si no hay señal.
   if (requestUrl.pathname.endsWith('/pautas/pautas.json') ||
       requestUrl.pathname.endsWith('/prevenciones/boletin.json') ||
-      requestUrl.pathname.endsWith('/grafico/grafico.json')) {
+      requestUrl.pathname.endsWith('/grafico/grafico.json') ||
+      requestUrl.pathname.endsWith('/personal/personal.json')) {
     event.respondWith(
       fetch(request)
         .then((response) => {

@@ -36,12 +36,17 @@
         .clock-date { color: #ffffff; font-weight: 750; text-transform: capitalize; }
         .clock-zone { color: #a9c7e7; font-size: 0.75rem; }
         
-        .main-controls { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-        .btn { border: none; padding: 12px 18px; border-radius: 8px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: 0.2s; }
+        .main-controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(196px, 1fr)); gap: 10px; margin-bottom: 20px; }
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; width: 100%; min-height: 50px; padding: 10px 14px; border: 2px solid transparent; border-radius: 11px; font: inherit; font-size: 0.95rem; font-weight: 800; line-height: 1.2; text-align: center; cursor: pointer; box-shadow: 0 2px 6px rgba(23,32,51,0.13); transition: filter 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease; }
+        .btn:hover { filter: brightness(1.08); box-shadow: 0 6px 16px rgba(23,32,51,0.19); }
+        .btn:active { transform: translateY(1px); box-shadow: 0 2px 6px rgba(23,32,51,0.13); }
+        /* Las dos utilidades van en tono menor: no compiten con los módulos. */
+        .btn.secundario { background: #fff; box-shadow: 0 1px 3px rgba(23,32,51,0.08); }
+        .btn.secundario:hover { filter: none; background: #f6f9fd; }
         .btn:active { transform: scale(0.98); }
-        .add-btn { background-color: #28a745; color: white; }
+        .add-btn { background-color: var(--verde); color: #fff; }
         .save-full-btn { background-color: #fd7e14; color: white; }
-        .delete-all-btn { background-color: #dc3545; color: white; }
+        .delete-all-btn { border-color: #e2b4b8; color: #a01c27; }
         .save-btn { background-color: #0056b3; color: white; }
         .whatsapp-btn { background-color: #25D366; color: white; }
         .search-btn { background-color: #17a2b8; color: white; padding: 6px 10px; font-size: 0.85em; border-radius: 4px; border:none; cursor:pointer;}
@@ -68,6 +73,7 @@
         .status-none { color: inherit; }
         .status-ontime { color: inherit; }
         .status-late { color: inherit; }
+        .conductor-corto[hidden] { display: none; }
         .conductor-corto { flex: 1 1 100%; display: flex; align-items: center; gap: 7px; padding-top: 8px; border-top: 1px dashed #cbd5e1; }
         .conductor-corto[hidden] { display: none !important; }
         .conductor-corto label { color: #3f4b5c; font-size: 0.9rem; font-weight: 800; white-space: nowrap; }
@@ -91,7 +97,7 @@
         .table-responsive { overflow-x: auto; }
 
         /* ===== Botón descargar bitácora (PDF) ===== */
-        .pdf-btn { background-color: #6f42c1; color: white; }
+        .pdf-btn { border-color: #cbd7e6; color: #37455e; }
 
         /* ===== ATRASO: se marca al instante; el motivo se edita solo si hace falta ===== */
         .atraso-wrap { display: none; }
@@ -176,8 +182,8 @@
             .clock-meta { grid-column: 2; grid-row: 1; min-width: 0; }
             .clock-date { font-size: 0.78rem; }
             .clock-zone { display: none; }
-            .main-controls { width: 100%; gap: 7px; }
-            .btn { min-height: 44px; }
+            .main-controls { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+            .btn { min-height: 58px; padding: 8px 10px; font-size: 0.9rem; }
             .whatsapp-container { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 7px; padding: 8px; }
             .whatsapp-container select { width: 100%; min-width: 0; }
             .whatsapp-container .whatsapp-btn { min-width: 0; padding-inline: 13px; }
@@ -284,6 +290,7 @@
         .prev-aviso.nivel-2 { border-left-color: #d97706; background: #fff5e6; color: #7c4708; }
         .prev-aviso.nivel-3 { border-left-color: #0b5ed7; background: #eaf2ff; color: #123c86; }
         .prev-aviso.nivel-4 { border-left-color: #6a7891; background: #f2f5f9; color: #3a475e; }
+        .prev-aviso[hidden] { display: none; }
         .prev-aviso.dentro { animation: prev-latido 1.4s ease-in-out infinite; }
         .prev-aviso.pasada { opacity: 0.82; border-left-style: dashed; }
         .prev-aviso.pasada .prev-aviso-dist { font-size: 1.25rem; }
@@ -342,7 +349,7 @@
         }
 
         /* ===== MI GRÁFICO ===== */
-        .graf-btn { background-color: #0a7d5a; color: #fff; }
+        .graf-btn { background-color: #0f766e; color: #fff; }
         .graf-form { grid-template-columns: 1fr; }
         .graf-form .plan-fila { grid-template-columns: minmax(0,1fr) auto; }
         .graf-auto { position: relative; }
@@ -359,19 +366,22 @@
         .graf-resumen .rec { background: #e7f7ee; color: #0a5b36; }
         .graf-resumen .practica { background: #efe7fd; color: #4c1d95; }
 
-        .graf-dia { margin-bottom: 7px; padding: 9px 11px; background: #fff; border: 1px solid #dde5ef; border-radius: 10px; }
+        .graf-dia { margin-bottom: 7px; background: #fff; border: 1px solid #dde5ef; border-radius: 10px; overflow: hidden; }
         .graf-dia.abierto { border-color: #0a7d5a; box-shadow: 0 3px 12px rgba(10,125,90,0.14); }
-        .graf-dia-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-        .graf-num { min-width: 52px; min-height: 44px; padding: 0 10px; border: 2px solid #cbd7e6; border-radius: 10px; background: #f4f7fc; color: #0f1c33; font: inherit; font-size: 1.1rem; font-weight: 900; font-variant-numeric: tabular-nums; cursor: pointer; }
+        .graf-dia-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; width: 100%; padding: 9px 11px; border: 0; background: none; font: inherit; text-align: left; cursor: pointer; }
+        .graf-dia.es-descanso .graf-dia-top { cursor: default; }
+        button.graf-dia-top:hover { background: #f4f9f7; }
+        .graf-flecha { margin-left: 6px; color: #9aa7bb; font-size: 0.7rem; }
+        .graf-num { display: inline-flex; align-items: center; justify-content: center; min-width: 52px; min-height: 44px; padding: 0 10px; border: 2px solid #cbd7e6; border-radius: 10px; background: #f4f7fc; color: #0f1c33; font: inherit; font-size: 1.1rem; font-weight: 900; font-variant-numeric: tabular-nums; }
         .graf-num.turno { border-color: #0a7d5a; background: #e7f7ee; color: #075437; }
-        .graf-num.turno:hover, .graf-num.abierto { background: #0a7d5a; border-color: #0a7d5a; color: #fff; }
-        .graf-num.descanso { border-style: dashed; color: #9aa7bb; background: #f6f9fd; cursor: default; display: inline-flex; align-items: center; justify-content: center; }
+        button.graf-dia-top:hover .graf-num.turno, .graf-num.abierto { background: #0a7d5a; border-color: #0a7d5a; color: #fff; }
+        .graf-num.descanso { border-style: dashed; color: #9aa7bb; background: #f6f9fd; }
         .graf-num.vac { border-color: #2672bd; background: #e7f0ff; color: #14459c; font-size: 0.9rem; }
         .graf-num.cum { border-color: #d99a1e; background: #fdf0d5; color: #8a5200; font-size: 0.9rem; }
         .graf-num.lm { border-color: #c9636d; background: #fdecec; color: #8d1d26; font-size: 0.9rem; }
         .graf-num.rec { border-color: #4aae86; background: #e7f7ee; color: #0a5b36; font-size: 0.9rem; }
         .graf-num.practica { border-color: #8b6ad4; background: #efe7fd; color: #4c1d95; font-size: 0.9rem; }
-        .graf-dia-fecha { font-weight: 850; color: #1d2b45; font-size: 0.93rem; line-height: 1.2; }
+        .graf-dia-fecha { flex: 1; min-width: 0; font-weight: 850; color: #1d2b45; font-size: 0.93rem; line-height: 1.2; }
         .graf-dia-fecha small { display: block; color: #7c8aa3; font-size: 0.72rem; font-weight: 700; text-transform: capitalize; }
         .graf-marca { margin-left: auto; padding: 3px 10px; border-radius: 999px; background: #eef2f7; color: #46536a; font-size: 0.76rem; font-weight: 850; }
         .graf-marca.vac { background: #e7f0ff; color: #14459c; }
@@ -381,7 +391,7 @@
         .graf-marca.practica { background: #efe7fd; color: #4c1d95; }
         .graf-detalle-chip { padding: 3px 9px; border-radius: 999px; background: #f2f5f9; color: #55637a; font-size: 0.74rem; font-weight: 800; }
 
-        .graf-detalle { margin-top: 10px; padding-top: 10px; border-top: 1px dashed #cbd7e6; }
+        .graf-detalle { margin: 0 11px 11px; padding-top: 10px; border-top: 1px dashed #cbd7e6; }
         .graf-detalle-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 9px; }
         .graf-chip { padding: 4px 10px; border-radius: 999px; background: #e7f7ee; color: #075437; font-size: 0.76rem; font-weight: 900; }
         .graf-chip.combinado { background: #fff2dd; color: #8a5200; }
@@ -455,12 +465,21 @@
         .ali-editor { padding: 11px; border-top: 1px dashed #cbd7e6; background: #fbfcfe; }
         .ali-editor-fila { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 9px; }
         .ali-editor label { display: block; color: #46536a; font-size: 0.7rem; font-weight: 900; letter-spacing: 0.03em; text-transform: uppercase; }
-        .ali-editor input[type=time], .ali-editor input[type=text], .ali-editor input[type=number] { width: 100%; min-height: 44px; margin-top: 3px; padding: 8px 9px; border: 2px solid #cbd7e6; border-radius: 8px; background: #fff; color: #172033; font: inherit; font-weight: 750; text-transform: none; }
+        .ali-editor input[type=text], .ali-editor input[type=number] { width: 100%; min-height: 44px; margin-top: 3px; padding: 8px 9px; border: 2px solid #cbd7e6; border-radius: 8px; background: #fff; color: #172033; font: inherit; font-weight: 750; text-transform: none; }
+        .campo-hora { font-variant-numeric: tabular-nums; letter-spacing: 0.06em; text-align: center; }
         .ali-largo { margin-top: 9px; }
         .ali-check { display: flex; align-items: center; gap: 8px; margin-top: 10px; text-transform: none; font-size: 0.85rem; font-weight: 800; color: #2b3d5c; }
         .ali-check input { width: 20px; height: 20px; }
         .ali-ref { margin-top: 9px; padding: 6px 10px; border-radius: 8px; background: #eef2f7; color: #46536a; font-size: 0.78rem; font-weight: 750; }
         .ali-ref small { color: #7c8aa3; font-weight: 700; }
+        .ali-manejo { margin-top: 11px; padding: 10px 11px; border-radius: 10px; background: #f2fbf6; border: 1px solid #b6e0ca; }
+        .ali-manejo-ref { color: #075437; font-size: 0.79rem; font-weight: 750; line-height: 1.5; }
+        .ali-manejo-ref small { color: #3f7a60; font-weight: 700; }
+        .ali-manejo-preg { margin-top: 9px; color: #0a5b36; font-size: 0.86rem; font-weight: 900; }
+        .ali-manejo-si-no { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 7px; max-width: 240px; }
+        .ali-sn { min-height: 44px; border: 2px solid #b6e0ca; border-radius: 9px; background: #fff; color: #37455e; font: inherit; font-weight: 850; cursor: pointer; }
+        .ali-sn.activo { background: #6a7891; border-color: #6a7891; color: #fff; }
+        .ali-sn.activo.si { background: #0a7d5a; border-color: #0a7d5a; }
         .ali-cambio { margin-top: 9px; padding: 8px 11px; border-radius: 9px; background: #e7f0ff; border: 1px solid #adc8f0; color: #14459c; font-size: 0.8rem; font-weight: 750; line-height: 1.45; }
         .ali-borrar { margin-top: 10px; min-height: 40px; padding: 0 14px; border: 2px solid #eab0b5; border-radius: 8px; background: #fff; color: #8d1d26; font-weight: 800; font-size: 0.82rem; cursor: pointer; }
 
@@ -499,10 +518,10 @@
         <button class="btn prev-btn" onclick="abrirPrevenciones()">⚠️ Prevenciones</button>
         <button class="btn graf-btn" onclick="abrirGrafico()">📅 Mi Gráfico</button>
         <button class="btn ali-btn" onclick="abrirAlistacion()">🕒 Mi Alistación</button>
-        <button class="btn delete-all-btn" onclick="borrarTodo()">🗑️ Borrar Todo</button>
-        <button class="btn pdf-btn" onclick="descargarBitacoraPDF()">📄 Descargar Bitácora</button>
+        <button class="btn secundario delete-all-btn" onclick="borrarTodo()">🗑️ Borrar Todo</button>
+        <button class="btn secundario pdf-btn" onclick="descargarBitacoraPDF()">📄 Descargar Bitácora</button>
 
-    <div class="whatsapp-container">
+    <div class="whatsapp-container" style="grid-column: 1 / -1;">
             <select id="whatsapp-number">
 <option value="56975583841">Wilfredo Hervera (+56975583841)</option>
                 <option value="56956586882">Carlos Alarcón (+56956586882)</option>
@@ -549,7 +568,9 @@
                 </div>
                 <div class="plan-campo">
                     <label for="plan-hora">Desde las</label>
-                    <input type="time" id="plan-hora" step="60">
+                    <input type="text" id="plan-hora" class="campo-hora" inputmode="numeric"
+                           maxlength="5" placeholder="hh:mm" autocomplete="off"
+                           oninput="horaFiltrar(this)" onchange="horaCampo(this); ejecutarPlanificador();">
                 </div>
                 <button type="button" class="plan-buscar" onclick="ejecutarPlanificador()">🔍 Buscar</button>
             </div>
@@ -2811,6 +2832,7 @@ function planVerAnteriores() {
 }
 
 function ejecutarPlanificador() {
+    horaCampo(document.getElementById('plan-hora'));
     planEstado = {
         origen: document.getElementById('plan-origen').value,
         destino: document.getElementById('plan-destino').value,
@@ -3877,6 +3899,38 @@ let PREV_GPS = {
 let PREV_HISTORIA = [];        // últimos PK, para deducir el sentido
 let PREV_MANUAL = { activo: false, linea: 'L2', pk: 0, sentido: 1 };
 let PREV_ULTIMO_AVISO = '';
+
+/* ------------------------------------------------- escribir una hora ------- */
+
+// Teclear la hora en vez de girar un reloj. Se aceptan 530, 5:30, 0530 y 1645;
+// todo termina guardado como HH:MM.
+function horaNormalizar(valor) {
+    const d = String(valor == null ? '' : valor).replace(/\D/g, '');
+    if (!d) return '';
+    let h, m;
+    if (d.length <= 2) { h = parseInt(d, 10); m = 0; }
+    else { h = parseInt(d.slice(0, d.length - 2), 10); m = parseInt(d.slice(-2), 10); }
+    if (!isFinite(h)) return '';
+    // El grafico y la alistacion escriben los cierres pasada medianoche como
+    // 24:15 o 25:35. Se entienden como del dia siguiente.
+    if (h >= 24 && h <= 29) h -= 24;
+    if (h > 23) h = 23;
+    if (m > 59) m = 59;
+    return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0');
+}
+
+// Mientras se escribe solo se dejan pasar números y los dos puntos.
+function horaFiltrar(input) {
+    const limpio = String(input.value).replace(/[^\d:]/g, '').slice(0, 5);
+    if (limpio !== input.value) input.value = limpio;
+}
+
+// Al salir del campo se ordena: 530 se convierte en 05:30.
+function horaCampo(input) {
+    if (!input) return '';
+    input.value = horaNormalizar(input.value);
+    return input.value;
+}
 
 /* ------------------------------------------------------------------ texto -- */
 
@@ -4987,16 +5041,12 @@ function grafFilaDiaHTML(g, dia, nombre) {
     const est = GRAF_ESTADOS[valor.tipo] || GRAF_ESTADOS.OTRO;
     const abierto = GRAF_ABIERTO === dia.fecha;
 
-    let boton;
-    if (valor.turno) {
-        boton = `<button type="button" class="graf-num ${escAttr(est.clase)}${abierto ? ' abierto' : ''}"
-                    onclick="grafToggleDia('${escAttr(dia.fecha)}')">${escHtml(valor.turno)}</button>`;
-    } else if (valor.tipo === 'DESCANSO') {
-        boton = `<span class="graf-num descanso">—</span>`;
-    } else {
-        boton = `<button type="button" class="graf-num ${escAttr(est.clase)}${abierto ? ' abierto' : ''}"
-                    onclick="grafToggleDia('${escAttr(dia.fecha)}')">${escHtml((valor.etiqueta || '?').slice(0, 3))}</button>`;
-    }
+    // El número es solo la etiqueta: lo que se toca es la tarjeta completa.
+    const esDescanso = valor.tipo === 'DESCANSO';
+    const numero = esDescanso
+        ? `<span class="graf-num descanso">—</span>`
+        : `<span class="graf-num ${escAttr(est.clase)}${abierto ? ' abierto' : ''}">${
+            escHtml(valor.turno || (valor.etiqueta || '?').slice(0, 3))}</span>`;
 
     const etiquetaExtra = valor.turno && valor.tipo !== 'TURNO'
         ? `<span class="graf-marca ${escAttr(est.clase)}">${escHtml(est.texto)}</span>`
@@ -5004,16 +5054,20 @@ function grafFilaDiaHTML(g, dia, nombre) {
             ? `<span class="graf-marca ${escAttr(est.clase)}">${escHtml(valor.etiqueta || est.texto)}</span>`
             : '');
 
+    const cuerpo = `
+        ${numero}
+        <span class="graf-dia-fecha">${escHtml(grafDiaTxt(dia.fecha))}
+            <small>${escHtml(dia.dia || '')}</small></span>
+        ${etiquetaExtra}
+        ${valor.detalle ? `<span class="graf-detalle-chip">${escHtml(valor.detalle)}</span>` : ''}
+        ${esDescanso ? '' : `<span class="graf-flecha">${abierto ? '▲' : '▼'}</span>`}`;
+
     return `
-        <div class="graf-dia${abierto ? ' abierto' : ''}">
-            <div class="graf-dia-top">
-                ${boton}
-                <div class="graf-dia-fecha">${escHtml(grafDiaTxt(dia.fecha))}
-                    <small>${escHtml(dia.dia || '')}</small></div>
-                ${etiquetaExtra}
-                ${valor.detalle ? `<span class="graf-detalle-chip">${escHtml(valor.detalle)}</span>` : ''}
-            </div>
-            ${abierto && valor.tipo !== 'DESCANSO' ? grafDetalleHTML(g, dia, valor) : ''}
+        <div class="graf-dia${abierto ? ' abierto' : ''}${esDescanso ? ' es-descanso' : ''}">
+            ${esDescanso
+                ? `<div class="graf-dia-top">${cuerpo}</div>`
+                : `<button type="button" class="graf-dia-top" onclick="grafToggleDia('${escAttr(dia.fecha)}')">${cuerpo}</button>`}
+            ${abierto && !esDescanso ? grafDetalleHTML(g, dia, valor) : ''}
         </div>`;
 }
 
@@ -5148,6 +5202,60 @@ document.addEventListener('click', function (e) {
    ========================================================================= */
 
 const ALI_LLAVE          = 'alistacionEfeSur';
+const PERSONAL_ARCHIVO   = 'personal/personal.json';
+
+/* ------------------------------------------------------------ dotación ---- */
+
+// Quién es maquinista y quién ayudante. Solo Concepción: Temuco y Puerto Montt
+// no entran al archivo. Sirve para no preguntarle por horas de manejo a quien
+// no maneja.
+let PERSONAL = {};        // clave sin puntos ni espacios -> persona
+let PERSONAL_ALIAS = {};  // inicial + apellido -> persona
+
+function personalClave(nombre) {
+    return pautaNorm(nombre).replace(/[^A-Z0-9Ñ]/g, '');
+}
+
+// "Alexis Fuentes" y "A.FUENTES" son la misma persona: inicial + apellido.
+function personalAlias(nombre) {
+    const partes = pautaNorm(nombre).replace(/\./g, ' ').replace(/\s+/g, ' ').trim().split(' ');
+    if (partes.length < 2) return '';
+    return partes[0].charAt(0) + partes[partes.length - 1];
+}
+
+function personalDe(nombre) {
+    if (!nombre) return null;
+    return PERSONAL[personalClave(nombre)] || PERSONAL_ALIAS[personalAlias(nombre)] || null;
+}
+
+function personalEsMaquinista(nombre) {
+    const p = personalDe(nombre);
+    if (p) return p.rol === 'MAQUINISTA';
+    // Sin dotación, se cae al rol que da el gráfico por la posición en la pareja.
+    const g = GRAFICOS[0];
+    const gp = g && g.personas[pautaNorm(nombre)];
+    return !!gp && gp.rol === 'Maquinista';
+}
+
+async function personalCargar() {
+    try {
+        const r = await fetch(PERSONAL_ARCHIVO, { cache: 'no-cache' });
+        if (!r.ok) return false;
+        const j = await r.json();
+        PERSONAL = {}; PERSONAL_ALIAS = {};
+        (j.personas || []).forEach(function (persona) {
+            PERSONAL[persona.clave] = persona;
+            const alias = personalAlias(persona.abreviacion);
+            if (!alias) return;
+            // Un alias ambiguo no sirve para decidir: se descarta.
+            PERSONAL_ALIAS[alias] = (alias in PERSONAL_ALIAS) ? null : persona;
+        });
+        Object.keys(PERSONAL_ALIAS).forEach(k => { if (!PERSONAL_ALIAS[k]) delete PERSONAL_ALIAS[k]; });
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
 const ALI_JORNADA        = 450;   // 7:30 de jornada normal
 const ALI_REPOSO_LARGO   = 690;   // 11:30 entre residencias EZ / El Arenal
 const ALI_REPOSO_CORTO   = 600;   // 10:00 en los demás pares
@@ -5301,7 +5409,7 @@ function aliCalcularDia(fecha, reg, prog, pauta, siguienteEsDescanso, previo) {
         real: null,
         jornada: 0, exceso: 0, fueraTurno: 0, descansoAfectado: 0,
         feriadoMin: 0, extras: 0, hrsTurno: 0, menosReposo: 0,
-        nocturnas: 0, manejo: (reg && parseInt(reg.manejoMin, 10)) || 0,
+        nocturnas: 0, manejo: 0,
         esFeriado: false, sinRegistro: true, avisos: []
     };
 
@@ -5371,6 +5479,13 @@ function aliCalcularDia(fecha, reg, prog, pauta, siguienteEsDescanso, previo) {
     }
     r.requiereJustificacion = (r.cierreTardio || 0) > 0;
     r.justificado = !!String((reg && reg.obs) || '').trim();
+
+    // Manejo: solo para maquinistas. Se guarda como hora (HH:MM) y se declara
+    // aparte; el estimado del itinerario es una referencia, no se cobra solo.
+    r.manejoExtra = !!(reg && reg.manejoExtra);
+    r.manejo = r.manejoExtra ? (aliMin((reg && reg.manejoHoras) || '') || 0) : 0;
+    r.manejoMotivo = String((reg && reg.manejoMotivo) || '').trim();
+    r.manejoEstimado = aliManejoDelTurno(prog);
 
     r.extras = (r.esFeriado ? 0 : r.exceso) + r.descansoAfectado;
 
@@ -5487,6 +5602,66 @@ function aliTotales(dias) {
     return t;
 }
 
+/* --------------------------------------------------- manejo del turno ----- */
+
+const ALI_MANEJO_CORTE = 60;   // un descanso de hasta 1 h no corta el bloque
+
+function aliHoraServicio(hhmmss) {
+    const m = String(hhmmss || '').match(/^(\d{1,2}):(\d{2})/);
+    return m ? parseInt(m[1], 10) * 60 + parseInt(m[2], 10) : null;
+}
+
+// Cuánto se maneja en el turno, según los itinerarios que la app ya conoce.
+// Cada servicio aporta desde su primera hasta su última hora; los servicios
+// separados por más de una hora abren un bloque nuevo, y cada bloque tiene un
+// máximo normal de 5 horas.
+function aliManejoDelTurno(prog) {
+    if (!prog || !prog.tramos.length) return null;
+    const grupo = prog.catalogo === 'SAB' ? 'SAB'
+                : (prog.catalogo === 'DOM' || prog.catalogo === 'FER') ? 'DOM' : 'LV';
+
+    const corridas = [];
+    const sinItinerario = [];
+
+    prog.tramos.forEach(function (tr) {
+        pautaTrenesDeServicio(tr.servicios).forEach(function (num) {
+            const info = (baseDatosTrenes[grupo] || {})[num];
+            if (!info) { if (sinItinerario.indexOf(num) < 0) sinItinerario.push(num); return; }
+            const horas = info.horarios.filter(Boolean).map(aliHoraServicio).filter(h => h !== null);
+            if (horas.length < 2) return;
+            let ini = horas[0], fin = horas[horas.length - 1];
+            if (fin < ini) fin += 1440;
+            corridas.push({ num: num, ini: ini, fin: fin });
+        });
+    });
+
+    if (!corridas.length) return { total: 0, extra: 0, bloques: [], sinItinerario: sinItinerario, vacio: true };
+
+    corridas.sort((a, b) => a.ini - b.ini);
+    const bloques = [];
+    let actual = { ini: corridas[0].ini, fin: corridas[0].fin, trenes: [corridas[0].num] };
+    for (let i = 1; i < corridas.length; i++) {
+        const c = corridas[i];
+        if (c.ini - actual.fin > ALI_MANEJO_CORTE) {
+            bloques.push(actual);
+            actual = { ini: c.ini, fin: c.fin, trenes: [c.num] };
+        } else {
+            actual.fin = Math.max(actual.fin, c.fin);
+            actual.trenes.push(c.num);
+        }
+    }
+    bloques.push(actual);
+
+    let total = 0, extra = 0;
+    bloques.forEach(function (b) {
+        b.dura = b.fin - b.ini;
+        total += b.dura;
+        extra += Math.max(b.dura - ALI_MANEJO_BLOQUE, 0);
+    });
+
+    return { total: total, extra: extra, bloques: bloques, sinItinerario: sinItinerario, vacio: false };
+}
+
 /* ------------------------------------------------------------- pantalla --- */
 
 function aliNombre() {
@@ -5573,6 +5748,55 @@ function aliBorrarDia(fecha) {
     aliRenderizar();
 }
 
+// Solo se le pregunta por manejo a quien maneja. El estimado sale de los
+// itinerarios del turno; lo que se declara es únicamente el extra.
+function aliManejoHTML(d) {
+    if (!personalEsMaquinista(aliNombre())) return '';
+
+    const est = d.manejoEstimado;
+    let referencia = '';
+    if (est && !est.vacio) {
+        const bloques = est.bloques.map((b, i) =>
+            `bloque ${i + 1}: ${aliHHMM(b.ini)}–${aliHHMM(b.fin)} (${aliHM(b.dura)})`).join(' · ');
+        referencia = `<div class="ali-manejo-ref">🚆 Manejo del turno según itinerario:
+            <strong>${escHtml(aliHM(est.total))}</strong> en ${est.bloques.length}
+            ${est.bloques.length === 1 ? 'bloque' : 'bloques'}<br><small>${escHtml(bloques)}</small>
+            ${est.extra ? `<br><strong>El itinerario ya pasa ${escHtml(aliHM(est.extra))} del máximo de 5:00 por bloque.</strong>` : ''}
+            ${est.sinItinerario.length ? `<br><small>Sin itinerario guardado: ${escHtml(est.sinItinerario.join(', '))} — el total puede quedar corto.</small>` : ''}
+        </div>`;
+    } else if (est) {
+        referencia = `<div class="ali-manejo-ref">🚆 No hay itinerarios guardados para los servicios de este turno,
+            así que no se puede estimar el manejo.</div>`;
+    }
+
+    return `
+        <div class="ali-manejo">
+            ${referencia}
+            <div class="ali-manejo-preg">¿Hiciste manejo extra este día?</div>
+            <div class="ali-manejo-si-no">
+                <button type="button" class="ali-sn${d.manejoExtra ? '' : ' activo'}"
+                    onclick="aliCampo('${escAttr(d.fecha)}','manejoExtra',false)">No</button>
+                <button type="button" class="ali-sn${d.manejoExtra ? ' activo si' : ''}"
+                    onclick="aliCampo('${escAttr(d.fecha)}','manejoExtra',true)">Sí</button>
+            </div>
+            ${d.manejoExtra ? `
+                <div class="ali-editor-fila">
+                    <label>Cuánto manejo extra
+                        <input type="text" class="campo-hora" inputmode="numeric" maxlength="5"
+                            placeholder="hh:mm" autocomplete="off" value="${escAttr(aliHM(d.manejo) ? aliHHMM(d.manejo) : '')}"
+                            oninput="horaFiltrar(this)"
+                            onchange="aliCampo('${escAttr(d.fecha)}','manejoHoras',horaNormalizar(this.value))"></label>
+                </div>
+                <label class="ali-largo${d.manejoMotivo ? '' : ' requerido'}">Por qué (obligatorio)
+                    <input type="text" placeholder="Ej: RELEVO EN CORONEL, MANEJO CONTINUO 5:30"
+                        value="${escAttr(d.manejoMotivo)}"
+                        onchange="aliCampo('${escAttr(d.fecha)}','manejoMotivo',this.value)"></label>
+                ${!d.manejo ? `<div class="ali-obliga">⚠ Falta indicar cuánto manejo extra hiciste.</div>` : ''}
+                ${d.manejo && !d.manejoMotivo ? `<div class="ali-obliga">⚠ Falta el motivo del manejo extra.</div>` : ''}
+            ` : ''}
+        </div>`;
+}
+
 function aliChip(etiqueta, min, clase) {
     return min ? `<span class="ali-chip ${clase || ''}">${escHtml(etiqueta)} <strong>${escHtml(aliHM(min))}</strong></span>` : '';
 }
@@ -5608,7 +5832,7 @@ function aliTarjetaDia(d) {
                 ${aliChip('Feriado', d.feriadoMin, 'feriado')}
                 ${aliChip('Menos rep.', d.menosReposo, 'reposo')}
                 ${aliChip('Nocturnas', d.nocturnas, 'noct')}
-                ${aliChip('Manejo', d.manejo, 'manejo')}
+                ${aliChip('Manejo extra', d.manejo, 'manejo')}
                 ${d.descansoAfectado ? aliChip('Descanso afectado', d.descansoAfectado, 'desc') : ''}
                 ${d.absorbido ? `<span class="ali-chip absorbido">Fuera de turno ${escHtml(aliHM(d.absorbido))} · ya contado en el exceso</span>` : ''}
                 ${d.cambioDeTurno ? `<span class="ali-chip cambio">Cambio de turno ${escHtml(d.turnoGrafico)} → ${escHtml(d.turnoPauta)}${d.voluntario ? ' · voluntario' : ''}</span>` : ''}
@@ -5624,12 +5848,17 @@ function aliTarjetaDia(d) {
             ${abierto ? `
             <div class="ali-editor">
                 <div class="ali-editor-fila">
-                    <label>Ingreso<input type="time" value="${escAttr(d.real ? aliHHMM(d.real.ini) : (d.refIni || ''))}"
-                        onchange="aliCampo('${escAttr(d.fecha)}','ingreso',this.value)"></label>
-                    <label>Término<input type="time" value="${escAttr(d.real ? aliHHMM(d.real.fin) : (d.refFin || ''))}"
-                        onchange="aliCampo('${escAttr(d.fecha)}','termino',this.value)"></label>
-                    <label>Manejo (min)<input type="number" min="0" step="5" value="${d.manejo || ''}"
-                        onchange="aliCampo('${escAttr(d.fecha)}','manejoMin',this.value)"></label>
+                    <label>Ingreso<input type="text" class="campo-hora" inputmode="numeric" maxlength="5"
+                        placeholder="hh:mm" autocomplete="off"
+                        value="${escAttr(d.real ? aliHHMM(d.real.ini) : (d.refIni || ''))}"
+                        oninput="horaFiltrar(this)"
+                        onchange="aliCampo('${escAttr(d.fecha)}','ingreso',horaNormalizar(this.value))"></label>
+                    <label>Término<input type="text" class="campo-hora" inputmode="numeric" maxlength="5"
+                        placeholder="hh:mm" autocomplete="off"
+                        value="${escAttr(d.real ? aliHHMM(d.real.fin) : (d.refFin || ''))}"
+                        oninput="horaFiltrar(this)"
+                        onchange="aliCampo('${escAttr(d.fecha)}','termino',horaNormalizar(this.value))"></label>
+
                 </div>
                 <label class="ali-largo">Servicio
                     <input type="text" value="${escAttr(d.servicio)}"
@@ -5646,6 +5875,7 @@ function aliTarjetaDia(d) {
                     <input type="checkbox" ${d.esFeriado ? 'checked' : ''}
                         onchange="aliCampo('${escAttr(d.fecha)}','feriado',this.checked)"> Feriado trabajado
                 </label>
+                ${aliManejoHTML(d)}
                 ${d.cambioDeTurno ? `
                 <label class="ali-check">
                     <input type="checkbox" ${d.voluntario ? 'checked' : ''}
@@ -5773,6 +6003,11 @@ function aliDescargarPDF() {
             const detalle = 'CIERRE +' + aliHM(d.cierreTardio);
             obs = obs ? obs + ' (' + detalle + ')' : 'SIN JUSTIFICAR (' + detalle + ')';
         }
+        if (d.manejo) {
+            const m = 'MANEJO EXTRA ' + aliHM(d.manejo) +
+                      (d.manejoMotivo ? ': ' + d.manejoMotivo : ' SIN JUSTIFICAR');
+            obs = obs ? obs + ' · ' + m : m;
+        }
         return [
             dia, d.servicio || '',
             aliHHMM(d.real.ini), aliHHMM(d.real.fin),
@@ -5879,6 +6114,7 @@ document.addEventListener('click', function (e) {
 aliLeerTodo();
 
 window.addEventListener('load', function () {
+    personalCargar();
     grafCargar().then(function (ok) {
         if (ok && document.getElementById('graf-overlay').classList.contains('abierto')) grafRenderizar();
     });
