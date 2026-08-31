@@ -340,6 +340,134 @@
             .prev-aviso-restr { font-size: 1rem; }
             .prev-acciones { grid-template-columns: 1fr; }
         }
+
+        /* ===== MI GRÁFICO ===== */
+        .graf-btn { background-color: #0a7d5a; color: #fff; }
+        .graf-form { grid-template-columns: 1fr; }
+        .graf-form .plan-fila { grid-template-columns: minmax(0,1fr) auto; }
+        .graf-auto { position: relative; }
+        .graf-auto input { width: 100%; min-height: 46px; padding: 9px 10px; border: 2px solid #cbd7e6; border-radius: 9px; background: #f8fbff; color: #172033; font: inherit; font-weight: 800; text-transform: uppercase; }
+        .graf-auto input:focus { border-color: #0a7d5a; outline: none; }
+        .graf-auto .pauta-sugerencias { position: absolute; z-index: 30; left: 0; right: 0; top: calc(100% + 4px); }
+
+        .graf-resumen { display: flex; flex-wrap: wrap; gap: 7px; margin: 0 0 14px; }
+        .graf-resumen span { padding: 5px 11px; border-radius: 999px; background: #eef2f7; color: #37455e; font-size: 0.82rem; font-weight: 750; }
+        .graf-resumen span strong { color: #0f1c33; font-weight: 900; }
+        .graf-resumen .vac { background: #e7f0ff; color: #14459c; }
+        .graf-resumen .cum { background: #fdf0d5; color: #8a5200; }
+        .graf-resumen .lm { background: #fdecec; color: #8d1d26; }
+        .graf-resumen .rec { background: #e7f7ee; color: #0a5b36; }
+        .graf-resumen .practica { background: #efe7fd; color: #4c1d95; }
+
+        .graf-dia { margin-bottom: 7px; padding: 9px 11px; background: #fff; border: 1px solid #dde5ef; border-radius: 10px; }
+        .graf-dia.abierto { border-color: #0a7d5a; box-shadow: 0 3px 12px rgba(10,125,90,0.14); }
+        .graf-dia-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .graf-num { min-width: 52px; min-height: 44px; padding: 0 10px; border: 2px solid #cbd7e6; border-radius: 10px; background: #f4f7fc; color: #0f1c33; font: inherit; font-size: 1.1rem; font-weight: 900; font-variant-numeric: tabular-nums; cursor: pointer; }
+        .graf-num.turno { border-color: #0a7d5a; background: #e7f7ee; color: #075437; }
+        .graf-num.turno:hover, .graf-num.abierto { background: #0a7d5a; border-color: #0a7d5a; color: #fff; }
+        .graf-num.descanso { border-style: dashed; color: #9aa7bb; background: #f6f9fd; cursor: default; display: inline-flex; align-items: center; justify-content: center; }
+        .graf-num.vac { border-color: #2672bd; background: #e7f0ff; color: #14459c; font-size: 0.9rem; }
+        .graf-num.cum { border-color: #d99a1e; background: #fdf0d5; color: #8a5200; font-size: 0.9rem; }
+        .graf-num.lm { border-color: #c9636d; background: #fdecec; color: #8d1d26; font-size: 0.9rem; }
+        .graf-num.rec { border-color: #4aae86; background: #e7f7ee; color: #0a5b36; font-size: 0.9rem; }
+        .graf-num.practica { border-color: #8b6ad4; background: #efe7fd; color: #4c1d95; font-size: 0.9rem; }
+        .graf-dia-fecha { font-weight: 850; color: #1d2b45; font-size: 0.93rem; line-height: 1.2; }
+        .graf-dia-fecha small { display: block; color: #7c8aa3; font-size: 0.72rem; font-weight: 700; text-transform: capitalize; }
+        .graf-marca { margin-left: auto; padding: 3px 10px; border-radius: 999px; background: #eef2f7; color: #46536a; font-size: 0.76rem; font-weight: 850; }
+        .graf-marca.vac { background: #e7f0ff; color: #14459c; }
+        .graf-marca.cum { background: #fdf0d5; color: #8a5200; }
+        .graf-marca.lm { background: #fdecec; color: #8d1d26; }
+        .graf-marca.rec { background: #e7f7ee; color: #0a5b36; }
+        .graf-marca.practica { background: #efe7fd; color: #4c1d95; }
+        .graf-detalle-chip { padding: 3px 9px; border-radius: 999px; background: #f2f5f9; color: #55637a; font-size: 0.74rem; font-weight: 800; }
+
+        .graf-detalle { margin-top: 10px; padding-top: 10px; border-top: 1px dashed #cbd7e6; }
+        .graf-detalle-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 9px; }
+        .graf-chip { padding: 4px 10px; border-radius: 999px; background: #e7f7ee; color: #075437; font-size: 0.76rem; font-weight: 900; }
+        .graf-chip.combinado { background: #fff2dd; color: #8a5200; }
+        .graf-rango { margin-left: auto; font-variant-numeric: tabular-nums; font-size: 1.08rem; font-weight: 900; color: #0f1c33; white-space: nowrap; }
+        .graf-dur { padding: 3px 10px; border-radius: 999px; background: #eef2f7; color: #46536a; font-size: 0.78rem; font-weight: 800; }
+        .graf-tramo { padding: 9px 0; }
+        .graf-tramo + .graf-tramo { border-top: 1px dashed #e3eaf4; }
+        .graf-tramo-n { margin-bottom: 5px; color: #8a5200; font-size: 0.74rem; font-weight: 900; letter-spacing: 0.04em; text-transform: uppercase; }
+        .graf-servicios { color: #37455e; font-size: 0.88rem; font-weight: 750; line-height: 1.4; overflow-wrap: anywhere; }
+        .graf-obs { margin-top: 7px; padding: 6px 10px; border-radius: 8px; background: #fff7e8; color: #8a5200; font-size: 0.79rem; font-weight: 750; }
+
+        @media (max-width: 720px) {
+            .graf-form .plan-fila { grid-template-columns: 1fr; }
+            .graf-rango { margin-left: 0; }
+            .graf-marca { margin-left: 0; }
+        }
+
+        /* ===== MI ALISTACIÓN ===== */
+        .ali-btn { background-color: #7c3a00; color: #fff; }
+        .ali-form { grid-template-columns: 1fr; }
+        .ali-auto { position: relative; }
+        .ali-auto input { width: 100%; min-height: 46px; padding: 9px 10px; border: 2px solid #cbd7e6; border-radius: 9px; background: #f8fbff; color: #172033; font: inherit; font-weight: 800; text-transform: uppercase; }
+        .ali-auto .pauta-sugerencias { position: absolute; z-index: 30; left: 0; right: 0; top: calc(100% + 4px); }
+        .ali-acciones { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 9px; }
+        .ali-accion { min-height: 46px; padding: 0 14px; border: 0; border-radius: 9px; font-weight: 850; font-size: 0.88rem; cursor: pointer; }
+        .ali-accion.prellenar { background: #0b5ed7; color: #fff; }
+        .ali-accion.pdf { background: #7c3a00; color: #fff; }
+
+        .ali-totales { display: grid; grid-template-columns: repeat(auto-fit, minmax(112px, 1fr)); gap: 8px; margin-bottom: 6px; }
+        .ali-tot { padding: 8px 10px; border-radius: 10px; background: #f6f9fd; border: 1px solid #e3eaf4; }
+        .ali-tot span { display: block; color: #6a7891; font-size: 0.67rem; font-weight: 900; letter-spacing: 0.04em; text-transform: uppercase; }
+        .ali-tot strong { font-size: 1.08rem; color: #0f1c33; font-variant-numeric: tabular-nums; }
+        .ali-tot.destacado { background: #fff3e6; border-color: #e8bf8e; }
+        .ali-tot.destacado strong { color: #7c3a00; }
+        .ali-tot.aparte { background: #fff; border-style: dashed; }
+        .ali-nota { margin: 0 0 14px; color: #6a7891; font-size: 0.78rem; font-weight: 700; }
+
+        .ali-dia { margin-bottom: 7px; background: #fff; border: 1px solid #dde5ef; border-radius: 10px; overflow: hidden; }
+        .ali-dia.abierto { border-color: #7c3a00; box-shadow: 0 3px 12px rgba(124,58,0,0.14); }
+        .ali-dia.vacio { background: #fbfcfe; }
+        .ali-dia-top { display: flex; align-items: center; gap: 10px; width: 100%; padding: 9px 11px; border: 0; background: none; text-align: left; font: inherit; cursor: pointer; }
+        .ali-n { min-width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; background: #eef2f7; color: #2b3d5c; font-weight: 900; font-size: 0.9rem; flex: none; }
+        .ali-dia-info { min-width: 0; flex: 1; }
+        .ali-serv { display: block; color: #1d2b45; font-weight: 800; font-size: 0.87rem; line-height: 1.3; overflow-wrap: anywhere; }
+        .ali-graf { display: block; margin-top: 2px; color: #0a5b36; font-weight: 800; font-size: 0.7rem; }
+        .ali-horas { flex: none; text-align: right; color: #37455e; font-size: 0.76rem; font-weight: 750; font-variant-numeric: tabular-nums; white-space: nowrap; }
+        .ali-horas strong { display: block; font-size: 1rem; color: #0f1c33; }
+        .ali-horas.vacio { color: #9aa7bb; font-style: italic; }
+
+        .ali-chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 11px 9px; }
+        .ali-chip { padding: 3px 9px; border-radius: 999px; background: #eef2f7; color: #46536a; font-size: 0.73rem; font-weight: 750; }
+        .ali-chip strong { font-variant-numeric: tabular-nums; }
+        .ali-chip.extra { background: #fff3e6; color: #7c3a00; }
+        .ali-chip.turno { background: #e7f0ff; color: #14459c; }
+        .ali-chip.feriado { background: #efe7fd; color: #4c1d95; }
+        .ali-chip.reposo { background: #fdecec; color: #8d1d26; }
+        .ali-chip.noct { background: #e8eefc; color: #29386b; }
+        .ali-chip.manejo { background: #e7f7ee; color: #0a5b36; }
+        .ali-chip.desc { background: #fdf0d5; color: #8a5200; }
+        .ali-chip.absorbido { background: #f2f5f9; color: #7c8aa3; font-style: italic; }
+        .ali-chip.tarde { background: #fff3e6; color: #7c3a00; }
+        .ali-chip.cambio { background: #e7f0ff; color: #14459c; }
+        .ali-chip.justificado { background: #e7f7ee; color: #0a5b36; }
+        .ali-chip.falta { background: #b4232f; color: #fff; }
+        .ali-dia.sin-justificar { border-color: #b4232f; }
+        .ali-dia.sin-justificar .ali-n { background: #fdecec; color: #8d1d26; }
+        .ali-obliga { margin-top: 9px; padding: 8px 11px; border-radius: 9px; background: #fdecec; border: 1px solid #eab0b5; color: #8d1d26; font-size: 0.82rem; font-weight: 800; line-height: 1.4; }
+        .ali-editor label.requerido { color: #8d1d26; }
+        .ali-editor label.requerido input { border-color: #eab0b5; background: #fffafa; }
+
+        .ali-editor { padding: 11px; border-top: 1px dashed #cbd7e6; background: #fbfcfe; }
+        .ali-editor-fila { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 9px; }
+        .ali-editor label { display: block; color: #46536a; font-size: 0.7rem; font-weight: 900; letter-spacing: 0.03em; text-transform: uppercase; }
+        .ali-editor input[type=time], .ali-editor input[type=text], .ali-editor input[type=number] { width: 100%; min-height: 44px; margin-top: 3px; padding: 8px 9px; border: 2px solid #cbd7e6; border-radius: 8px; background: #fff; color: #172033; font: inherit; font-weight: 750; text-transform: none; }
+        .ali-largo { margin-top: 9px; }
+        .ali-check { display: flex; align-items: center; gap: 8px; margin-top: 10px; text-transform: none; font-size: 0.85rem; font-weight: 800; color: #2b3d5c; }
+        .ali-check input { width: 20px; height: 20px; }
+        .ali-ref { margin-top: 9px; padding: 6px 10px; border-radius: 8px; background: #eef2f7; color: #46536a; font-size: 0.78rem; font-weight: 750; }
+        .ali-ref small { color: #7c8aa3; font-weight: 700; }
+        .ali-cambio { margin-top: 9px; padding: 8px 11px; border-radius: 9px; background: #e7f0ff; border: 1px solid #adc8f0; color: #14459c; font-size: 0.8rem; font-weight: 750; line-height: 1.45; }
+        .ali-borrar { margin-top: 10px; min-height: 40px; padding: 0 14px; border: 2px solid #eab0b5; border-radius: 8px; background: #fff; color: #8d1d26; font-weight: 800; font-size: 0.82rem; cursor: pointer; }
+
+        @media (max-width: 720px) {
+            .ali-acciones { grid-template-columns: 1fr; }
+            .ali-totales { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
     </style>
 </head>
 <body>
@@ -367,8 +495,10 @@
     <div class="main-controls">
         <button class="btn add-btn" onclick="addService()">+ Nuevo Servicio</button>
         <button class="btn plan-btn" onclick="abrirPlanificador()">🧭 Planificar Viaje</button>
-        <button class="btn pauta-btn" onclick="abrirPauta()">👤 Mis Turnos</button>
+        <button class="btn pauta-btn" onclick="abrirPauta()">📋 Pauta Diaria</button>
         <button class="btn prev-btn" onclick="abrirPrevenciones()">⚠️ Prevenciones</button>
+        <button class="btn graf-btn" onclick="abrirGrafico()">📅 Mi Gráfico</button>
+        <button class="btn ali-btn" onclick="abrirAlistacion()">🕒 Mi Alistación</button>
         <button class="btn delete-all-btn" onclick="borrarTodo()">🗑️ Borrar Todo</button>
         <button class="btn pdf-btn" onclick="descargarBitacoraPDF()">📄 Descargar Bitácora</button>
 
@@ -436,15 +566,15 @@
     </div>
 </div>
 
-<!-- ===== Mis Turnos: lectura de la pauta diaria por nombre ===== -->
+<!-- ===== Pauta Diaria: los turnos del día por nombre ===== -->
 <div id="pauta-overlay" class="plan-overlay" role="dialog" aria-modal="true" aria-labelledby="pauta-titulo" hidden>
     <div class="plan-panel" role="document">
         <div class="plan-head">
             <div>
-                <h3 id="pauta-titulo">👤 Mis Turnos</h3>
+                <h3 id="pauta-titulo">📋 Pauta Diaria</h3>
                 <small>Pauta diaria · tripulaciones y servicios</small>
             </div>
-            <button type="button" class="plan-cerrar" onclick="cerrarPauta()" aria-label="Cerrar mis turnos">✕</button>
+            <button type="button" class="plan-cerrar" onclick="cerrarPauta()" aria-label="Cerrar pauta diaria">✕</button>
         </div>
 
         <div class="plan-form pauta-form">
@@ -519,6 +649,81 @@
         </div>
 
         <div class="plan-cuerpo" id="prev-resultados" aria-live="polite"></div>
+    </div>
+</div>
+
+<!-- ===== Mi Gráfico: turnos del mes por persona ===== -->
+<div id="graf-overlay" class="plan-overlay" role="dialog" aria-modal="true" aria-labelledby="graf-titulo" hidden>
+    <div class="plan-panel" role="document">
+        <div class="plan-head">
+            <div>
+                <h3 id="graf-titulo">📅 Mi Gráfico</h3>
+                <small>Turnos del mes y su horario</small>
+            </div>
+            <button type="button" class="plan-cerrar" onclick="cerrarGrafico()" aria-label="Cerrar mi gráfico">✕</button>
+        </div>
+
+        <div class="plan-form graf-form">
+            <div class="plan-campo">
+                <label for="graf-nombre">Escribe tu apellido</label>
+                <div class="graf-auto">
+                    <input type="text" id="graf-nombre" autocomplete="off" autocapitalize="characters" spellcheck="false"
+                           placeholder="Escribe tu apellido"
+                           oninput="grafAutocompletar()" onfocus="grafAutocompletar()" onkeydown="grafTeclaSugerencia(event)">
+                    <div id="graf-sugerencias" class="pauta-sugerencias" role="listbox" hidden></div>
+                </div>
+            </div>
+
+            <div class="plan-fila">
+                <div class="plan-campo">
+                    <label for="graf-mes">Mes</label>
+                    <select id="graf-mes" onchange="grafRenderizar()"></select>
+                </div>
+                <button type="button" class="plan-buscar" onclick="grafRenderizar()">🔍 Ver gráfico</button>
+            </div>
+        </div>
+
+        <div class="plan-cuerpo" id="graf-resultados" aria-live="polite"></div>
+    </div>
+</div>
+
+<!-- ===== Mi Alistación: horas trabajadas día a día ===== -->
+<div id="ali-overlay" class="plan-overlay" role="dialog" aria-modal="true" aria-labelledby="ali-titulo" hidden>
+    <div class="plan-panel" role="document">
+        <div class="plan-head">
+            <div>
+                <h3 id="ali-titulo">🕒 Mi Alistación</h3>
+                <small>Horas trabajadas y horas extra del mes</small>
+            </div>
+            <button type="button" class="plan-cerrar" onclick="cerrarAlistacion()" aria-label="Cerrar mi alistación">✕</button>
+        </div>
+
+        <div class="plan-form ali-form">
+            <div class="plan-campo">
+                <label for="ali-nombre">Escribe tu apellido</label>
+                <div class="ali-auto">
+                    <input type="text" id="ali-nombre" autocomplete="off" autocapitalize="characters" spellcheck="false"
+                           placeholder="Escribe tu apellido"
+                           oninput="aliAutocompletar()" onfocus="aliAutocompletar()">
+                    <div id="ali-sugerencias" class="pauta-sugerencias" role="listbox" hidden></div>
+                </div>
+            </div>
+
+            <div class="plan-fila">
+                <div class="plan-campo">
+                    <label for="ali-mes">Mes</label>
+                    <select id="ali-mes" onchange="aliRenderizar()"></select>
+                </div>
+                <button type="button" class="plan-buscar" onclick="aliRenderizar()">🔍 Ver</button>
+            </div>
+
+            <div class="ali-acciones">
+                <button type="button" class="ali-accion prellenar" onclick="aliPrellenarMes()">✨ Prellenar del gráfico</button>
+                <button type="button" class="ali-accion pdf" onclick="aliDescargarPDF()">📄 Descargar PDF</button>
+            </div>
+        </div>
+
+        <div class="plan-cuerpo" id="ali-resultados" aria-live="polite"></div>
     </div>
 </div>
 
@@ -3207,12 +3412,15 @@ function pautaSubsecuencia(consulta, texto) {
 
 // Ordena por apellido: escribir "HENRIQUEZ" tiene que ofrecer primero a los
 // Henríquez, no a cualquiera que lleve esas letras sueltas.
-function pautaSugerencias(consulta, limite) {
+// `roster` permite reutilizar el mismo buscador con la lista del gráfico,
+// que trae los nombres escritos de otra forma que las pautas.
+function pautaSugerencias(consulta, limite, roster) {
+    const lista = roster || PAUTA_ROSTER;
     const q = pautaNorm(consulta).replace(/\./g, '').trim();
-    if (!q) return PAUTA_ROSTER.slice(0, limite || 8);
+    if (!q) return lista.slice(0, limite || 8);
 
     const res = [];
-    PAUTA_ROSTER.forEach(function (nombre) {
+    lista.forEach(function (nombre) {
         const completo = pautaNorm(nombre).replace(/\./g, '');
         const ape = pautaApellido(nombre);
         let p = 0;
@@ -4309,6 +4517,1372 @@ async function prevCargarBoletin() {
         return false;
     }
 }
+
+
+/* =========================================================================
+   MI GRÁFICO
+   El gráfico del mes dice qué turno le toca a cada persona cada día; las hojas
+   "Lunes - Viernes" y "S-D-F" dicen a qué hora es cada turno. Aquí se juntan
+   las dos cosas: buscas tu apellido y ves tu mes, y al tocar el número del
+   turno se abre su horario.
+
+   Turnos combinados: un mismo número puede venir en dos filas del catálogo
+   (el 68 del sábado, por ejemplo). En ese caso la apertura es la más temprana
+   y el cierre el más tardío, y se muestran los dos tramos.
+   ========================================================================= */
+
+const GRAF_ARCHIVO = 'grafico/grafico.json';
+const GRAF_LLAVE_NOMBRE = 'graficoEfeSurNombre';
+
+let GRAFICOS = [];      // [{mes, archivo, personas, dias, catalogos}]
+let GRAF_ROSTER = [];
+let GRAF_ABIERTO = '';  // fecha del día cuyo horario está desplegado
+
+/* ------------------------------------------------------------ el gráfico -- */
+
+// Lee lo que dice una celda del gráfico. Puede ser un número de turno, un
+// estado (VAC, CUM, LM, REC...), las dos cosas —"(41) VAC" es el turno que le
+// habría tocado estando de vacaciones— o venir vacía, que es descanso.
+function grafLeerValor(txt) {
+    const s = String(txt == null ? '' : txt).trim();
+    if (!s) return { tipo: 'DESCANSO', texto: '' };
+
+    let m = s.match(/^\(\s*(\d+)\s*\)\s*(.+)$/);          // (41) VAC
+    if (m) return { tipo: grafTipoEstado(m[2]), turno: m[1], etiqueta: m[2].trim(), texto: s };
+
+    m = s.match(/^(\d+)\s*\.?\s*\((.+)\)\s*$/);           // 83 (859-46)
+    if (m) return { tipo: 'TURNO', turno: m[1], detalle: m[2].trim(), texto: s };
+
+    m = s.match(/^(\d+)\s*\.?$/);                         // 29   ·   59.
+    if (m) return { tipo: 'TURNO', turno: m[1], texto: s };
+
+    return { tipo: grafTipoEstado(s), etiqueta: s, texto: s };
+}
+
+function grafTipoEstado(txt) {
+    const t = pautaNorm(txt);
+    if (t === 'VAC' || t.indexOf('VACACION') === 0) return 'VAC';
+    if (t === 'CUM' || t.indexOf('CUMPLE') === 0) return 'CUM';
+    if (t === 'LM' || t.indexOf('LICENCIA') >= 0) return 'LM';
+    if (t.indexOf('REC') === 0) return 'REC';
+    if (t.indexOf('PRACTICA') === 0) return 'PRACTICA';
+    return 'OTRO';
+}
+
+const GRAF_ESTADOS = {
+    TURNO:    { texto: 'Turno',          clase: 'turno' },
+    DESCANSO: { texto: 'Descanso',       clase: 'descanso' },
+    VAC:      { texto: 'Vacaciones',     clase: 'vac' },
+    CUM:      { texto: 'Cumpleaños',     clase: 'cum' },
+    LM:       { texto: 'Licencia médica',clase: 'lm' },
+    REC:      { texto: 'Recibidor',      clase: 'rec' },
+    PRACTICA: { texto: 'Práctica',       clase: 'practica' },
+    OTRO:     { texto: '',               clase: 'otro' }
+};
+
+/* --------------------------------------------------------- los catálogos -- */
+
+// Las hojas de horarios no traen las mismas columnas (la de fin de semana no
+// tiene "Término operación"), así que se ubican por el nombre del encabezado.
+function grafColumnas(cabecera) {
+    const m = {};
+    (cabecera || []).forEach(function (c, i) {
+        const t = pautaNorm(c);
+        if (t.indexOf('TURNO') === 0) m.turno = i;
+        else if (t.indexOf('SERVICIO') === 0) m.servicios = i;
+        else if (t === 'APERTURA') m.aperturaLugar = i;
+        else if (t === 'HORA') m.hora = i;
+        else if (t === 'TRASLADO') m.traslado = i;
+        else if (t.indexOf('BASE INICIO') === 0) m.baseInicio = i;
+        else if (t.indexOf('INICIO SERVICIO') === 0) m.inicio = i;
+        else if (t.indexOf('BASE TERMINO') === 0) m.baseTermino = i;
+        else if (t.indexOf('TERMINO OPERACION') === 0) m.terminoOp = i;
+        else if (t.indexOf('TRASLADO VUELTA') === 0) m.trasladoVuelta = i;
+        else if (t.indexOf('TERMINO FINAL') === 0) m.terminoFinal = i;
+        else if (t === 'CIERRE') m.cierreLugar = i;
+        else if (t.indexOf('OBSERVACION') === 0) m.obs = i;
+    });
+    return m;
+}
+
+function grafFilaTurno(f, cols) {
+    const v = (k) => cols[k] === undefined ? '' : String(f[cols[k]] || '').trim();
+    return {
+        turno: v('turno'),
+        servicios: v('servicios'),
+        aperturaLugar: v('aperturaLugar'),
+        apertura: v('hora').slice(0, 5),
+        traslado: v('traslado').slice(0, 5),
+        baseInicio: v('baseInicio'),
+        inicio: v('inicio').slice(0, 5),
+        baseTermino: v('baseTermino'),
+        terminoOp: v('terminoOp').slice(0, 5),
+        trasladoVuelta: v('trasladoVuelta').slice(0, 5),
+        cierre: v('terminoFinal').slice(0, 5),
+        cierreLugar: v('cierreLugar'),
+        obs: v('obs')
+    };
+}
+
+// Devuelve { LV:{...}, SAB:{...}, DOM:{...}, FER:{...} }, cada uno como
+// { "<turno o nombre>": [fila, ...] }. La lista permite los turnos combinados.
+function grafLeerCatalogos(hojas) {
+    const cat = { LV: {}, SAB: {}, DOM: {}, FER: {} };
+
+    const cargar = function (filas, seccionPorDefecto) {
+        let seccion = seccionPorDefecto;
+        let cols = null;
+        let ultimo = null;
+
+        (filas || []).forEach(function (f) {
+            const c0 = pautaNorm((f || [])[0]);
+            if (c0.indexOf('SABADO') === 0)  { seccion = 'SAB'; cols = null; return; }
+            if (c0.indexOf('DOMINGO') === 0) { seccion = 'DOM'; cols = null; return; }
+            if (c0.indexOf('FERIADO') === 0) { seccion = 'FER'; cols = null; return; }
+            if (c0.indexOf('TURNO') === 0)   { cols = grafColumnas(f); return; }
+            if (!cols || !seccion) return;
+
+            const fila = grafFilaTurno(f, cols);
+            if (!fila.servicios && !fila.apertura) return;
+
+            // Con número, la clave es el número. Sin número, la fila puede ser
+            // la continuación de un turno combinado o una entrada con nombre
+            // propio (REC VALLE, REC CC, PRÁCTICA SIMULADOR). Estas últimas se
+            // guardan también bajo el nombre del servicio, que es como las
+            // nombra el gráfico.
+            const claves = [];
+            if (/^\d+$/.test(fila.turno)) {
+                claves.push(fila.turno);
+            } else {
+                if (fila.turno) claves.push(pautaNorm(fila.turno));
+                const porServicio = pautaNorm(fila.servicios);
+                if (porServicio && /^[A-ZÑ]/.test(porServicio)) claves.push(porServicio);
+                if (!claves.length && ultimo) claves.push(ultimo);   // continuación
+            }
+            if (!claves.length) return;
+
+            claves.forEach(function (clave) {
+                if (!cat[seccion][clave]) cat[seccion][clave] = [];
+                if (cat[seccion][clave].indexOf(fila) < 0) cat[seccion][clave].push(fila);
+            });
+            ultimo = claves[0];
+        });
+    };
+
+    cargar(hojas.LV, 'LV');
+    cargar(hojas.SDF, null);
+    return cat;
+}
+
+// Qué catálogo corresponde a ese día. El 18 de septiembre es viernes pero se
+// trabaja con turnos de feriado, así que si el número no está en el catálogo
+// del día se busca en los otros antes de rendirse.
+function grafCatalogoDe(g, diaNombre, clave) {
+    const d = pautaNorm(diaNombre);
+    const orden = d.indexOf('SAB') === 0 ? ['SAB', 'FER', 'DOM', 'LV']
+                : d.indexOf('DOM') === 0 ? ['DOM', 'FER', 'SAB', 'LV']
+                : ['LV', 'FER', 'DOM', 'SAB'];
+    for (let i = 0; i < orden.length; i++) {
+        const c = orden[i];
+        if (g.catalogos[c] && g.catalogos[c][clave]) {
+            return { catalogo: c, tramos: g.catalogos[c][clave] };
+        }
+    }
+    return null;
+}
+
+const GRAF_CATALOGO_TXT = { LV: 'Lunes a viernes', SAB: 'Sábado', DOM: 'Domingo', FER: 'Feriado' };
+
+/* ------------------------------------------------------------- horarios --- */
+
+function grafMin(hhmm) {
+    const m = String(hhmm || '').match(/^(\d{1,2}):(\d{2})/);
+    return m ? parseInt(m[1], 10) * 60 + parseInt(m[2], 10) : null;
+}
+
+function grafDuracionTxt(minutos) {
+    if (minutos === null || minutos < 0) return '';
+    return Math.floor(minutos / 60) + ':' + String(minutos % 60).padStart(2, '0') + ' h';
+}
+
+// Apertura más temprana y cierre más tardío del conjunto de tramos. Un cierre
+// anterior a la apertura es del día siguiente, y se cuenta como tal.
+function grafResumen(tramos) {
+    let ini = null, fin = null;
+    tramos.forEach(function (t) {
+        const a = grafMin(t.apertura);
+        let c = grafMin(t.cierre);
+        if (a === null) return;
+        if (c !== null && c < a) c += 1440;
+        if (ini === null || a < ini) ini = a;
+        if (c !== null && (fin === null || c > fin)) fin = c;
+    });
+    if (ini === null) return null;
+    const hhmm = (m) => String(Math.floor((m % 1440) / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0');
+    return {
+        apertura: hhmm(ini),
+        cierre: fin === null ? '' : hhmm(fin),
+        duracion: fin === null ? null : fin - ini,
+        combinado: tramos.length > 1
+    };
+}
+
+/* ----------------------------------------------------------- interpretar -- */
+
+function grafInterpretar(entrada) {
+    const hojas = entrada.hojas || {};
+    const filas = hojas.GRAFICO || [];
+    const celda = (f, i) => String((f && f[i]) || '').trim();
+
+    const personas = {};    // nombreNormalizado -> { nombre, pareja, rol, columna }
+    const dias = [];        // [{ fecha, dia, valores: { nombreNorm: texto } }]
+
+    let columnas = null;    // columna -> nombreNorm de esa vuelta de bloque
+
+    filas.forEach(function (f) {
+        const c0 = celda(f, 0);
+
+        // Encabezado del bloque. Casi todos dicen "PAREJAS 1–12" y llevan el
+        // número de la pareja de dos en dos; el último dice "PAREJA 49 ·
+        // PRÁCTICAS" y usa etiquetas en vez de números.
+        if (/^PAREJAS?\b/.test(pautaNorm(c0))) {
+            columnas = { parejas: {} };
+            for (let i = 2; i < f.length; i++) {
+                if (celda(f, i)) columnas.parejas[i] = celda(f, i);
+            }
+            return;
+        }
+
+        // Fila de nombres: cada columna es una persona.
+        if (columnas && !columnas.gente && c0 && !/^\d{4}-\d{2}-\d{2}/.test(c0)) {
+            columnas.gente = {};
+            let parejaActual = '';
+            for (let i = 2; i < f.length; i++) {
+                if (columnas.parejas[i]) parejaActual = columnas.parejas[i];
+                const nombre = celda(f, i);
+                if (!nombre) continue;
+                const k = pautaNorm(nombre);
+                columnas.gente[i] = k;
+                if (!personas[k]) {
+                    const numerica = /^\d+$/.test(parejaActual);
+                    personas[k] = {
+                        nombre: nombre,
+                        pareja: parejaActual,
+                        grupoNumerico: numerica,
+                        // El rol se deduce de la posición solo en las parejas de
+                        // conducción; en el grupo de prácticas no aplica.
+                        rol: numerica ? (columnas.parejas[i] ? 'Maquinista' : 'Ayudante') : ''
+                    };
+                }
+            }
+            return;
+        }
+
+        // Fila de día.
+        if (columnas && columnas.gente && /^\d{4}-\d{2}-\d{2}/.test(c0)) {
+            const fecha = c0.slice(0, 10);
+            let dia = dias.find(d => d.fecha === fecha);
+            if (!dia) { dia = { fecha: fecha, dia: celda(f, 1), valores: {} }; dias.push(dia); }
+            Object.keys(columnas.gente).forEach(function (i) {
+                dia.valores[columnas.gente[i]] = celda(f, parseInt(i, 10));
+            });
+        }
+    });
+
+    dias.sort((a, b) => a.fecha.localeCompare(b.fecha));
+
+    // Con quién forma pareja cada uno (el otro de su mismo número de pareja).
+    const porPareja = {};
+    Object.keys(personas).forEach(function (k) {
+        const p = personas[k];
+        if (!p.pareja) return;
+        (porPareja[p.pareja] = porPareja[p.pareja] || []).push(k);
+    });
+    Object.keys(personas).forEach(function (k) {
+        const grupo = porPareja[personas[k].pareja] || [];
+        const compa = grupo.filter(x => x !== k);
+        personas[k].companero = (personas[k].grupoNumerico && grupo.length === 2)
+            ? personas[compa[0]].nombre : '';
+    });
+
+    return {
+        mes: entrada.mes,
+        archivo: entrada.archivo || '',
+        personas: personas,
+        dias: dias,
+        catalogos: grafLeerCatalogos(hojas)
+    };
+}
+
+/* ------------------------------------------------------------- inventario -- */
+
+function grafConstruirRoster() {
+    const mapa = new Map();
+    GRAFICOS.forEach(g => Object.keys(g.personas).forEach(function (k) {
+        if (!mapa.has(k)) mapa.set(k, g.personas[k].nombre);
+    }));
+    GRAF_ROSTER = [...mapa.values()].sort((a, b) =>
+        pautaApellido(a).localeCompare(pautaApellido(b), 'es') || a.localeCompare(b, 'es'));
+}
+
+async function grafCargar() {
+    try {
+        const r = await fetch(GRAF_ARCHIVO, { cache: 'no-cache' });
+        if (!r.ok) return false;
+        const j = await r.json();
+        GRAFICOS = (Array.isArray(j.graficos) ? j.graficos : [])
+            .filter(g => g && g.mes && g.hojas)
+            .map(grafInterpretar)
+            .sort((a, b) => a.mes.localeCompare(b.mes));
+        grafConstruirRoster();
+        grafLlenarSelectorMes();
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+/* --------------------------------------------------------------- buscar --- */
+
+let grafSugerenciaActiva = -1;
+
+function grafAutocompletar() {
+    const input = document.getElementById('graf-nombre');
+    const caja = document.getElementById('graf-sugerencias');
+    if (!input || !caja) return;
+
+    const opciones = pautaSugerencias(input.value, 8, GRAF_ROSTER);
+    grafSugerenciaActiva = -1;
+
+    if (!opciones.length) { caja.hidden = true; caja.innerHTML = ''; return; }
+    caja.innerHTML = opciones.map(function (n) {
+        return `<button type="button" class="pauta-sug" role="option" onclick="grafElegirNombre(&quot;${escAttr(n)}&quot;)">` +
+               `${escHtml(pautaApellido(n))}<small>${escHtml(n)}</small></button>`;
+    }).join('');
+    caja.hidden = false;
+}
+
+function grafTeclaSugerencia(e) {
+    const caja = document.getElementById('graf-sugerencias');
+    if (!caja || caja.hidden) {
+        if (e.key === 'Enter') { e.preventDefault(); grafRenderizar(); }
+        return;
+    }
+    const botones = [...caja.querySelectorAll('.pauta-sug')];
+    if (!botones.length) return;
+
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        grafSugerenciaActiva += (e.key === 'ArrowDown' ? 1 : -1);
+        if (grafSugerenciaActiva < 0) grafSugerenciaActiva = botones.length - 1;
+        if (grafSugerenciaActiva >= botones.length) grafSugerenciaActiva = 0;
+        botones.forEach((b, i) => b.classList.toggle('activa', i === grafSugerenciaActiva));
+        botones[grafSugerenciaActiva].scrollIntoView({ block: 'nearest' });
+    } else if (e.key === 'Enter') {
+        e.preventDefault();
+        botones[grafSugerenciaActiva >= 0 ? grafSugerenciaActiva : 0].click();
+    } else if (e.key === 'Escape') {
+        caja.hidden = true;
+    }
+}
+
+function grafElegirNombre(nombre) {
+    const input = document.getElementById('graf-nombre');
+    const caja = document.getElementById('graf-sugerencias');
+    if (input) input.value = nombre;
+    if (caja) { caja.hidden = true; caja.innerHTML = ''; }
+    try { localStorage.setItem(GRAF_LLAVE_NOMBRE, nombre); } catch (e) {}
+    GRAF_ABIERTO = '';
+    grafRenderizar();
+}
+
+function grafNombreResuelto() {
+    const input = document.getElementById('graf-nombre');
+    const texto = input ? input.value : '';
+    if (!pautaNorm(texto)) return '';
+    const exacto = GRAF_ROSTER.find(n => pautaNorm(n) === pautaNorm(texto));
+    if (exacto) return exacto;
+    const sug = pautaSugerencias(texto, 1, GRAF_ROSTER);
+    return sug.length ? sug[0] : '';
+}
+
+/* -------------------------------------------------------------- pantalla -- */
+
+function grafLlenarSelectorMes() {
+    const sel = document.getElementById('graf-mes');
+    if (!sel) return;
+    const previo = sel.value;
+    sel.innerHTML = GRAFICOS.length
+        ? GRAFICOS.map(g => `<option value="${escAttr(g.mes)}">${escHtml(grafMesTxt(g.mes))}</option>`).join('')
+        : `<option value="">— sin gráfico cargado —</option>`;
+    if (previo && GRAFICOS.some(g => g.mes === previo)) { sel.value = previo; return; }
+    const hoy = fechaArchivoChile().slice(0, 7);
+    const actual = GRAFICOS.find(g => g.mes >= hoy) || GRAFICOS[GRAFICOS.length - 1];
+    if (actual) sel.value = actual.mes;
+}
+
+function grafMesTxt(mes) {
+    const d = new Date(mes + '-01T12:00:00');
+    const txt = new Intl.DateTimeFormat('es-CL', { month: 'long', year: 'numeric' }).format(d);
+    return txt.charAt(0).toUpperCase() + txt.slice(1);
+}
+
+function grafSeleccionado() {
+    const sel = document.getElementById('graf-mes');
+    return GRAFICOS.find(g => g.mes === (sel ? sel.value : '')) || null;
+}
+
+function grafDiaTxt(fecha) {
+    const d = new Date(fecha + 'T12:00:00');
+    const txt = new Intl.DateTimeFormat('es-CL', { weekday: 'short', day: '2-digit', month: 'short' }).format(d);
+    return txt.charAt(0).toUpperCase() + txt.slice(1);
+}
+
+function grafTramoHTML(t, i, total) {
+    const dato = (etiqueta, valor, sub) => valor
+        ? `<div class="pauta-dato"><span>${escHtml(etiqueta)}</span><strong>${escHtml(valor)}</strong>${sub ? `<small>${escHtml(sub)}</small>` : ''}</div>`
+        : '';
+    return `
+        <div class="graf-tramo">
+            ${total > 1 ? `<div class="graf-tramo-n">Tramo ${i + 1} de ${total}</div>` : ''}
+            <div class="graf-servicios">${escHtml(t.servicios || '—')}</div>
+            <div class="pauta-datos">
+                ${dato('Apertura', t.apertura, t.aperturaLugar)}
+                ${dato('Traslado', t.traslado, t.baseInicio)}
+                ${dato('Inicio servicio', t.inicio, t.baseInicio)}
+                ${dato('Término oper.', t.terminoOp, t.baseTermino)}
+                ${dato('Traslado vuelta', t.trasladoVuelta, '')}
+                ${dato('Cierre', t.cierre, t.cierreLugar)}
+            </div>
+            ${t.obs ? `<div class="graf-obs">${escHtml(t.obs)}</div>` : ''}
+        </div>`;
+}
+
+function grafDetalleHTML(g, dia, valor) {
+    const clave = valor.turno || pautaNorm(valor.etiqueta || '');
+    const cat = clave ? grafCatalogoDe(g, dia.dia, clave) : null;
+
+    if (!cat) {
+        return `<div class="graf-detalle"><div class="pauta-aviso info">
+            Este día no tiene un horario en el catálogo de turnos${clave ? ' para «' + escHtml(valor.texto) + '»' : ''}.
+            </div></div>`;
+    }
+
+    const r = grafResumen(cat.tramos);
+    return `
+        <div class="graf-detalle">
+            <div class="graf-detalle-top">
+                <span class="graf-chip">${escHtml(GRAF_CATALOGO_TXT[cat.catalogo] || cat.catalogo)}</span>
+                ${r && r.combinado ? `<span class="graf-chip combinado">Turno combinado · ${cat.tramos.length} tramos</span>` : ''}
+                ${r ? `<span class="graf-rango">${escHtml(r.apertura)} → ${escHtml(r.cierre)}</span>` : ''}
+                ${r && r.duracion !== null ? `<span class="graf-dur">${escHtml(grafDuracionTxt(r.duracion))}</span>` : ''}
+            </div>
+            ${valor.detalle ? `<div class="graf-obs">Gráfico: ${escHtml(valor.texto)}</div>` : ''}
+            ${cat.tramos.map((t, i) => grafTramoHTML(t, i, cat.tramos.length)).join('')}
+        </div>`;
+}
+
+function grafFilaDiaHTML(g, dia, nombre) {
+    const valor = grafLeerValor(dia.valores[pautaNorm(nombre)]);
+    const est = GRAF_ESTADOS[valor.tipo] || GRAF_ESTADOS.OTRO;
+    const abierto = GRAF_ABIERTO === dia.fecha;
+
+    let boton;
+    if (valor.turno) {
+        boton = `<button type="button" class="graf-num ${escAttr(est.clase)}${abierto ? ' abierto' : ''}"
+                    onclick="grafToggleDia('${escAttr(dia.fecha)}')">${escHtml(valor.turno)}</button>`;
+    } else if (valor.tipo === 'DESCANSO') {
+        boton = `<span class="graf-num descanso">—</span>`;
+    } else {
+        boton = `<button type="button" class="graf-num ${escAttr(est.clase)}${abierto ? ' abierto' : ''}"
+                    onclick="grafToggleDia('${escAttr(dia.fecha)}')">${escHtml((valor.etiqueta || '?').slice(0, 3))}</button>`;
+    }
+
+    const etiquetaExtra = valor.turno && valor.tipo !== 'TURNO'
+        ? `<span class="graf-marca ${escAttr(est.clase)}">${escHtml(est.texto)}</span>`
+        : (valor.tipo !== 'TURNO' && valor.tipo !== 'DESCANSO'
+            ? `<span class="graf-marca ${escAttr(est.clase)}">${escHtml(valor.etiqueta || est.texto)}</span>`
+            : '');
+
+    return `
+        <div class="graf-dia${abierto ? ' abierto' : ''}">
+            <div class="graf-dia-top">
+                ${boton}
+                <div class="graf-dia-fecha">${escHtml(grafDiaTxt(dia.fecha))}
+                    <small>${escHtml(dia.dia || '')}</small></div>
+                ${etiquetaExtra}
+                ${valor.detalle ? `<span class="graf-detalle-chip">${escHtml(valor.detalle)}</span>` : ''}
+            </div>
+            ${abierto && valor.tipo !== 'DESCANSO' ? grafDetalleHTML(g, dia, valor) : ''}
+        </div>`;
+}
+
+function grafToggleDia(fecha) {
+    GRAF_ABIERTO = (GRAF_ABIERTO === fecha) ? '' : fecha;
+    grafRenderizar();
+}
+
+function grafRenderizar() {
+    const caja = document.getElementById('graf-resultados');
+    if (!caja) return;
+
+    if (!GRAFICOS.length) {
+        caja.innerHTML = `<div class="plan-vacio">No se pudo cargar el gráfico.<br>
+            Revisa que tengas señal y vuelve a abrir la aplicación.</div>`;
+        return;
+    }
+
+    const g = grafSeleccionado();
+    if (!g) { caja.innerHTML = `<div class="plan-vacio">Elige un mes.</div>`; return; }
+
+    const nombre = grafNombreResuelto();
+    if (!nombre) {
+        caja.innerHTML = `<div class="plan-vacio">Escribe tu apellido arriba y elige tu nombre de la lista.<br>
+            <small>Hay ${GRAF_ROSTER.length} personas en el gráfico.</small></div>`;
+        return;
+    }
+    try { localStorage.setItem(GRAF_LLAVE_NOMBRE, nombre); } catch (e) {}
+
+    const persona = g.personas[pautaNorm(nombre)];
+    const cuenta = { TURNO: 0, DESCANSO: 0, VAC: 0, CUM: 0, LM: 0, REC: 0, PRACTICA: 0, OTRO: 0 };
+    g.dias.forEach(function (d) {
+        cuenta[grafLeerValor(d.valores[pautaNorm(nombre)]).tipo]++;
+    });
+
+    let html = `<p class="plan-hint"><strong>${escHtml(nombre)}</strong>
+        ${persona && persona.pareja
+            ? ' · ' + (persona.grupoNumerico ? 'pareja ' : '') + escHtml(persona.pareja) : ''}
+        ${persona && persona.rol ? ' · ' + escHtml(persona.rol) : ''}
+        ${persona && persona.companero ? ' · con ' + escHtml(persona.companero) : ''}</p>`;
+
+    html += `<div class="graf-resumen">
+        <span><strong>${cuenta.TURNO}</strong> turnos</span>
+        <span><strong>${cuenta.DESCANSO}</strong> descansos</span>
+        ${cuenta.VAC ? `<span class="vac"><strong>${cuenta.VAC}</strong> vacaciones</span>` : ''}
+        ${cuenta.CUM ? `<span class="cum"><strong>${cuenta.CUM}</strong> cumpleaños</span>` : ''}
+        ${cuenta.LM ? `<span class="lm"><strong>${cuenta.LM}</strong> licencia</span>` : ''}
+        ${cuenta.REC ? `<span class="rec"><strong>${cuenta.REC}</strong> recibidor</span>` : ''}
+        ${cuenta.PRACTICA ? `<span class="practica"><strong>${cuenta.PRACTICA}</strong> práctica</span>` : ''}
+    </div>`;
+
+    html += `<p class="plan-hint">Toca el número del turno para ver su horario.</p>`;
+    html += g.dias.map(d => grafFilaDiaHTML(g, d, nombre)).join('');
+    html += `<div class="pauta-pie">Gráfico de ${escHtml(grafMesTxt(g.mes))}${g.archivo ? ' · ' + escHtml(g.archivo) : ''}
+        · ${g.dias.length} días.<br>
+        Los turnos combinados (un mismo número en dos filas del catálogo) se muestran con la apertura
+        más temprana, el cierre más tardío y los dos tramos completos.</div>`;
+
+    caja.innerHTML = html;
+}
+
+/* ----------------------------------------------------------- abrir/cerrar -- */
+
+function abrirGrafico() {
+    const overlay = document.getElementById('graf-overlay');
+    const input = document.getElementById('graf-nombre');
+    if (input && !input.value) {
+        try {
+            input.value = localStorage.getItem(GRAF_LLAVE_NOMBRE) ||
+                          localStorage.getItem(PAUTA_LLAVE_NOMBRE) || '';
+        } catch (e) {}
+    }
+    grafLlenarSelectorMes();
+    overlay.hidden = false;
+    overlay.classList.add('abierto');
+    document.body.classList.add('plan-abierto');
+    grafRenderizar();
+}
+
+function cerrarGrafico() {
+    const overlay = document.getElementById('graf-overlay');
+    const caja = document.getElementById('graf-sugerencias');
+    if (caja) caja.hidden = true;
+    overlay.classList.remove('abierto');
+    overlay.hidden = true;
+    if (!document.getElementById('plan-overlay').classList.contains('abierto') &&
+        !document.getElementById('pauta-overlay').classList.contains('abierto') &&
+        !document.getElementById('prev-overlay').classList.contains('abierto')) {
+        document.body.classList.remove('plan-abierto');
+    }
+}
+
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && document.getElementById('graf-overlay').classList.contains('abierto')) {
+        cerrarGrafico();
+    }
+});
+document.getElementById('graf-overlay').addEventListener('click', function (e) {
+    if (e.target === this) cerrarGrafico();
+});
+document.addEventListener('click', function (e) {
+    const caja = document.getElementById('graf-sugerencias');
+    if (!caja || caja.hidden) return;
+    if (!e.target.closest('.graf-auto')) caja.hidden = true;
+});
+
+
+/* =========================================================================
+   MI ALISTACIÓN
+   Registro diario de horas trabajadas y su comparación con el turno que manda
+   el gráfico. Todo se calcula en minutos enteros.
+
+       Jornada real     = cierre real − apertura real
+       Horas extra      = feriado trabajado
+                        + exceso sobre 7:30
+                        + tiempo fuera del turno (solo si no hubo exceso)
+                        + descanso semanal afectado
+
+   Los mismos minutos no se pagan dos veces. En un día normal, si la jornada ya
+   pasó de 7:30, ese exceso es la medida del sobretiempo y "Hrs Turno" queda en
+   cero: cerrar 1:20 tarde en una jornada de 8:50 son 1:20, no 2:40.
+
+   Cuando la pauta del día pone un turno distinto al graficado, el tiempo que
+   cae fuera del turno que correspondía sí es un concepto aparte, y solo se le
+   descuenta lo que el exceso ya pagó.
+
+   Nocturnas, menor reposo y manejo se calculan aparte y NO entran en el total
+   de horas extra: son conceptos contractuales distintos.
+
+   Lo que se escribe queda guardado en este teléfono (localStorage), día a día,
+   y al final del mes se descarga en PDF.
+   ========================================================================= */
+
+const ALI_LLAVE          = 'alistacionEfeSur';
+const ALI_JORNADA        = 450;   // 7:30 de jornada normal
+const ALI_REPOSO_LARGO   = 690;   // 11:30 entre residencias EZ / El Arenal
+const ALI_REPOSO_CORTO   = 600;   // 10:00 en los demás pares
+const ALI_MANEJO_BLOQUE  = 300;   // 5:00 por bloque de manejo
+const ALI_NOCTURNA_DESDE = 1380;  // 23:00
+const ALI_NOCTURNA_HASTA = 1860;  // 07:00 del día siguiente
+
+// Residencias que exigen el reposo largo.
+const ALI_RESIDENCIA_LARGA = ['EZ', 'AR', 'ARENAL', 'EL ARENAL'];
+
+let ALISTACION = {};      // { "<nombre>|<mes>": { "2026-09-01": {...} } }
+let ALI_DIA_ABIERTO = '';
+
+/* ------------------------------------------------------------- minutos ---- */
+
+function aliMin(hhmm) {
+    const m = String(hhmm || '').match(/^(\d{1,2})[:.](\d{2})/);
+    if (!m) return null;
+    return parseInt(m[1], 10) * 60 + parseInt(m[2], 10);
+}
+function aliHHMM(min) {
+    if (min === null || min === undefined) return '';
+    const v = ((min % 1440) + 1440) % 1440;
+    return String(Math.floor(v / 60)).padStart(2, '0') + ':' + String(v % 60).padStart(2, '0');
+}
+function aliHM(min) {
+    if (!min) return '';
+    return Math.floor(min / 60) + ':' + String(min % 60).padStart(2, '0');
+}
+function aliDec(min) {
+    if (!min) return '';
+    return (min / 60).toFixed(2).replace('.', ',');
+}
+function aliTraslape(a1, a2, b1, b2) {
+    return Math.max(0, Math.min(a2, b2) - Math.max(a1, b1));
+}
+function aliEsResidenciaLarga(lugar) {
+    const t = pautaNorm(lugar).replace(/\s*V\d+.*$/, '').trim();
+    return ALI_RESIDENCIA_LARGA.indexOf(t) >= 0;
+}
+
+/* ------------------------------------------------------------ guardado ---- */
+
+function aliClave(nombre, mes) { return pautaNorm(nombre) + '|' + mes; }
+
+function aliLeerTodo() {
+    try {
+        const crudo = localStorage.getItem(ALI_LLAVE);
+        ALISTACION = crudo ? JSON.parse(crudo) : {};
+    } catch (e) { ALISTACION = {}; }
+    if (!ALISTACION || typeof ALISTACION !== 'object') ALISTACION = {};
+}
+
+function aliGuardarTodo() {
+    try {
+        localStorage.setItem(ALI_LLAVE, JSON.stringify(ALISTACION));
+        return true;
+    } catch (e) {
+        console.warn('No se pudo guardar la alistación:', e);
+        return false;
+    }
+}
+
+function aliMes(nombre, mes) {
+    const k = aliClave(nombre, mes);
+    if (!ALISTACION[k]) ALISTACION[k] = {};
+    return ALISTACION[k];
+}
+
+/* ------------------------------------------- lo que manda el gráfico ------ */
+
+// Turno programado del día: número, horario del catálogo y si es feriado.
+function aliProgramado(g, fecha, nombre) {
+    if (!g) return null;
+    const dia = g.dias.find(d => d.fecha === fecha);
+    if (!dia) return null;
+
+    const valor = grafLeerValor(dia.valores[pautaNorm(nombre)]);
+    const clave = valor.turno || pautaNorm(valor.etiqueta || '');
+    const cat = clave ? grafCatalogoDe(g, dia.dia, clave) : null;
+    const r = cat ? grafResumen(cat.tramos) : null;
+
+    return {
+        fecha: fecha,
+        diaSemana: dia.dia,
+        valor: valor,
+        turno: valor.turno || '',
+        etiqueta: valor.etiqueta || '',
+        tipo: valor.tipo,
+        catalogo: cat ? cat.catalogo : '',
+        tramos: cat ? cat.tramos : [],
+        apertura: r ? r.apertura : '',
+        cierre: r ? r.cierre : '',
+        combinado: r ? r.combinado : false,
+        feriado: cat ? cat.catalogo === 'FER' : false,
+        aperturaLugar: cat && cat.tramos.length ? cat.tramos[0].aperturaLugar : '',
+        cierreLugar: cat && cat.tramos.length ? cat.tramos[cat.tramos.length - 1].cierreLugar : '',
+        servicios: cat ? cat.tramos.map(t => t.servicios).filter(Boolean).join(' + ') : ''
+    };
+}
+
+// La pauta del día, cuando está publicada, manda sobre el gráfico: es lo que
+// realmente se programó para esa fecha.
+function aliDeLaPauta(fecha, nombre) {
+    const pauta = (typeof PAUTAS !== 'undefined' ? PAUTAS : []).find(p => p.fecha === fecha);
+    if (!pauta) return null;
+    const entradas = pautaTurnosDe(pauta, nombre);
+    if (!entradas.length) return null;
+
+    const t0 = entradas[0].turno;
+    const ultimo = entradas[entradas.length - 1].turno;
+    return {
+        turno: t0.turno || '',
+        rol: entradas[0].rol,
+        servicios: entradas.map(e => e.turno.servicios).filter(Boolean).join(' + '),
+        apertura: t0.apertura || '',
+        cierre: ultimo.fin || ultimo.terminoServicio || '',
+        aperturaLugar: t0.aperturaLugar || '',
+        cierreLugar: ultimo.baseFin || ''
+    };
+}
+
+/* ------------------------------------------------------------- cálculo ---- */
+
+// Ventana en minutos, permitiendo que el cierre caiga al día siguiente.
+function aliVentana(desde, hasta) {
+    const a = aliMin(desde);
+    let b = aliMin(hasta);
+    if (a === null || b === null) return null;
+    if (b < a) b += 1440;
+    return { ini: a, fin: b, dura: Math.min(b - a, 1440) };
+}
+
+// Minutos de la ventana que caen entre las 23:00 y las 07:00.
+function aliNocturnas(ini, fin) {
+    let total = 0;
+    for (let k = -1; k <= 1; k++) {
+        total += aliTraslape(ini, fin, ALI_NOCTURNA_DESDE + 1440 * k, ALI_NOCTURNA_HASTA + 1440 * k);
+    }
+    return total;
+}
+
+// Calcula un día. `previo` es el día anterior ya calculado, para el reposo.
+function aliCalcularDia(fecha, reg, prog, pauta, siguienteEsDescanso, previo) {
+    const r = {
+        fecha: fecha,
+        turno: (reg && reg.turno) || (pauta && pauta.turno) || (prog && prog.turno) || '',
+        servicio: (reg && reg.servicio) || (pauta && pauta.servicios) || (prog && prog.servicios) || '',
+        obs: (reg && reg.obs) || '',
+        prog: prog,
+        real: null,
+        jornada: 0, exceso: 0, fueraTurno: 0, descansoAfectado: 0,
+        feriadoMin: 0, extras: 0, hrsTurno: 0, menosReposo: 0,
+        nocturnas: 0, manejo: (reg && parseInt(reg.manejoMin, 10)) || 0,
+        esFeriado: false, sinRegistro: true, avisos: []
+    };
+
+    // ¿La pauta del día puso un turno distinto al del gráfico?
+    r.turnoGrafico = (prog && prog.turno) || '';
+    r.turnoPauta = (pauta && pauta.turno) || '';
+    r.cambioDeTurno = !!(r.turnoGrafico && r.turnoPauta && r.turnoGrafico !== r.turnoPauta);
+    r.voluntario = !!(reg && reg.voluntario);
+
+    // Con qué se compara la jornada real:
+    //   · sin cambio de turno  -> la pauta del día si está publicada, si no el gráfico
+    //   · cambio impuesto      -> el gráfico, que es el turno que correspondía; así el
+    //                             tiempo del turno nuevo que cae fuera genera horas
+    //   · cambio voluntario    -> la pauta, porque el intercambio entre compañeros no
+    //                             genera sobretiempo por sí solo
+    const usarGrafico = r.cambioDeTurno && !r.voluntario;
+    const refIni = usarGrafico ? (prog.apertura || '')
+                 : ((pauta && pauta.apertura) || (prog && prog.apertura) || '');
+    const refFin = usarGrafico ? (prog.cierre || '')
+                 : ((pauta && pauta.cierre) || (prog && prog.cierre) || '');
+    const ref = aliVentana(refIni, refFin);
+    r.refIni = refIni; r.refFin = refFin;
+    r.fuente = usarGrafico ? 'gráfico (turno que correspondía)'
+             : (pauta ? 'pauta del día' : (prog && prog.apertura ? 'gráfico' : ''));
+
+    const real = aliVentana(reg && reg.ingreso, reg && reg.termino);
+    if (!real) return r;
+
+    r.sinRegistro = false;
+    r.real = real;
+    r.jornada = real.dura;
+
+    // Feriado: manual si se marcó, si no lo que diga el catálogo del gráfico.
+    r.esFeriado = (reg && reg.feriado !== undefined && reg.feriado !== null)
+        ? !!reg.feriado
+        : !!(prog && prog.feriado);
+
+    // Descanso semanal afectado: minutos después de medianoche cuando al día
+    // siguiente toca descanso.
+    if (siguienteEsDescanso && real.fin > 1440) r.descansoAfectado = real.fin - 1440;
+
+    if (r.esFeriado) {
+        // El feriado absorbe la apertura anticipada, el cierre tardío, el turno
+        // fuera de rango y el exceso sobre 7:30. No absorbe el descanso.
+        r.feriadoMin = r.jornada;
+    } else {
+        r.exceso = Math.max(r.jornada - ALI_JORNADA, 0);
+        if (ref) {
+            r.fueraTurno = r.jornada - aliTraslape(real.ini, real.fin, ref.ini, ref.fin);
+        }
+    }
+
+    // Para exigir justificación se compara contra el turno que efectivamente te
+    // asignaron —la pauta del día—, no contra el del gráfico: si te cambiaron de
+    // turno, cerrar a la hora del turno nuevo no es un cierre tardío. El cambio
+    // en sí ya queda registrado aparte.
+    const refJustIni = (pauta && pauta.apertura) || (prog && prog.apertura) || '';
+    const refJustFin = (pauta && pauta.cierre) || (prog && prog.cierre) || '';
+    const refJust = aliVentana(refJustIni, refJustFin) || ref;
+
+    if (refJust) {
+        r.aperturaAntes = Math.max(refJust.ini - real.ini, 0);
+        r.aperturaTarde = Math.max(real.ini - refJust.ini, 0);
+        r.cierreTardio  = Math.max(real.fin - refJust.fin, 0);
+        r.cierreAntes   = Math.max(refJust.fin - real.fin, 0);
+        r.refJustFin = refJustFin;
+    }
+    r.requiereJustificacion = (r.cierreTardio || 0) > 0;
+    r.justificado = !!String((reg && reg.obs) || '').trim();
+
+    r.extras = (r.esFeriado ? 0 : r.exceso) + r.descansoAfectado;
+
+    // Sin duplicar, pero sin castigar tampoco:
+    //   · Mismo turno: si la jornada pasó de 7:30, ese exceso es la medida del
+    //     sobretiempo y "Hrs Turno" queda en cero (es como se paga hoy).
+    //   · Cambio de turno impuesto: el tiempo fuera del turno que correspondía
+    //     es un concepto propio, así que solo se le resta lo que el exceso ya
+    //     pagó. Si no, trabajar más terminaría pagando menos.
+    if (r.esFeriado) {
+        r.hrsTurno = 0;
+    } else if (r.cambioDeTurno && !r.voluntario) {
+        r.hrsTurno = Math.max(r.fueraTurno - r.exceso, 0);
+    } else {
+        r.hrsTurno = r.exceso > 0 ? 0 : r.fueraTurno;
+    }
+    if (r.fueraTurno > r.hrsTurno && !r.esFeriado) {
+        r.absorbido = r.fueraTurno - r.hrsTurno;   // para explicarlo en pantalla
+    }
+
+    r.total = r.extras + r.hrsTurno + r.feriadoMin;
+
+    // Nocturnas: presentación → término efectivo del maestro, no el cierre
+    // administrativo. El traslado de vuelta queda fuera.
+    if (prog && prog.tramos.length) {
+        prog.tramos.forEach(function (t) {
+            const v = aliVentana(t.apertura, t.terminoOp || t.cierre);
+            if (v) r.nocturnas += aliNocturnas(v.ini, v.fin);
+        });
+    } else if (real) {
+        r.nocturnas = aliNocturnas(real.ini, real.fin);
+        r.avisos.push('Nocturnas calculadas sobre el horario real: el turno no está en el catálogo.');
+    }
+
+    // Menor reposo contra el cierre del día anterior.
+    if (previo && previo.real && previo.cierreAbs !== undefined) {
+        const aperturaAbs = r.diaIndice * 1440 + real.ini;
+        const reposo = aperturaAbs - previo.cierreAbs;
+        if (reposo >= 0) {
+            const minimo = (aliEsResidenciaLarga(previo.cierreLugar) && aliEsResidenciaLarga(r.aperturaLugar))
+                ? ALI_REPOSO_LARGO : ALI_REPOSO_CORTO;
+            r.menosReposo = Math.max(minimo - reposo, 0);
+            r.reposoReal = reposo;
+            r.reposoMinimo = minimo;
+        }
+    }
+
+    return r;
+}
+
+// Recorre el mes completo, en orden, para poder encadenar el reposo.
+function aliCalcularMes(nombre, mes) {
+    const g = GRAFICOS.find(x => x.mes === mes) || null;
+    const datos = aliMes(nombre, mes);
+    const dias = g ? g.dias.map(d => d.fecha) : aliDiasDelMes(mes);
+
+    const salida = [];
+    let previo = null;
+
+    dias.forEach(function (fecha, i) {
+        const prog = aliProgramado(g, fecha, nombre);
+        const pauta = aliDeLaPauta(fecha, nombre);
+        const siguiente = g ? aliProgramado(g, dias[i + 1], nombre) : null;
+        const siguienteEsDescanso = !!siguiente && siguiente.tipo === 'DESCANSO';
+
+        const r = aliCalcularDia(fecha, datos[fecha], prog, pauta, siguienteEsDescanso, previo);
+        r.diaIndice = i;
+        r.aperturaLugar = (pauta && pauta.aperturaLugar) || (prog && prog.aperturaLugar) || '';
+        r.cierreLugar = (pauta && pauta.cierreLugar) || (prog && prog.cierreLugar) || '';
+        r.diaSemana = prog ? prog.diaSemana : '';
+
+        // Se recalcula el reposo ahora que el índice del día ya está puesto.
+        if (previo && previo.cierreAbs !== undefined && r.real) {
+            const reposo = (i * 1440 + r.real.ini) - previo.cierreAbs;
+            if (reposo >= 0) {
+                const minimo = (aliEsResidenciaLarga(previo.cierreLugar) && aliEsResidenciaLarga(r.aperturaLugar))
+                    ? ALI_REPOSO_LARGO : ALI_REPOSO_CORTO;
+                r.menosReposo = Math.max(minimo - reposo, 0);
+                r.reposoReal = reposo;
+                r.reposoMinimo = minimo;
+            }
+        }
+        if (r.real) r.cierreAbs = i * 1440 + r.real.fin;
+
+        salida.push(r);
+        if (r.real) previo = r;
+    });
+
+    return { grafico: g, dias: salida, totales: aliTotales(salida) };
+}
+
+function aliDiasDelMes(mes) {
+    const [a, m] = mes.split('-').map(Number);
+    const n = new Date(Date.UTC(a, m, 0)).getUTCDate();
+    const out = [];
+    for (let d = 1; d <= n; d++) out.push(mes + '-' + String(d).padStart(2, '0'));
+    return out;
+}
+
+function aliTotales(dias) {
+    const t = { jornada: 0, extras: 0, hrsTurno: 0, feriado: 0, menosReposo: 0, manejo: 0, nocturnas: 0, total: 0, trabajados: 0 };
+    dias.forEach(function (d) {
+        if (d.sinRegistro) return;
+        t.trabajados++;
+        t.jornada += d.jornada;
+        t.extras += d.extras;
+        t.hrsTurno += d.hrsTurno;
+        t.feriado += d.feriadoMin;
+        t.menosReposo += d.menosReposo;
+        t.manejo += d.manejo;
+        t.nocturnas += d.nocturnas;
+        t.total += d.total;
+    });
+    return t;
+}
+
+/* ------------------------------------------------------------- pantalla --- */
+
+function aliNombre() {
+    const input = document.getElementById('ali-nombre');
+    const texto = input ? input.value : '';
+    if (!pautaNorm(texto)) return '';
+    const exacto = GRAF_ROSTER.find(n => pautaNorm(n) === pautaNorm(texto));
+    if (exacto) return exacto;
+    const sug = pautaSugerencias(texto, 1, GRAF_ROSTER);
+    return sug.length ? sug[0] : '';
+}
+
+function aliMesSel() {
+    const sel = document.getElementById('ali-mes');
+    return sel ? sel.value : '';
+}
+
+function aliAutocompletar() {
+    const input = document.getElementById('ali-nombre');
+    const caja = document.getElementById('ali-sugerencias');
+    if (!input || !caja) return;
+    const opciones = pautaSugerencias(input.value, 8, GRAF_ROSTER);
+    if (!opciones.length) { caja.hidden = true; caja.innerHTML = ''; return; }
+    caja.innerHTML = opciones.map(n =>
+        `<button type="button" class="pauta-sug" onclick="aliElegirNombre(&quot;${escAttr(n)}&quot;)">` +
+        `${escHtml(pautaApellido(n))}<small>${escHtml(n)}</small></button>`).join('');
+    caja.hidden = false;
+}
+
+function aliElegirNombre(nombre) {
+    const input = document.getElementById('ali-nombre');
+    const caja = document.getElementById('ali-sugerencias');
+    if (input) input.value = nombre;
+    if (caja) { caja.hidden = true; caja.innerHTML = ''; }
+    try { localStorage.setItem(GRAF_LLAVE_NOMBRE, nombre); } catch (e) {}
+    ALI_DIA_ABIERTO = '';
+    aliRenderizar();
+}
+
+function aliCampo(fecha, campo, valor) {
+    const nombre = aliNombre(), mes = aliMesSel();
+    if (!nombre || !mes) return;
+    const datos = aliMes(nombre, mes);
+    if (!datos[fecha]) datos[fecha] = {};
+    datos[fecha][campo] = valor;
+    aliGuardarTodo();
+    aliRenderizar();
+}
+
+function aliToggleDia(fecha) {
+    ALI_DIA_ABIERTO = (ALI_DIA_ABIERTO === fecha) ? '' : fecha;
+    aliRenderizar();
+}
+
+// Copia al registro las horas del turno programado, en los días que estén en
+// blanco. Lo que ya esté escrito no se toca.
+function aliPrellenarMes() {
+    const nombre = aliNombre(), mes = aliMesSel();
+    if (!nombre || !mes) return;
+    const calc = aliCalcularMes(nombre, mes);
+    const datos = aliMes(nombre, mes);
+    let n = 0;
+
+    calc.dias.forEach(function (d) {
+        if (!d.sinRegistro) return;
+        if (!d.refIni || !d.refFin) return;
+        datos[d.fecha] = Object.assign({}, datos[d.fecha], {
+            ingreso: d.refIni, termino: d.refFin,
+            servicio: d.servicio, turno: d.turno
+        });
+        n++;
+    });
+    aliGuardarTodo();
+    aliRenderizar();
+    pautaToast(n ? `✅ ${n} días prellenados con el turno programado` : 'No quedaban días en blanco por prellenar');
+}
+
+function aliBorrarDia(fecha) {
+    const nombre = aliNombre(), mes = aliMesSel();
+    if (!nombre || !mes) return;
+    const datos = aliMes(nombre, mes);
+    delete datos[fecha];
+    aliGuardarTodo();
+    aliRenderizar();
+}
+
+function aliChip(etiqueta, min, clase) {
+    return min ? `<span class="ali-chip ${clase || ''}">${escHtml(etiqueta)} <strong>${escHtml(aliHM(min))}</strong></span>` : '';
+}
+
+function aliTarjetaDia(d) {
+    const abierto = ALI_DIA_ABIERTO === d.fecha;
+    const dia = new Date(d.fecha + 'T12:00:00').getUTCDate();
+    const prog = d.prog;
+    const esDescanso = prog && prog.tipo === 'DESCANSO';
+
+    const turnoTxt = prog && prog.turno
+        ? `TURNO GRÁFICO ${prog.turno} DE ${prog.apertura || '—'} A ${prog.cierre || '—'}`
+        : (prog && prog.etiqueta ? prog.etiqueta : (esDescanso ? 'DESCANSO' : ''));
+
+    return `
+        <div class="ali-dia${abierto ? ' abierto' : ''}${d.sinRegistro ? ' vacio' : ''}${d.requiereJustificacion && !d.justificado ? ' sin-justificar' : ''}">
+            <button type="button" class="ali-dia-top" onclick="aliToggleDia('${escAttr(d.fecha)}')">
+                <span class="ali-n">${dia}</span>
+                <span class="ali-dia-info">
+                    <span class="ali-serv">${escHtml(d.servicio || (esDescanso ? 'Descanso' : '—'))}</span>
+                    <span class="ali-graf">${escHtml(turnoTxt)}</span>
+                </span>
+                ${d.sinRegistro
+                    ? `<span class="ali-horas vacio">sin registrar</span>`
+                    : `<span class="ali-horas">${escHtml(aliHHMM(d.real.ini))}–${escHtml(aliHHMM(d.real.fin))}
+                        <strong>${escHtml(aliHM(d.jornada))}</strong></span>`}
+            </button>
+
+            ${d.sinRegistro ? '' : `
+            <div class="ali-chips">
+                ${aliChip('Extras', d.extras, 'extra')}
+                ${aliChip('Turno', d.hrsTurno, 'turno')}
+                ${aliChip('Feriado', d.feriadoMin, 'feriado')}
+                ${aliChip('Menos rep.', d.menosReposo, 'reposo')}
+                ${aliChip('Nocturnas', d.nocturnas, 'noct')}
+                ${aliChip('Manejo', d.manejo, 'manejo')}
+                ${d.descansoAfectado ? aliChip('Descanso afectado', d.descansoAfectado, 'desc') : ''}
+                ${d.absorbido ? `<span class="ali-chip absorbido">Fuera de turno ${escHtml(aliHM(d.absorbido))} · ya contado en el exceso</span>` : ''}
+                ${d.cambioDeTurno ? `<span class="ali-chip cambio">Cambio de turno ${escHtml(d.turnoGrafico)} → ${escHtml(d.turnoPauta)}${d.voluntario ? ' · voluntario' : ''}</span>` : ''}
+                ${d.cierreTardio ? `<span class="ali-chip tarde">Cierre +${escHtml(aliHM(d.cierreTardio))}</span>` : ''}
+                ${d.aperturaAntes ? `<span class="ali-chip tarde">Apertura −${escHtml(aliHM(d.aperturaAntes))}</span>` : ''}
+                ${d.requiereJustificacion
+                    ? (d.justificado
+                        ? `<span class="ali-chip justificado">✔ justificado</span>`
+                        : `<span class="ali-chip falta">⚠ falta justificación</span>`)
+                    : ''}
+            </div>`}
+
+            ${abierto ? `
+            <div class="ali-editor">
+                <div class="ali-editor-fila">
+                    <label>Ingreso<input type="time" value="${escAttr(d.real ? aliHHMM(d.real.ini) : (d.refIni || ''))}"
+                        onchange="aliCampo('${escAttr(d.fecha)}','ingreso',this.value)"></label>
+                    <label>Término<input type="time" value="${escAttr(d.real ? aliHHMM(d.real.fin) : (d.refFin || ''))}"
+                        onchange="aliCampo('${escAttr(d.fecha)}','termino',this.value)"></label>
+                    <label>Manejo (min)<input type="number" min="0" step="5" value="${d.manejo || ''}"
+                        onchange="aliCampo('${escAttr(d.fecha)}','manejoMin',this.value)"></label>
+                </div>
+                <label class="ali-largo">Servicio
+                    <input type="text" value="${escAttr(d.servicio)}"
+                        onchange="aliCampo('${escAttr(d.fecha)}','servicio',this.value)"></label>
+                <label class="ali-largo${d.requiereJustificacion && !d.justificado ? ' requerido' : ''}">
+                    ${d.requiereJustificacion ? 'Justificación (obligatoria)' : 'Observaciones'}
+                    <input type="text" placeholder="Ej: EXCEDE POR ATRASO" value="${escAttr(d.obs)}"
+                        onchange="aliCampo('${escAttr(d.fecha)}','obs',this.value)"></label>
+                ${d.requiereJustificacion && !d.justificado
+                    ? `<div class="ali-obliga">⚠ Cerraste ${escHtml(aliHM(d.cierreTardio))} más tarde que tu turno
+                        (${escHtml(d.refJustFin || d.refFin)}). Escribe por qué: sin justificación el día sale marcado en el PDF.</div>`
+                    : ''}
+                <label class="ali-check">
+                    <input type="checkbox" ${d.esFeriado ? 'checked' : ''}
+                        onchange="aliCampo('${escAttr(d.fecha)}','feriado',this.checked)"> Feriado trabajado
+                </label>
+                ${d.cambioDeTurno ? `
+                <label class="ali-check">
+                    <input type="checkbox" ${d.voluntario ? 'checked' : ''}
+                        onchange="aliCampo('${escAttr(d.fecha)}','voluntario',this.checked)">
+                    Cambio voluntario con un compañero (no genera sobretiempo)
+                </label>
+                <div class="ali-cambio">La pauta del día te puso el <strong>turno ${escHtml(d.turnoPauta)}</strong>
+                    y el gráfico decía <strong>turno ${escHtml(d.turnoGrafico)}</strong>
+                    (${escHtml(d.prog ? d.prog.apertura + '–' + d.prog.cierre : '—')}).
+                    ${d.voluntario
+                        ? 'Marcado como voluntario: se compara contra el turno nuevo.'
+                        : 'Se compara contra el turno del gráfico, que era el que te correspondía.'}</div>` : ''}
+                ${d.refIni ? `<div class="ali-ref">Programado: ${escHtml(d.refIni)} – ${escHtml(d.refFin)}
+                    <small>según ${escHtml(d.fuente)}</small></div>` : ''}
+                ${d.reposoReal !== undefined ? `<div class="ali-ref">Reposo desde el cierre anterior:
+                    ${escHtml(aliHM(d.reposoReal))} · mínimo ${escHtml(aliHM(d.reposoMinimo))}</div>` : ''}
+                ${d.avisos.map(a => `<div class="pauta-aviso info">${escHtml(a)}</div>`).join('')}
+                <button type="button" class="ali-borrar" onclick="aliBorrarDia('${escAttr(d.fecha)}')">Borrar este día</button>
+            </div>` : ''}
+        </div>`;
+}
+
+function aliRenderizar() {
+    const caja = document.getElementById('ali-resultados');
+    if (!caja) return;
+
+    const nombre = aliNombre(), mes = aliMesSel();
+    if (!GRAFICOS.length) {
+        caja.innerHTML = `<div class="plan-vacio">Falta el gráfico del mes para poder comparar.</div>`;
+        return;
+    }
+    if (!nombre) {
+        caja.innerHTML = `<div class="plan-vacio">Escribe tu apellido arriba y elige tu nombre de la lista.</div>`;
+        return;
+    }
+
+    const calc = aliCalcularMes(nombre, mes);
+    const t = calc.totales;
+
+    let html = `<p class="plan-hint"><strong>${escHtml(nombre)}</strong> · ${escHtml(grafMesTxt(mes))}
+        · ${t.trabajados} días registrados</p>`;
+
+    html += `<div class="ali-totales">
+        <div class="ali-tot destacado"><span>Total horas extra</span><strong>${escHtml(aliHM(t.total) || '0:00')}</strong></div>
+        <div class="ali-tot"><span>Jornada</span><strong>${escHtml(aliHM(t.jornada) || '0:00')}</strong></div>
+        <div class="ali-tot"><span>Hrs Extras</span><strong>${escHtml(aliHM(t.extras) || '0:00')}</strong></div>
+        <div class="ali-tot"><span>Hrs Turno</span><strong>${escHtml(aliHM(t.hrsTurno) || '0:00')}</strong></div>
+        <div class="ali-tot"><span>Feriado</span><strong>${escHtml(aliHM(t.feriado) || '0:00')}</strong></div>
+        <div class="ali-tot aparte"><span>Menos reposo</span><strong>${escHtml(aliHM(t.menosReposo) || '0:00')}</strong></div>
+        <div class="ali-tot aparte"><span>Nocturnas</span><strong>${escHtml(aliHM(t.nocturnas) || '0:00')}</strong></div>
+        <div class="ali-tot aparte"><span>Manejo</span><strong>${escHtml(aliHM(t.manejo) || '0:00')}</strong></div>
+    </div>
+    <p class="ali-nota">Los mismos minutos no se cuentan dos veces: si la jornada pasó de 7:30,
+        el sobretiempo se paga como exceso y «Hrs Turno» queda en cero.<br>
+        Menos reposo, nocturnas y manejo van aparte: no suman al total de horas extra.</p>`;
+
+    const cambios = calc.dias.filter(d => d.cambioDeTurno);
+    if (cambios.length) {
+        html += `<div class="pauta-aviso info">🔄 ${cambios.length}
+            ${cambios.length === 1 ? 'día con turno distinto al graficado' : 'días con turno distinto al graficado'}:
+            ${cambios.map(d => new Date(d.fecha + 'T12:00:00').getUTCDate() + ' (' +
+                escHtml(d.turnoGrafico) + '→' + escHtml(d.turnoPauta) + ')').join(', ')}.
+            Se comparan contra el turno del gráfico, salvo los marcados como cambio voluntario.</div>`;
+    }
+
+    const faltan = calc.dias.filter(d => d.requiereJustificacion && !d.justificado);
+    if (faltan.length) {
+        html += `<div class="pauta-aviso error">⚠️ ${faltan.length}
+            ${faltan.length === 1 ? 'día con cierre tardío sin justificar' : 'días con cierre tardío sin justificar'}:
+            ${escHtml(faltan.map(d => new Date(d.fecha + 'T12:00:00').getUTCDate()).join(', '))}.
+            Todo cierre fuera del horario programado necesita una explicación, y esa explicación va en el PDF.</div>`;
+    }
+
+    html += calc.dias.map(aliTarjetaDia).join('');
+    html += `<div class="pauta-pie">Lo que escribes queda guardado en este teléfono, día a día.
+        Se pierde si borras los datos del sitio o desinstalas la app: descarga el PDF de respaldo.</div>`;
+
+    caja.innerHTML = html;
+}
+
+/* ----------------------------------------------------------------- PDF ---- */
+
+function aliDescargarPDF() {
+    if (!(window.jspdf && window.jspdf.jsPDF)) { alert('No se pudo preparar el PDF.'); return; }
+    const nombre = aliNombre(), mes = aliMesSel();
+    if (!nombre) { alert('Elige primero tu nombre.'); return; }
+
+    const calc = aliCalcularMes(nombre, mes);
+    const t = calc.totales;
+
+    const faltan = calc.dias.filter(d => d.requiereJustificacion && !d.justificado);
+    if (faltan.length && !confirm(
+            faltan.length + ' día(s) con cierre tardío sin justificar (' +
+            faltan.map(d => new Date(d.fecha + 'T12:00:00').getUTCDate()).join(', ') +
+            ').\nEn el PDF saldrán marcados como SIN JUSTIFICAR.\n\n¿Descargar igual?')) {
+        return;
+    }
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'a4' });
+
+    doc.setFontSize(13); doc.setFont(undefined, 'bold');
+    doc.text('ALISTACIÓN · ' + nombre.toUpperCase(), 40, 34);
+    doc.setFontSize(9); doc.setFont(undefined, 'normal');
+    doc.text(grafMesTxt(mes) + '  ·  EFE Sur  ·  emitido ' + fechaChile(), 40, 48);
+
+    const cuerpo = calc.dias.map(function (d) {
+        const dia = new Date(d.fecha + 'T12:00:00').getUTCDate();
+        const prog = d.prog;
+        const graf = prog && prog.turno
+            ? 'TURNO GRAFICO ' + prog.turno + ' DE ' + (prog.apertura || '—') + ' A ' + (prog.cierre || '—')
+            : (prog && prog.etiqueta ? prog.etiqueta : '');
+        if (d.sinRegistro) {
+            const esDesc = prog && prog.tipo === 'DESCANSO';
+            return [dia, esDesc ? 'DESCANSO' : (d.servicio || ''), '', '', '', '', '', '', '', '', '', '', d.obs || '', esDesc ? '' : graf];
+        }
+        // La justificación viaja al PDF. Si falta, el día queda marcado.
+        let obs = d.obs || '';
+        if (d.cambioDeTurno) {
+            const cambio = 'CAMBIO DE TURNO ' + d.turnoGrafico + '→' + d.turnoPauta +
+                           (d.voluntario ? ' (VOLUNTARIO)' : '');
+            obs = obs ? obs + ' · ' + cambio : cambio;
+        }
+        if (d.cierreTardio) {
+            const detalle = 'CIERRE +' + aliHM(d.cierreTardio);
+            obs = obs ? obs + ' (' + detalle + ')' : 'SIN JUSTIFICAR (' + detalle + ')';
+        }
+        return [
+            dia, d.servicio || '',
+            aliHHMM(d.real.ini), aliHHMM(d.real.fin),
+            aliHM(d.jornada), aliDec(d.jornada),
+            aliHM(d.extras), aliHM(d.hrsTurno), aliHM(d.feriadoMin),
+            aliHM(d.menosReposo), aliHM(d.manejo), aliHM(d.nocturnas),
+            obs, graf
+        ];
+    });
+
+    cuerpo.push(['', 'TOTALES', '', '', aliHM(t.jornada), aliDec(t.jornada),
+        aliHM(t.extras), aliHM(t.hrsTurno), aliHM(t.feriado),
+        aliHM(t.menosReposo), aliHM(t.manejo), aliHM(t.nocturnas),
+        'TOTAL HORAS EXTRA ' + (aliHM(t.total) || '0:00'), '']);
+
+    const opts = {
+        startY: 60,
+        head: [['', 'Día Servicio', 'Ingreso', 'Término', 'Horas', 'Horas', 'Hrs Extras',
+                'Hrs Turno', 'Hrs Feriado', 'Hrs Menos Rep', 'Hrs Manejo', 'Hrs Nocturnas',
+                'Observaciones', 'Turno del gráfico']],
+        body: cuerpo,
+        theme: 'grid',
+        styles: { fontSize: 6.5, cellPadding: 2, overflow: 'linebreak', lineColor: [120, 120, 120], lineWidth: 0.4 },
+        headStyles: { fillColor: [255, 255, 255], textColor: [20, 20, 20], fontStyle: 'bold', halign: 'center' },
+        columnStyles: {
+            0: { cellWidth: 16, halign: 'center' },
+            1: { cellWidth: 168, fillColor: [252, 224, 208] },
+            2: { cellWidth: 34, halign: 'center' }, 3: { cellWidth: 34, halign: 'center' },
+            4: { cellWidth: 32, halign: 'center' }, 5: { cellWidth: 32, halign: 'center' },
+            6: { cellWidth: 38, halign: 'center' }, 7: { cellWidth: 38, halign: 'center' },
+            8: { cellWidth: 40, halign: 'center' }, 9: { cellWidth: 46, halign: 'center' },
+            10: { cellWidth: 40, halign: 'center' }, 11: { cellWidth: 44, halign: 'center' },
+            12: { cellWidth: 120, fillColor: [255, 246, 178], fontStyle: 'bold', halign: 'center' },
+            13: { cellWidth: 150, fillColor: [225, 240, 219], fontStyle: 'bold' }
+        },
+        didParseCell: function (data) {
+            if (data.row.index === cuerpo.length - 1) {
+                data.cell.styles.fontStyle = 'bold';
+                data.cell.styles.fillColor = [238, 242, 247];
+                return;
+            }
+            // Los cierres tardíos sin explicar quedan en rojo, para que salten.
+            if (data.section === 'body' && data.column.index === 12 &&
+                String(data.cell.raw || '').indexOf('SIN JUSTIFICAR') === 0) {
+                data.cell.styles.fillColor = [253, 220, 220];
+                data.cell.styles.textColor = [141, 29, 38];
+            }
+        }
+    };
+    if (typeof doc.autoTable === 'function') doc.autoTable(opts);
+    else if (window.jspdf.autoTable) window.jspdf.autoTable(doc, opts);
+
+    doc.save('Alistacion_' + pautaApellido(nombre).replace(/\s+/g, '_') + '_' + mes + '.pdf');
+}
+
+/* ----------------------------------------------------------- abrir/cerrar -- */
+
+function aliLlenarSelectorMes() {
+    const sel = document.getElementById('ali-mes');
+    if (!sel) return;
+    const previo = sel.value;
+    sel.innerHTML = GRAFICOS.map(g => `<option value="${escAttr(g.mes)}">${escHtml(grafMesTxt(g.mes))}</option>`).join('');
+    if (previo && GRAFICOS.some(g => g.mes === previo)) { sel.value = previo; return; }
+    const hoy = fechaArchivoChile().slice(0, 7);
+    const actual = GRAFICOS.find(g => g.mes >= hoy) || GRAFICOS[GRAFICOS.length - 1];
+    if (actual) sel.value = actual.mes;
+}
+
+function abrirAlistacion() {
+    const overlay = document.getElementById('ali-overlay');
+    const input = document.getElementById('ali-nombre');
+    aliLeerTodo();
+    if (input && !input.value) {
+        try { input.value = localStorage.getItem(GRAF_LLAVE_NOMBRE) || ''; } catch (e) {}
+    }
+    aliLlenarSelectorMes();
+    overlay.hidden = false;
+    overlay.classList.add('abierto');
+    document.body.classList.add('plan-abierto');
+    aliRenderizar();
+}
+
+function cerrarAlistacion() {
+    const overlay = document.getElementById('ali-overlay');
+    const caja = document.getElementById('ali-sugerencias');
+    if (caja) caja.hidden = true;
+    overlay.classList.remove('abierto');
+    overlay.hidden = true;
+    if (!document.querySelector('.plan-overlay.abierto')) document.body.classList.remove('plan-abierto');
+}
+
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && document.getElementById('ali-overlay').classList.contains('abierto')) cerrarAlistacion();
+});
+document.getElementById('ali-overlay').addEventListener('click', function (e) {
+    if (e.target === this) cerrarAlistacion();
+});
+document.addEventListener('click', function (e) {
+    const caja = document.getElementById('ali-sugerencias');
+    if (!caja || caja.hidden) return;
+    if (!e.target.closest('.ali-auto')) caja.hidden = true;
+});
+
+aliLeerTodo();
+
+window.addEventListener('load', function () {
+    grafCargar().then(function (ok) {
+        if (ok && document.getElementById('graf-overlay').classList.contains('abierto')) grafRenderizar();
+    });
+});
 
 window.addEventListener('load', function () {
     prevAjustarTope();
