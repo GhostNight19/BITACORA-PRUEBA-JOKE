@@ -508,8 +508,28 @@
             font: inherit; font-size: 1.05rem; font-weight: 800; }
         .cond-sug { position: relative; }
         .cond-sug .pauta-sugerencias { background: #16203a; border-color: #2b3a58; }
-        .cond-sug .pauta-sugerencias button { color: #eef3fb; }
-        .cond-sug .pauta-sugerencias button:hover { background: #22304c; }
+        .cond-sug .pauta-sug { color: #eef3fb; }
+        .cond-sug .pauta-sug small { color: #9fb2ce; }
+        .cond-sug .pauta-sug + .pauta-sug { border-top-color: #2b3a58; }
+        .cond-sug .pauta-sug:hover, .cond-sug .pauta-sug.activa { background: #22304c; }
+
+        .cond-gps { display: flex; align-items: center; gap: 9px; flex-wrap: wrap;
+            margin-bottom: 10px; padding: 10px 12px; border-radius: 10px;
+            background: #12253f; border: 1px solid #23406e; color: #cfe3ff;
+            font-size: 0.83rem; font-weight: 800; }
+        .cond-gps.mal { background: #2a1119; border-color: #7b2231; color: #ffd9de; }
+        .cond-gps button { margin-left: auto; padding: 8px 12px; border-radius: 8px;
+            border: 1px solid #4c9ef5; background: #1c5ea8; color: #fff;
+            font: inherit; font-weight: 850; font-size: 0.8rem; cursor: pointer; }
+
+        .cond-extra { margin-top: 12px; padding: 12px; border-radius: 12px;
+            background: #16203a; border: 1px dashed #2b3a58; display: grid; gap: 8px; }
+        .cond-extra-fila { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+        .cond-extra input { min-height: 48px; padding: 0 12px; border-radius: 9px;
+            border: 2px solid #2b3a58; background: #0f1a30; color: #eef3fb;
+            font: inherit; font-weight: 850; font-size: 1rem; }
+        .cond-quitar { border: 0; background: none; color: #ff9aa8; font: inherit;
+            font-weight: 900; font-size: 1.1rem; cursor: pointer; padding: 0 4px; }
 
         .cond-vacio { padding: 26px 16px; text-align: center; color: #9fb2ce;
             border: 1px dashed #2b3a58; border-radius: 12px; font-weight: 700; }
@@ -6689,6 +6709,35 @@ function condCorridasDelTurno(nombre, fecha) {
     return { corridas: corridas, sinItinerario: sinItinerario, turnos: turnos, rol: entradas[0].rol };
 }
 
+// Un servicio suelto, buscado por su número en el itinerario del día.
+function condCorridaDeNumero(num) {
+    const pauta = (typeof PAUTAS !== 'undefined' ? PAUTAS : []).find(p => p.fecha === COND.fecha);
+    const grupos = [];
+    if (pauta && pauta.dia) grupos.push(pauta.dia);
+    ['LV', 'SAB', 'DOM'].forEach(g => { if (grupos.indexOf(g) < 0) grupos.push(g); });
+
+    const idx = condIndiceEstaciones();
+    for (let i = 0; i < grupos.length; i++) {
+        const info = (baseDatosTrenes[grupos[i]] || {})[num];
+        if (!info || !rutas[info.ruta]) continue;
+        const linea = condLineaDeRuta(info.ruta);
+        const paradas = [];
+        rutas[info.ruta].forEach(function (nom, k) {
+            const h = info.horarios[k];
+            if (!h) return;
+            const ubi = (idx[condClave(nom)] || []).find(x => x.linea === linea) ||
+                        (idx[condClave(nom)] || [])[0] || null;
+            paradas.push({ nombre: nom, hora: String(h).slice(0, 5),
+                           min: aliHoraServicio(h), pk: ubi ? ubi.pk : null });
+        });
+        if (paradas.length < 2) continue;
+        return { numero: num, ruta: info.ruta, linea: linea, paradas: paradas,
+                 salida: paradas[0].min, llegada: paradas[paradas.length - 1].min,
+                 agregado: true };
+    }
+    return null;
+}
+
 /* ------------------------------------------------------------- registro ---- */
 
 function condLeer() {
@@ -6698,7 +6747,7 @@ function condLeer() {
 function condGuardar() {
     if (!COND) return;
     const todo = condLeer();
-    todo[COND.nombre + '|' + COND.fecha] = { marcas: COND.marcas, cerrado: COND.cerrado || {} };
+    todo[COND.nombre + '|' + COND.fecha] = { marcas: COND.marcas, extras: COND.extras || [] };
     try { localStorage.setItem(COND_LLAVE, JSON.stringify(todo)); } catch (e) {}
 }
 
@@ -6907,13 +6956,14 @@ function condVozToggle() {
 
 function condRenderizar() {
     const caja = document.getElementById('cond-cuerpo');
-    if (!caja || !COND) return;
+    if (!caja) return;
+    if (!COND) { caja.innerHTML = condGpsHTML(); return; }
     // Si se está escribiendo el motivo, no se redibuja encima.
     const foco = document.activeElement;
     if (foco && foco.id === 'cond-motivo') { condRefrescarVivo(); return; }
 
-    if (COND.iCorrida < 0) caja.innerHTML = condListaHTML();
-    else caja.innerHTML = condMarchaHTML();
+    if (COND.iCorrida < 0) caja.innerHTML = condGpsHTML() + condListaHTML();
+    else caja.innerHTML = condGpsHTML() + condMarchaHTML();
 }
 
 // Solo los números que cambian cada segundo, para no pisar lo que se escribe.
@@ -6927,19 +6977,23 @@ function condRefrescarVivo() {
 
 function condListaHTML() {
     const r = COND.datos;
-    if (r.error) return '<div class="cond-vacio">' + escHtml(r.error) + '</div>';
-    if (!r.corridas.length) {
-        return '<div class="cond-vacio">Tu turno no trae servicios con itinerario cargado.</div>';
-    }
 
-    let html = '<div class="cond-aviso info"><strong>' + escHtml(COND.nombre) + '</strong> · ' +
-        (r.turnos.length ? 'turno ' + escHtml(r.turnos.join(' + ')) + ' · ' : '') +
-        escHtml(r.rol || '') + ' · ' + r.corridas.length +
-        (r.corridas.length === 1 ? ' servicio' : ' servicios') + '</div>';
+    let html = '<div class="cond-aviso info"><strong>' + escHtml(COND.nombre) + '</strong>' +
+        (r.turnos && r.turnos.length ? ' · turno ' + escHtml(r.turnos.join(' + ')) : '') +
+        (r.rol ? ' · ' + escHtml(r.rol) : '') +
+        ' · ' + COND.corridas.length +
+        (COND.corridas.length === 1 ? ' servicio' : ' servicios') + '</div>';
 
-    if (r.sinItinerario.length) {
+    if (r.error) html += '<div class="cond-aviso">' + escHtml(r.error) +
+        ' Puedes agregar los servicios a mano aquí abajo.</div>';
+
+    if (r.sinItinerario && r.sinItinerario.length) {
         html += '<div class="cond-aviso">Sin itinerario guardado: ' +
             escHtml(r.sinItinerario.join(', ')) + '. Esos no se pueden seguir.</div>';
+    }
+
+    if (!COND.corridas.length) {
+        html += '<div class="cond-vacio">Todavía no hay servicios que seguir.</div>';
     }
 
     html += r.corridas.map(function (c, i) {
@@ -6955,7 +7009,57 @@ function condListaHTML() {
             (hecha ? '<br><small>✔ hecho</small>' : '') + '</span></button>';
     }).join('');
 
+    // El turno del día no siempre es todo lo que se hace: se pueden sumar
+    // servicios sueltos escribiendo el número del tren.
+    html += '<div class="cond-extra">' +
+        '<div class="cond-rot">¿Vas a hacer otro servicio?</div>' +
+        '<div class="cond-extra-fila">' +
+        '<input type="text" id="cond-extra-num" inputmode="numeric" autocomplete="off" ' +
+        'placeholder="N° de tren, por ejemplo 20075" ' +
+        'onkeydown="if(event.key===&quot;Enter&quot;){event.preventDefault();condAgregarServicio();}">' +
+        '<button type="button" class="cond-bt" onclick="condAgregarServicio()">➕ Agregar</button>' +
+        '</div>' +
+        (COND.extras.length
+            ? '<div class="cond-rot">Agregados: ' + COND.extras.map(function (n) {
+                  return escHtml(n) + ' <button type="button" class="cond-quitar" ' +
+                      'onclick="condQuitarServicio(&quot;' + escAttr(n) + '&quot;)" ' +
+                      'aria-label="Quitar ' + escAttr(n) + '">✕</button>';
+              }).join(' · ') + '</div>'
+            : '') +
+        '</div>';
+
     return html;
+}
+
+function condAgregarServicio() {
+    const caja = document.getElementById('cond-extra-num');
+    if (!caja) return;
+    const num = String(caja.value || '').replace(/\D/g, '');
+    if (!num) return;
+
+    if (COND.corridas.some(c => c.numero === num)) {
+        pautaToast('El servicio ' + num + ' ya está en la lista.');
+        caja.value = '';
+        return;
+    }
+    const c = condCorridaDeNumero(num);
+    if (!c) { pautaToast('No hay itinerario guardado para el ' + num + '.'); return; }
+
+    if (COND.extras.indexOf(num) < 0) COND.extras.push(num);
+    COND.corridas.push(c);
+    COND.corridas.sort((a, b) => (a.salida === null ? 1e9 : a.salida) - (b.salida === null ? 1e9 : b.salida));
+    condGuardar();
+    caja.value = '';
+    condRenderizar();
+    pautaToast('✅ ' + num + ' agregado (' + c.paradas[0].nombre + ' ' + c.paradas[0].hora + ')');
+}
+
+function condQuitarServicio(num) {
+    COND.extras = COND.extras.filter(x => x !== num);
+    COND.corridas = COND.corridas.filter(c => c.numero !== num);
+    if (COND.iCorrida >= COND.corridas.length) COND.iCorrida = -1;
+    condGuardar();
+    condRenderizar();
 }
 
 function condMarchaHTML() {
@@ -7140,11 +7244,14 @@ function condAutocompletar() {
     const input = document.getElementById('cond-nombre');
     const caja = document.getElementById('cond-sugerencias');
     if (!input || !caja) return;
+
     const opciones = pautaSugerencias(input.value, 8, GRAF_ROSTER);
     if (!opciones.length) { caja.hidden = true; caja.innerHTML = ''; return; }
-    caja.innerHTML = opciones.map(n =>
-        '<button type="button" onclick="condElegirNombre(' +
-        JSON.stringify(n).replace(/"/g, '&quot;') + ')">' + escHtml(n) + '</button>').join('');
+    caja.innerHTML = opciones.map(function (n) {
+        return '<button type="button" class="pauta-sug" role="option" ' +
+            'onclick="condElegirNombre(&quot;' + escAttr(n) + '&quot;)">' +
+            escHtml(pautaApellido(n)) + '<small>' + escHtml(n) + '</small></button>';
+    }).join('');
     caja.hidden = false;
 }
 
@@ -7163,20 +7270,23 @@ function condArrancar(nombre) {
     COND = {
         nombre: nombre, fecha: fecha,
         datos: condCorridasDelTurno(nombre, fecha),
-        corridas: [], marcas: guardado.marcas || {},
+        corridas: [], marcas: guardado.marcas || {}, extras: guardado.extras || [],
         iCorrida: -1, iParada: 0, enMarcha: false,
         movDesde: null, pkParado: null, justificando: null
     };
-    COND.corridas = COND.datos.corridas;
+    COND.corridas = COND.datos.corridas.slice();
+    // Los servicios que se agregaron a mano vuelven solos al día siguiente.
+    COND.extras.forEach(function (n) {
+        if (COND.corridas.some(c => c.numero === n)) return;
+        const c = condCorridaDeNumero(n);
+        if (c) COND.corridas.push(c);
+    });
+    COND.corridas.sort((a, b) => (a.salida === null ? 1e9 : a.salida) - (b.salida === null ? 1e9 : b.salida));
 
     document.getElementById('cond-form').hidden = true;
     const sub = document.getElementById('cond-sub');
     if (sub) sub.textContent = nombre + ' · ' + fechaChile();
 
-    prevIniciarGPS();
-    condPantallaEncendida();
-    if (COND_TICK) clearInterval(COND_TICK);
-    COND_TICK = setInterval(condTick, 1000);
     condRenderizar();
 }
 
@@ -7193,6 +7303,34 @@ function condPantallaLibre() {
     if (COND_WAKE) { try { COND_WAKE.release(); } catch (e) {} COND_WAKE = null; }
 }
 
+// El aviso de ubicación se pide al abrir el modo, no al elegir el servicio:
+// así el maquinista resuelve el permiso antes de arrancar.
+function condEstadoGPS() {
+    if (PREV_GPS.error) return { mal: true, txt: '📡 ' + PREV_GPS.error };
+    if (PREV_GPS.pk === null) return { mal: true, txt: '📡 Buscando ubicación…' };
+    const viejo = (Date.now() - PREV_GPS.ts) / 1000;
+    if (viejo > 40) return { mal: true, txt: '📡 Sin señal hace ' + Math.round(viejo) + ' s' };
+    return { mal: false, txt: '📡 ' + PREV_GPS.linea + ' · PK ' + PREV_GPS.pk.toFixed(2) +
+             (PREV_GPS.precision ? ' · ±' + Math.round(PREV_GPS.precision) + ' m' : '') };
+}
+
+function condGpsHTML() {
+    const e = condEstadoGPS();
+    return '<div class="cond-gps' + (e.mal ? ' mal' : '') + '"><span>' + escHtml(e.txt) + '</span>' +
+        (e.mal ? '<button type="button" onclick="condPedirGPS()">Activar ubicación</button>' : '') +
+        '</div>';
+}
+
+function condPedirGPS() {
+    PREV_GPS.error = '';
+    if (PREV_GPS.watchId !== null) {
+        try { navigator.geolocation.clearWatch(PREV_GPS.watchId); } catch (e) {}
+        PREV_GPS.watchId = null;
+    }
+    prevIniciarGPS();
+    condRenderizar();
+}
+
 function abrirConduccion() {
     const overlay = document.getElementById('cond-overlay');
     const input = document.getElementById('cond-nombre');
@@ -7206,6 +7344,10 @@ function abrirConduccion() {
     overlay.classList.add('abierto');
     document.body.classList.add('plan-abierto');
     ventanaAbierta('cond', cerrarConduccion);
+    prevIniciarGPS();
+    condPantallaEncendida();
+    if (COND_TICK) clearInterval(COND_TICK);
+    COND_TICK = setInterval(function () { COND ? condTick() : condRenderizar(); }, 1000);
     if (COND) condRenderizar();
 }
 
