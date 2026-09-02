@@ -355,6 +355,7 @@
 
         /* ===== MI GRÁFICO ===== */
         .graf-btn { background-color: #0f766e; color: #fff; }
+        .cond-btn { background-color: #1d2b45; color: #fff; }
         .graf-form { grid-template-columns: 1fr; }
         .graf-form .plan-fila { grid-template-columns: minmax(0,1fr) auto; }
         .graf-auto { position: relative; }
@@ -491,6 +492,123 @@
         .ali-cambio { margin-top: 9px; padding: 8px 11px; border-radius: 9px; background: #e7f0ff; border: 1px solid #adc8f0; color: #14459c; font-size: 0.8rem; font-weight: 750; line-height: 1.45; }
         .ali-igual { width: 100%; margin-top: 4px; min-height: 44px; padding: 0 12px; border: 2px solid #9ec8b4; border-radius: 9px; background: #eef8f3; color: #0a5c42; font: inherit; font-weight: 850; font-size: 0.85rem; cursor: pointer; }
         .ali-igual:active { background: #ddf0e7; }
+        /* ---- modo conducción: pantalla de cabina, legible de un vistazo ---- */
+        .cond-panel { background: #0d1526; color: #eef3fb; max-width: 760px; }
+        .cond-head { background: #0a1120; border-bottom: 1px solid #22304c; }
+        .cond-head h3, .cond-head small { color: #eef3fb; }
+        .cond-head .plan-cerrar { color: #eef3fb; }
+        .cond-cuerpo { padding: 14px; overflow-y: auto; flex: 1; }
+
+        .cond-form[hidden] { display: none; }
+        .cond-form { display: grid; gap: 10px; margin: 0 14px 4px; }
+        .cond-form label { font-size: 0.74rem; font-weight: 800; letter-spacing: 0.04em;
+            text-transform: uppercase; color: #9fb2ce; }
+        .cond-form input { width: 100%; min-height: 50px; padding: 0 14px; border-radius: 10px;
+            border: 2px solid #2b3a58; background: #16203a; color: #eef3fb;
+            font: inherit; font-size: 1.05rem; font-weight: 800; }
+        .cond-sug { position: relative; }
+        .cond-sug .pauta-sugerencias { background: #16203a; border-color: #2b3a58; }
+        .cond-sug .pauta-sugerencias button { color: #eef3fb; }
+        .cond-sug .pauta-sugerencias button:hover { background: #22304c; }
+
+        .cond-vacio { padding: 26px 16px; text-align: center; color: #9fb2ce;
+            border: 1px dashed #2b3a58; border-radius: 12px; font-weight: 700; }
+
+        .cond-corrida { width: 100%; display: grid; grid-template-columns: auto 1fr auto; gap: 12px;
+            align-items: center; margin-bottom: 9px; padding: 13px; border-radius: 12px;
+            border: 1px solid #2b3a58; background: #16203a; color: #eef3fb;
+            font: inherit; text-align: left; cursor: pointer; }
+        .cond-corrida:hover { border-color: #4c9ef5; }
+        .cond-corrida.hecha { opacity: 0.55; }
+        .cond-corrida-num { min-width: 62px; padding: 7px 9px; border-radius: 9px; background: #23406e;
+            color: #cfe3ff; font-weight: 900; font-size: 1rem; text-align: center;
+            font-variant-numeric: tabular-nums; }
+        .cond-corrida-ruta { font-weight: 850; font-size: 0.95rem; line-height: 1.25; }
+        .cond-corrida-ruta small { display: block; color: #9fb2ce; font-weight: 700; font-size: 0.78rem; }
+        .cond-corrida-hora { font-weight: 900; font-size: 1.05rem; font-variant-numeric: tabular-nums;
+            color: #8fd3b0; }
+
+        .cond-marcha { display: grid; gap: 12px; }
+        .cond-aviso { padding: 12px 14px; border-radius: 12px; font-weight: 850; line-height: 1.4;
+            background: #3a1720; border: 1px solid #7b2231; color: #ffd9de; }
+        .cond-aviso.ok { background: #12301f; border-color: #1f5c39; color: #b9efd0; }
+        .cond-aviso.info { background: #12253f; border-color: #23406e; color: #cfe3ff; }
+        .cond-aviso strong { color: #fff; }
+
+        .cond-panel-vel { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center;
+            padding: 16px; border-radius: 14px; background: #16203a; border: 1px solid #2b3a58; }
+        .cond-vel { font-size: 3.4rem; font-weight: 900; line-height: 1; font-variant-numeric: tabular-nums; }
+        .cond-vel small { display: block; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.1em;
+            color: #9fb2ce; margin-top: 4px; }
+        .cond-estado { text-align: right; font-weight: 850; font-size: 0.9rem; color: #9fb2ce; }
+        .cond-estado b { display: block; color: #eef3fb; font-size: 1.1rem; }
+
+        .cond-tramo { display: grid; gap: 10px; padding: 16px; border-radius: 14px;
+            background: #16203a; border: 1px solid #2b3a58; }
+        .cond-fila { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: baseline; }
+        .cond-rot { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.08em;
+            text-transform: uppercase; color: #9fb2ce; }
+        .cond-est { font-size: 1.5rem; font-weight: 900; line-height: 1.15; }
+        .cond-est.chica { font-size: 1.1rem; color: #cfe3ff; }
+        .cond-hora { font-size: 1.6rem; font-weight: 900; font-variant-numeric: tabular-nums; }
+        .cond-hora.chica { font-size: 1.15rem; }
+        .cond-hora.tarde { color: #ff9aa8; }
+        .cond-hora.bien { color: #8fd3b0; }
+        .cond-sep { height: 1px; background: #2b3a58; }
+
+        .cond-prev { padding: 14px; border-radius: 14px; border: 2px solid #b4232f;
+            background: #2a1119; display: grid; gap: 5px; }
+        .cond-prev.n2 { border-color: #d08a1d; background: #2a2011; }
+        .cond-prev.n3, .cond-prev.n4 { border-color: #23406e; background: #12253f; }
+        .cond-prev-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .cond-prev-vel { padding: 5px 11px; border-radius: 8px; background: #b4232f; color: #fff;
+            font-weight: 900; font-size: 1.05rem; }
+        .cond-prev.n2 .cond-prev-vel { background: #d08a1d; color: #2a1a00; }
+        .cond-prev.n3 .cond-prev-vel, .cond-prev.n4 .cond-prev-vel { background: #23406e; color: #cfe3ff; }
+        .cond-prev-dist { font-weight: 900; font-size: 1.15rem; }
+        .cond-prev-txt { color: #cfd8e8; font-size: 0.84rem; font-weight: 700; line-height: 1.35; }
+
+        .cond-acciones { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 9px; }
+        .cond-bt { min-height: 54px; padding: 0 14px; border-radius: 11px; border: 2px solid #2b3a58;
+            background: #16203a; color: #eef3fb; font: inherit; font-weight: 850; font-size: 0.92rem;
+            cursor: pointer; }
+        .cond-bt:hover { border-color: #4c9ef5; }
+        .cond-bt.principal { background: #1c5ea8; border-color: #1c5ea8; }
+        .cond-bt.alerta { background: #8d1d26; border-color: #8d1d26; }
+        .cond-bt.voz { background: #14603f; border-color: #14603f; }
+        .cond-bt.voz.grabando { background: #b4232f; border-color: #b4232f; animation: cond-late 1.1s infinite; }
+        @keyframes cond-late { 50% { opacity: 0.55; } }
+
+        .cond-just { display: grid; gap: 9px; padding: 14px; border-radius: 14px;
+            background: #2a1119; border: 2px solid #7b2231; }
+        .cond-just textarea { width: 100%; min-height: 74px; padding: 10px 12px; border-radius: 10px;
+            border: 2px solid #7b2231; background: #16203a; color: #eef3fb; font: inherit;
+            font-size: 0.95rem; font-weight: 700; resize: vertical; }
+        .cond-motivos { display: flex; flex-wrap: wrap; gap: 7px; }
+        .cond-motivo { padding: 9px 12px; border-radius: 999px; border: 1px solid #2b3a58;
+            background: #16203a; color: #cfe3ff; font: inherit; font-weight: 800; font-size: 0.8rem;
+            cursor: pointer; }
+        .cond-motivo:hover { border-color: #4c9ef5; }
+
+        .cond-linea { display: grid; grid-template-columns: auto 1fr auto auto; gap: 10px;
+            align-items: center; padding: 9px 11px; border-radius: 10px; background: #16203a;
+            border: 1px solid #2b3a58; margin-bottom: 6px; font-size: 0.88rem; }
+        .cond-linea.pendiente { opacity: 0.5; }
+        .cond-linea.actual { border-color: #4c9ef5; }
+        .cond-punto { width: 11px; height: 11px; border-radius: 50%; background: #2b3a58; }
+        .cond-linea.hecha .cond-punto { background: #8fd3b0; }
+        .cond-linea.actual .cond-punto { background: #4c9ef5; }
+        .cond-linea b { font-weight: 850; }
+        .cond-dif { font-weight: 900; font-variant-numeric: tabular-nums; }
+        .cond-dif.tarde { color: #ff9aa8; }
+        .cond-dif.bien { color: #8fd3b0; }
+
+        @media (max-width: 720px) {
+            .cond-vel { font-size: 2.9rem; }
+            .cond-est { font-size: 1.3rem; }
+            .cond-acciones { grid-template-columns: 1fr; }
+        }
+
         .ali-editor-acciones { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, auto); gap: 8px; margin-top: 12px; }
         .ali-guardar { min-height: 44px; padding: 0 14px; border: 2px solid #0a7d5a; border-radius: 8px; background: #0a7d5a; color: #fff; font: inherit; font-weight: 900; font-size: 0.85rem; cursor: pointer; }
         .ali-guardar.guardado { background: #eaf7f1; color: #075437; }
@@ -533,6 +651,7 @@
         <button class="btn prev-btn" onclick="abrirPrevenciones()">⚠️ Prevenciones</button>
         <button class="btn graf-btn" onclick="abrirGrafico()">📅 Mi Gráfico</button>
         <button class="btn ali-btn" onclick="abrirAlistacion()">🕒 Mi Alistación</button>
+        <button class="btn cond-btn" onclick="abrirConduccion()">🚦 Modo Conducción</button>
         <button class="btn secundario delete-all-btn" onclick="borrarTodo()">🗑️ Borrar Todo</button>
         <button class="btn secundario pdf-btn" onclick="descargarBitacoraPDF()">📄 Descargar Bitácora</button>
 
@@ -720,6 +839,32 @@
         </div>
 
         <div class="plan-cuerpo" id="graf-resultados" aria-live="polite"></div>
+    </div>
+</div>
+
+<!-- ===== Modo Conducción: el turno arriba de la máquina ===== -->
+<div id="cond-overlay" class="plan-overlay cond-overlay" role="dialog" aria-modal="true"
+     aria-labelledby="cond-titulo" hidden>
+    <div class="plan-panel cond-panel" role="document">
+        <div class="plan-head cond-head">
+            <div>
+                <h3 id="cond-titulo">🚦 Modo Conducción</h3>
+                <small id="cond-sub">Marca solo las salidas y llegadas</small>
+            </div>
+            <button type="button" class="plan-cerrar" onclick="cerrarConduccion()"
+                    aria-label="Salir del modo conducción">✕</button>
+        </div>
+        <div class="cond-form" id="cond-form">
+            <div class="cond-sug">
+                <label for="cond-nombre">Escribe tu apellido</label>
+                <input type="text" id="cond-nombre" autocomplete="off" autocapitalize="characters"
+                       spellcheck="false" placeholder="Escribe tu apellido"
+                       oninput="condAutocompletar()" onfocus="condAutocompletar()">
+                <div id="cond-sugerencias" class="pauta-sugerencias" role="listbox" hidden></div>
+            </div>
+        </div>
+
+        <div class="cond-cuerpo" id="cond-cuerpo" aria-live="polite"></div>
     </div>
 </div>
 
@@ -3951,7 +4096,8 @@ const PREV_RANGO = { L1: [40, 86], L2: [0, 28.5] };
 let PREV_BOLETINES = [];
 let PREV_GPS = {
     watchId: null, lat: null, lon: null, precision: null,
-    linea: '', pk: null, distVia: null, sentido: 0, ts: 0, error: ''
+    linea: '', pk: null, distVia: null, sentido: 0, ts: 0, error: '',
+    velocidad: null                 // km/h, cuando el equipo la entrega
 };
 let PREV_HISTORIA = [];        // últimos PK, para deducir el sentido
 let PREV_MANUAL = { activo: false, linea: 'L2', pk: 0, sentido: 1 };
@@ -4355,6 +4501,8 @@ function prevIniciarGPS() {
             const u = prevUbicar(lat, lon);
             PREV_GPS.lat = lat; PREV_GPS.lon = lon;
             PREV_GPS.precision = pos.coords.accuracy;
+            PREV_GPS.velocidad = (pos.coords.speed !== null && isFinite(pos.coords.speed) &&
+                                  pos.coords.speed >= 0) ? pos.coords.speed * 3.6 : null;
             PREV_GPS.ts = Date.now();
             PREV_GPS.error = '';
             if (u) {
@@ -6408,6 +6556,676 @@ document.addEventListener('keydown', function (e) {
 document.getElementById('ali-overlay').addEventListener('click', function (e) {
     if (e.target === this) cerrarAlistacion();
 });
+
+/* ======================================================== MODO CONDUCCIÓN ==
+   El turno arriba de la máquina. El GPS marca solo la salida y la llegada de
+   cada estación; el maquinista no toca la pantalla salvo para justificar un
+   atraso, y aun eso se puede dictar.                                        */
+
+const COND_MOV_KMH   = 5;      // desde aquí se considera que el tren anda
+const COND_MOV_SEG   = 4;      // segundos seguidos para darlo por cierto
+const COND_MOV_M     = 60;     // o esta distancia desde el punto de detención
+const COND_LLEGADA_M = 300;    // radio para dar por llegada una estación
+const COND_GRACIA_S  = 59;     // el minuto de cortesía de la salida
+const COND_LLAVE     = 'syncrored_conduccion';
+
+const COND_MOTIVOS = [
+    'Cruce ocupado', 'Espera de tren', 'Señal en rojo',
+    'Pasajeros / puerta', 'Falla del material', 'Orden del controlador',
+    'Prevención de vía', 'Llegó atrasado el anterior'
+];
+
+let COND        = null;   // turno en curso
+let COND_TICK   = null;   // reloj de un segundo
+let COND_WAKE   = null;   // bloqueo de pantalla
+let COND_VOZ    = null;   // reconocimiento de voz en curso
+let COND_HIST   = [];     // últimos PK, para sacar la velocidad si el GPS no la da
+let COND_INDICE = null;   // estaciones con su PK, calculado una sola vez
+
+/* ------------------------------------------------------------- estaciones -- */
+
+// El itinerario escribe "Talcamávida" y el trazado "Talcamavida"; unas pocas
+// además vienen abreviadas. Esta clave las hace coincidir.
+const COND_ALIAS = {
+    VCHANCO: 'VALLECHANCO', LARENAS: 'LORENZOARENAS', PMEDINA: 'PEDROMEDINA',
+    HHIGUERAS: 'HOSPITALLASHIGUERAS', UTFSM: 'UTFSM'
+};
+
+function condClave(txt) {
+    const k = pautaNorm(txt).replace(/[^A-Z0-9]/g, '');
+    return COND_ALIAS[k] || k;
+}
+
+function condIndiceEstaciones() {
+    if (COND_INDICE) return COND_INDICE;
+    COND_INDICE = {};
+    ['L1', 'L2'].forEach(function (linea) {
+        (PREV_ESTACIONES[linea] || []).forEach(function (e) {
+            const pr = prevProyectar(linea, e[1], e[2]);
+            const clave = condClave(e[0]);
+            if (!COND_INDICE[clave]) COND_INDICE[clave] = [];
+            COND_INDICE[clave].push({ linea: linea, pk: pr ? pr.pk : null });
+        });
+    });
+    return COND_INDICE;
+}
+
+function condLineaDeRuta(ruta) { return /^l2_/.test(String(ruta)) ? 'L2' : 'L1'; }
+
+/* ----------------------------------------------------------------- hora ---- */
+
+function condAhora() {
+    const p = Object.fromEntries(
+        formatoHoraChile.formatToParts(new Date())
+            .filter(x => x.type !== 'literal').map(x => [x.type, x.value])
+    );
+    const h = parseInt(p.hour, 10), m = parseInt(p.minute, 10), s = parseInt(p.second, 10);
+    return { min: h * 60 + m, seg: h * 3600 + m * 60 + s, texto: p.hour + ':' + p.minute };
+}
+
+function condHM(min) {
+    if (min === null || min === undefined) return '--:--';
+    const m = ((min % 1440) + 1440) % 1440;
+    return String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0');
+}
+
+// Minutos de atraso contra el horario, con el minuto de cortesía ya descontado.
+function condAtraso(programadoMin, ahora) {
+    if (programadoMin === null || programadoMin === undefined) return 0;
+    let limite = programadoMin * 60 + COND_GRACIA_S;
+    let seg = ahora.seg;
+    if (seg - limite < -43200) seg += 86400;      // cruzó la medianoche
+    const dif = seg - limite;
+    return dif <= 0 ? 0 : Math.round(dif / 60) || 1;
+}
+
+/* -------------------------------------------------- los trenes del turno --- */
+
+function condCorridasDelTurno(nombre, fecha) {
+    const pauta = (typeof PAUTAS !== 'undefined' ? PAUTAS : []).find(p => p.fecha === fecha);
+    if (!pauta) return { error: 'Todavía no está cargada la pauta de hoy.', corridas: [] };
+
+    const entradas = pautaTurnosDe(pauta, nombre);
+    if (!entradas.length) {
+        const sit = pautaSituacionDe(pauta, nombre);
+        return { error: sit ? 'Hoy figuras en ' + sit + '.' : 'Hoy no apareces en la pauta.',
+                 corridas: [] };
+    }
+
+    const base = baseDatosTrenes[pauta.dia] || baseDatosTrenes.LV || {};
+    const idx = condIndiceEstaciones();
+    const corridas = [], sinItinerario = [], turnos = [];
+
+    entradas.forEach(function (e) {
+        if (e.turno.turno && turnos.indexOf(e.turno.turno) < 0) turnos.push(e.turno.turno);
+        (e.turno.trenes || []).forEach(function (num) {
+            if (corridas.some(c => c.numero === num)) return;
+            const info = base[num];
+            if (!info || !rutas[info.ruta]) {
+                if (sinItinerario.indexOf(num) < 0) sinItinerario.push(num);
+                return;
+            }
+            const linea = condLineaDeRuta(info.ruta);
+            const paradas = [];
+            rutas[info.ruta].forEach(function (nom, i) {
+                const h = info.horarios[i];
+                if (!h) return;                       // el tren no detiene ahí
+                const ubi = (idx[condClave(nom)] || []).find(x => x.linea === linea) ||
+                            (idx[condClave(nom)] || [])[0] || null;
+                paradas.push({
+                    nombre: nom, hora: String(h).slice(0, 5),
+                    min: aliHoraServicio(h), pk: ubi ? ubi.pk : null
+                });
+            });
+            if (paradas.length < 2) return;
+            corridas.push({
+                numero: num, ruta: info.ruta, linea: linea, paradas: paradas,
+                salida: paradas[0].min, llegada: paradas[paradas.length - 1].min
+            });
+        });
+    });
+
+    corridas.sort((a, b) => (a.salida === null ? 1e9 : a.salida) - (b.salida === null ? 1e9 : b.salida));
+    return { corridas: corridas, sinItinerario: sinItinerario, turnos: turnos, rol: entradas[0].rol };
+}
+
+/* ------------------------------------------------------------- registro ---- */
+
+function condLeer() {
+    try { return JSON.parse(localStorage.getItem(COND_LLAVE) || '{}'); } catch (e) { return {}; }
+}
+
+function condGuardar() {
+    if (!COND) return;
+    const todo = condLeer();
+    todo[COND.nombre + '|' + COND.fecha] = { marcas: COND.marcas, cerrado: COND.cerrado || {} };
+    try { localStorage.setItem(COND_LLAVE, JSON.stringify(todo)); } catch (e) {}
+}
+
+function condMarcas(numero) {
+    if (!COND.marcas[numero]) COND.marcas[numero] = {};
+    return COND.marcas[numero];
+}
+
+function condMarca(numero, i) {
+    const m = condMarcas(numero);
+    if (!m[i]) m[i] = {};
+    return m[i];
+}
+
+/* ------------------------------------------------------------ velocidad ---- */
+
+function condVelocidad() {
+    if (PREV_GPS.velocidad !== null && PREV_GPS.velocidad !== undefined) return PREV_GPS.velocidad;
+    if (COND_HIST.length < 2) return null;
+    const a = COND_HIST[0], b = COND_HIST[COND_HIST.length - 1];
+    const horas = (b.ts - a.ts) / 3600000;
+    if (horas <= 0) return null;
+    return Math.abs(b.pk - a.pk) / horas;
+}
+
+function condAnotarPK(pk) {
+    if (pk === null || pk === undefined) return;
+    const ahora = Date.now();
+    COND_HIST.push({ ts: ahora, pk: pk });
+    while (COND_HIST.length > 2 && ahora - COND_HIST[0].ts > 9000) COND_HIST.shift();
+}
+
+// Andar de verdad: o mantiene velocidad unos segundos, o ya se despegó del andén.
+function condEnMovimiento(v, pk) {
+    if (COND.pkParado !== null && pk !== null &&
+        Math.abs(pk - COND.pkParado) * 1000 >= COND_MOV_M) return true;
+    if (v === null || v < COND_MOV_KMH) { COND.movDesde = null; return false; }
+    if (COND.movDesde === null) COND.movDesde = Date.now();
+    return (Date.now() - COND.movDesde) / 1000 >= COND_MOV_SEG;
+}
+
+/* -------------------------------------------------- la máquina de estados -- */
+
+function condCorridaActual() {
+    return COND && COND.iCorrida >= 0 ? COND.corridas[COND.iCorrida] : null;
+}
+
+function condTick() {
+    if (!COND || COND.iCorrida < 0) return;
+    const c = condCorridaActual();
+    const pos = prevPosicionActual();
+    const pk = pos ? pos.pk : null;
+    condAnotarPK(pk);
+    const v = condVelocidad();
+    const ahora = condAhora();
+
+    if (COND.pkParado === null && !COND.enMarcha && pk !== null) COND.pkParado = pk;
+
+    if (!COND.enMarcha) {
+        // Parado: se espera la salida de la parada actual.
+        const p = c.paradas[COND.iParada];
+        if (p && condEnMovimiento(v, pk)) {
+            const m = condMarca(c.numero, COND.iParada);
+            m.salida = ahora.texto;
+            m.atraso = condAtraso(p.min, ahora);
+            COND.enMarcha = true;
+            COND.movDesde = null;
+            COND.pkParado = null;
+            condGuardar();
+            if (m.atraso > 0 && COND.iParada === 0 && !m.motivo) {
+                COND.justificando = { i: COND.iParada, tipo: 'salida' };
+            }
+            condVibrar();
+        }
+    } else {
+        // En marcha: se espera llegar a la siguiente.
+        const sig = c.paradas[COND.iParada + 1];
+        if (sig && pk !== null && sig.pk !== null) {
+            const metros = Math.abs(pk - sig.pk) * 1000;
+            const frenado = v === null || v < COND_MOV_KMH;
+            if (metros <= COND_LLEGADA_M && frenado) condLlegada(ahora);
+        }
+    }
+
+    condRenderizar();
+}
+
+function condLlegada(ahora) {
+    const c = condCorridaActual();
+    const i = COND.iParada + 1;
+    const sig = c.paradas[i];
+    if (!sig) return;
+
+    const m = condMarca(c.numero, i);
+    m.llegada = (ahora || condAhora()).texto;
+    m.atrasoLlegada = condAtraso(sig.min, ahora || condAhora());
+    COND.iParada = i;
+    COND.enMarcha = false;
+    COND.movDesde = null;
+    COND.pkParado = prevPosicionActual() ? prevPosicionActual().pk : null;
+    condGuardar();
+    condVibrar();
+
+    // Al término del recorrido el atraso también se justifica.
+    if (i === c.paradas.length - 1 && m.atrasoLlegada > 0 && !m.motivo) {
+        COND.justificando = { i: i, tipo: 'llegada' };
+    }
+}
+
+function condVibrar() {
+    try { if (navigator.vibrate) navigator.vibrate([90, 60, 90]); } catch (e) {}
+}
+
+/* ------------------------------------------------- marcar a mano si falla --- */
+
+function condSaliManual() {
+    const c = condCorridaActual();
+    if (!c || COND.enMarcha) return;
+    const ahora = condAhora();
+    const p = c.paradas[COND.iParada];
+    const m = condMarca(c.numero, COND.iParada);
+    m.salida = ahora.texto;
+    m.atraso = condAtraso(p.min, ahora);
+    m.manual = true;
+    COND.enMarcha = true;
+    COND.pkParado = null;
+    condGuardar();
+    if (m.atraso > 0 && COND.iParada === 0 && !m.motivo) {
+        COND.justificando = { i: COND.iParada, tipo: 'salida' };
+    }
+    condRenderizar();
+}
+
+function condLlegueManual() {
+    if (!COND || !COND.enMarcha) return;
+    condLlegada(condAhora());
+    const c = condCorridaActual();
+    condMarca(c.numero, COND.iParada).manual = true;
+    condGuardar();
+    condRenderizar();
+}
+
+/* --------------------------------------------------------- justificación --- */
+
+function condMotivoRapido(texto) {
+    if (!COND || !COND.justificando) return;
+    const c = condCorridaActual();
+    const m = condMarca(c.numero, COND.justificando.i);
+    m.motivo = m.motivo ? (m.motivo + ' · ' + texto) : texto;
+    condGuardar();
+    condRenderizar();
+}
+
+function condMotivoTexto(texto) {
+    if (!COND || !COND.justificando) return;
+    const c = condCorridaActual();
+    condMarca(c.numero, COND.justificando.i).motivo = texto;
+    condGuardar();
+}
+
+function condCerrarJustificacion() {
+    if (!COND) return;
+    if (COND_VOZ) { try { COND_VOZ.stop(); } catch (e) {} COND_VOZ = null; }
+    COND.justificando = null;
+    condRenderizar();
+}
+
+// Dictar el motivo. Si el equipo no transcribe, queda escribirlo o tocar un
+// motivo de la lista: nunca se deja al maquinista sin salida.
+function condVozToggle() {
+    const R = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!R) {
+        pautaToast('Este teléfono no transcribe voz: toca un motivo o escríbelo.');
+        return;
+    }
+    if (COND_VOZ) { try { COND_VOZ.stop(); } catch (e) {} COND_VOZ = null; condRenderizar(); return; }
+
+    const r = new R();
+    r.lang = 'es-CL';
+    r.interimResults = true;
+    r.continuous = false;
+    r.onresult = function (ev) {
+        let txt = '';
+        for (let i = 0; i < ev.results.length; i++) txt += ev.results[i][0].transcript;
+        txt = txt.trim();
+        if (!txt) return;
+        condMotivoTexto(txt);
+        const caja = document.getElementById('cond-motivo');
+        if (caja) caja.value = txt;
+    };
+    r.onerror = function (ev) {
+        COND_VOZ = null;
+        pautaToast(ev.error === 'not-allowed'
+            ? 'Falta el permiso del micrófono.'
+            : 'No se entendió; escríbelo o toca un motivo.');
+        condRenderizar();
+    };
+    r.onend = function () { COND_VOZ = null; condRenderizar(); };
+
+    COND_VOZ = r;
+    try { r.start(); } catch (e) { COND_VOZ = null; }
+    condRenderizar();
+}
+
+/* -------------------------------------------------------------- pantalla --- */
+
+function condRenderizar() {
+    const caja = document.getElementById('cond-cuerpo');
+    if (!caja || !COND) return;
+    // Si se está escribiendo el motivo, no se redibuja encima.
+    const foco = document.activeElement;
+    if (foco && foco.id === 'cond-motivo') { condRefrescarVivo(); return; }
+
+    if (COND.iCorrida < 0) caja.innerHTML = condListaHTML();
+    else caja.innerHTML = condMarchaHTML();
+}
+
+// Solo los números que cambian cada segundo, para no pisar lo que se escribe.
+function condRefrescarVivo() {
+    const vel = document.getElementById('cond-vel-num');
+    if (vel) {
+        const v = condVelocidad();
+        vel.textContent = v === null ? '--' : String(Math.round(v));
+    }
+}
+
+function condListaHTML() {
+    const r = COND.datos;
+    if (r.error) return '<div class="cond-vacio">' + escHtml(r.error) + '</div>';
+    if (!r.corridas.length) {
+        return '<div class="cond-vacio">Tu turno no trae servicios con itinerario cargado.</div>';
+    }
+
+    let html = '<div class="cond-aviso info"><strong>' + escHtml(COND.nombre) + '</strong> · ' +
+        (r.turnos.length ? 'turno ' + escHtml(r.turnos.join(' + ')) + ' · ' : '') +
+        escHtml(r.rol || '') + ' · ' + r.corridas.length +
+        (r.corridas.length === 1 ? ' servicio' : ' servicios') + '</div>';
+
+    if (r.sinItinerario.length) {
+        html += '<div class="cond-aviso">Sin itinerario guardado: ' +
+            escHtml(r.sinItinerario.join(', ')) + '. Esos no se pueden seguir.</div>';
+    }
+
+    html += r.corridas.map(function (c, i) {
+        const m = COND.marcas[c.numero] || {};
+        const hecha = m[c.paradas.length - 1] && m[c.paradas.length - 1].llegada;
+        return '<button type="button" class="cond-corrida' + (hecha ? ' hecha' : '') +
+            '" onclick="condElegirCorrida(' + i + ')">' +
+            '<span class="cond-corrida-num">' + escHtml(c.numero) + '</span>' +
+            '<span class="cond-corrida-ruta">' + escHtml(c.paradas[0].nombre) + ' → ' +
+            escHtml(c.paradas[c.paradas.length - 1].nombre) +
+            '<small>' + c.paradas.length + ' paradas · ' + escHtml(c.linea) + '</small></span>' +
+            '<span class="cond-corrida-hora">' + escHtml(c.paradas[0].hora) +
+            (hecha ? '<br><small>✔ hecho</small>' : '') + '</span></button>';
+    }).join('');
+
+    return html;
+}
+
+function condMarchaHTML() {
+    const c = condCorridaActual();
+    const ahora = condAhora();
+    const v = condVelocidad();
+    const pos = prevPosicionActual();
+    const p = c.paradas[COND.iParada];
+    const sig = c.paradas[COND.iParada + 1];
+    const m = condMarca(c.numero, COND.iParada);
+
+    let html = '<div class="cond-marcha">';
+
+    // ---- prevención más grave dentro de 500 m
+    const bol = prevBoletinActivo();
+    if (bol && pos) {
+        const pv = prevMasImportanteCerca(pos, prevAhoraChile());
+        if (pv) {
+            html += '<div class="cond-prev n' + pv.nivel + '">' +
+                '<div class="cond-prev-top">' +
+                '<span class="cond-prev-vel">' + escHtml(prevRestriccionCorta(pv)) + '</span>' +
+                '<span class="cond-prev-dist">' + escHtml(prevMetrosTxt(pv.metros, pv.estado)) + '</span>' +
+                '<span class="cond-rot">' + escHtml(pv.viaTexto) + ' · PK ' + escHtml(pv.kmTexto) + '</span>' +
+                '</div>' +
+                '<div class="cond-prev-txt">' + escHtml((pv.descripcion || '').slice(0, 120)) + '</div>' +
+                '</div>';
+        }
+    }
+
+    // ---- velocidad y estado
+    const estado = COND.enMarcha ? 'EN MARCHA' : 'DETENIDO';
+    html += '<div class="cond-panel-vel">' +
+        '<div class="cond-vel"><span id="cond-vel-num">' +
+        (v === null ? '--' : Math.round(v)) + '</span><small>KM/H</small></div>' +
+        '<div class="cond-estado"><b>' + escHtml(c.numero) + '</b>' + estado +
+        '<br>' + escHtml(ahora.texto) + '</div></div>';
+
+    // ---- de dónde salgo / a dónde voy
+    const terminal = COND.iParada === c.paradas.length - 1;
+
+    html += '<div class="cond-tramo">';
+    if (terminal) {
+        // Fin del servicio: lo que importa es a qué hora se llegó.
+        const atr = m.atrasoLlegada || 0;
+        html += '<div class="cond-fila"><div><div class="cond-rot">Llegó a</div>' +
+            '<div class="cond-est">' + escHtml(p.nombre) + '</div></div>' +
+            '<div style="text-align:right"><div class="cond-rot">' + escHtml(p.hora) + ' prog.</div>' +
+            '<div class="cond-hora ' + (atr > 0 ? 'tarde' : 'bien') + '">' +
+            escHtml(m.llegada || '--:--') + (atr > 0 ? ' (+' + atr + ')' : '') + '</div></div></div>';
+        html += '<div class="cond-aviso ' + (atr > 0 ? '' : 'ok') + '">' +
+            (atr > 0 ? 'Servicio terminado con <strong>' + atr + ' min</strong> de atraso.'
+                     : 'Servicio terminado a la hora.') + '</div>';
+    } else if (!COND.enMarcha) {
+        const atrasoVivo = m.salida ? m.atraso : condAtraso(p.min, ahora);
+        const clase = atrasoVivo > 0 ? 'tarde' : 'bien';
+        html += '<div class="cond-fila"><div><div class="cond-rot">Detenido en</div>' +
+            '<div class="cond-est">' + escHtml(p.nombre) + '</div></div>' +
+            '<div style="text-align:right"><div class="cond-rot">Sale</div>' +
+            '<div class="cond-hora ' + clase + '">' + escHtml(p.hora) + '</div></div></div>';
+        html += '<div class="cond-aviso ' + (atrasoVivo > 0 ? '' : 'ok') + '">' +
+            (atrasoVivo > 0
+                ? 'Atraso de <strong>' + atrasoVivo + ' min</strong>. Se marca sola en cuanto el tren ande.'
+                : 'A la hora. La salida se marca sola.') + '</div>';
+    } else {
+        html += '<div class="cond-fila"><div><div class="cond-rot">Salió de</div>' +
+            '<div class="cond-est chica">' + escHtml(p.nombre) + '</div></div>' +
+            '<div style="text-align:right"><div class="cond-rot">' + escHtml(p.hora) + ' prog.</div>' +
+            '<div class="cond-hora chica ' + (m.atraso > 0 ? 'tarde' : 'bien') + '">' +
+            escHtml(m.salida || '--:--') + (m.atraso > 0 ? ' (+' + m.atraso + ')' : '') +
+            '</div></div></div>';
+        html += '<div class="cond-sep"></div>';
+        if (sig) {
+            const dif = condAtraso(sig.min, ahora);
+            html += '<div class="cond-fila"><div><div class="cond-rot">Siguiente</div>' +
+                '<div class="cond-est">' + escHtml(sig.nombre) + '</div></div>' +
+                '<div style="text-align:right"><div class="cond-rot">Horario</div>' +
+                '<div class="cond-hora ' + (dif > 0 ? 'tarde' : 'bien') + '">' + escHtml(sig.hora) +
+                '</div></div></div>';
+            if (pos && sig.pk !== null) {
+                const km = Math.abs(pos.pk - sig.pk);
+                html += '<div class="cond-rot">A ' + (km < 1 ? Math.round(km * 1000) + ' m' : km.toFixed(1) + ' km') +
+                    (dif > 0 ? ' · ' + dif + ' min de atraso' : '') + '</div>';
+            }
+        } else {
+            html += '<div class="cond-rot">Último tramo del servicio.</div>';
+        }
+    }
+    html += '</div>';
+
+    // ---- justificación
+    if (COND.justificando) html += condJustificarHTML();
+
+    // ---- botones
+    html += '<div class="cond-acciones">' +
+        (terminal
+            ? '<button type="button" class="cond-bt principal" onclick="condVolverALista()">✔ Siguiente servicio</button>'
+            : COND.enMarcha
+                ? '<button type="button" class="cond-bt principal" onclick="condLlegueManual()">📍 Ya llegué</button>'
+                : '<button type="button" class="cond-bt principal" onclick="condSaliManual()">▶ Ya salí</button>') +
+        (!COND.justificando && (m.atraso > 0 || m.atrasoLlegada > 0)
+            ? '<button type="button" class="cond-bt" onclick="condAbrirJustificacion()">🎤 Motivo del atraso</button>'
+            : '') +
+        (terminal ? '' : '<button type="button" class="cond-bt" onclick="condVolverALista()">↩ Servicios</button>') +
+        '</div>';
+
+    // ---- el recorrido completo
+    html += '<div>' + c.paradas.map(function (pp, i) {
+        const mm = condMarcas(c.numero)[i] || {};
+        const clase = i < COND.iParada ? 'hecha' : (i === COND.iParada ? 'actual' : 'pendiente');
+        const real = i === 0 ? mm.salida : (mm.llegada || mm.salida);
+        const atr = i === 0 ? mm.atraso : (mm.atrasoLlegada !== undefined ? mm.atrasoLlegada : mm.atraso);
+        return '<div class="cond-linea ' + clase + '"><span class="cond-punto"></span>' +
+            '<b>' + escHtml(pp.nombre) + '</b><span>' + escHtml(pp.hora) + '</span>' +
+            '<span class="cond-dif ' + (atr > 0 ? 'tarde' : 'bien') + '">' +
+            (real ? escHtml(real) + (atr > 0 ? ' +' + atr : '') : '·') + '</span></div>';
+    }).join('') + '</div>';
+
+    html += '</div>';
+    return html;
+}
+
+function condJustificarHTML() {
+    const c = condCorridaActual();
+    const j = COND.justificando;
+    const m = condMarca(c.numero, j.i);
+    const p = c.paradas[j.i];
+    const atraso = j.tipo === 'salida' ? m.atraso : m.atrasoLlegada;
+
+    return '<div class="cond-just">' +
+        '<div><strong>' + (j.tipo === 'salida' ? 'Salida de ' : 'Llegada a ') + escHtml(p.nombre) +
+        '</strong> con <strong>' + (atraso || 0) + ' min</strong> de atraso. ¿Por qué?</div>' +
+        '<div class="cond-motivos">' + COND_MOTIVOS.map(function (x) {
+            return '<button type="button" class="cond-motivo" onclick="condMotivoRapido(' +
+                JSON.stringify(x).replace(/"/g, '&quot;') + ')">' + escHtml(x) + '</button>';
+        }).join('') + '</div>' +
+        '<textarea id="cond-motivo" placeholder="O díctalo con el micrófono, o escríbelo aquí" ' +
+        'oninput="condMotivoTexto(this.value)">' + escHtml(m.motivo || '') + '</textarea>' +
+        '<div class="cond-acciones">' +
+        '<button type="button" class="cond-bt voz' + (COND_VOZ ? ' grabando' : '') + '" ' +
+        'onclick="condVozToggle()">' + (COND_VOZ ? '⏹ Detener' : '🎤 Dictar motivo') + '</button>' +
+        '<button type="button" class="cond-bt principal" onclick="condCerrarJustificacion()">✔ Listo</button>' +
+        '</div></div>';
+}
+
+function condAbrirJustificacion() {
+    const c = condCorridaActual();
+    const m = condMarca(c.numero, COND.iParada);
+    COND.justificando = {
+        i: COND.iParada,
+        tipo: (m.atrasoLlegada !== undefined && COND.iParada > 0) ? 'llegada' : 'salida'
+    };
+    condRenderizar();
+}
+
+/* ---------------------------------------------------------- navegación ----- */
+
+function condElegirCorrida(i) {
+    COND.iCorrida = i;
+    const c = COND.corridas[i];
+    // Se retoma donde iba: la última parada con llegada marcada.
+    const m = COND.marcas[c.numero] || {};
+    let iP = 0;
+    for (let k = c.paradas.length - 1; k >= 0; k--) {
+        if (m[k] && (m[k].llegada || m[k].salida)) { iP = k; break; }
+    }
+    COND.iParada = iP;
+    COND.enMarcha = !!(m[iP] && m[iP].salida && iP < c.paradas.length - 1);
+    COND.movDesde = null;
+    COND.pkParado = null;
+    COND.justificando = null;
+    COND_HIST = [];
+    condRenderizar();
+}
+
+function condVolverALista() {
+    COND.iCorrida = -1;
+    COND.justificando = null;
+    condRenderizar();
+}
+
+function condAutocompletar() {
+    const input = document.getElementById('cond-nombre');
+    const caja = document.getElementById('cond-sugerencias');
+    if (!input || !caja) return;
+    const opciones = pautaSugerencias(input.value, 8, GRAF_ROSTER);
+    if (!opciones.length) { caja.hidden = true; caja.innerHTML = ''; return; }
+    caja.innerHTML = opciones.map(n =>
+        '<button type="button" onclick="condElegirNombre(' +
+        JSON.stringify(n).replace(/"/g, '&quot;') + ')">' + escHtml(n) + '</button>').join('');
+    caja.hidden = false;
+}
+
+function condElegirNombre(nombre) {
+    const input = document.getElementById('cond-nombre');
+    if (input) input.value = nombre;
+    const caja = document.getElementById('cond-sugerencias');
+    if (caja) caja.hidden = true;
+    try { localStorage.setItem(GRAF_LLAVE_NOMBRE, nombre); } catch (e) {}
+    condArrancar(nombre);
+}
+
+function condArrancar(nombre) {
+    const fecha = fechaArchivoChile();
+    const guardado = condLeer()[nombre + '|' + fecha] || {};
+    COND = {
+        nombre: nombre, fecha: fecha,
+        datos: condCorridasDelTurno(nombre, fecha),
+        corridas: [], marcas: guardado.marcas || {},
+        iCorrida: -1, iParada: 0, enMarcha: false,
+        movDesde: null, pkParado: null, justificando: null
+    };
+    COND.corridas = COND.datos.corridas;
+
+    document.getElementById('cond-form').hidden = true;
+    const sub = document.getElementById('cond-sub');
+    if (sub) sub.textContent = nombre + ' · ' + fechaChile();
+
+    prevIniciarGPS();
+    condPantallaEncendida();
+    if (COND_TICK) clearInterval(COND_TICK);
+    COND_TICK = setInterval(condTick, 1000);
+    condRenderizar();
+}
+
+/* ------------------------------------------------------ pantalla y ciclo --- */
+
+function condPantallaEncendida() {
+    if (!navigator.wakeLock) return;
+    navigator.wakeLock.request('screen')
+        .then(function (w) { COND_WAKE = w; })
+        .catch(function () {});
+}
+
+function condPantallaLibre() {
+    if (COND_WAKE) { try { COND_WAKE.release(); } catch (e) {} COND_WAKE = null; }
+}
+
+function abrirConduccion() {
+    const overlay = document.getElementById('cond-overlay');
+    const input = document.getElementById('cond-nombre');
+    if (input && !input.value) {
+        try { input.value = localStorage.getItem(GRAF_LLAVE_NOMBRE) || ''; } catch (e) {}
+    }
+    document.getElementById('cond-form').hidden = false;
+    const cuerpo = document.getElementById('cond-cuerpo');
+    if (cuerpo && !COND) cuerpo.innerHTML = '';
+    overlay.hidden = false;
+    overlay.classList.add('abierto');
+    document.body.classList.add('plan-abierto');
+    ventanaAbierta('cond', cerrarConduccion);
+    if (COND) condRenderizar();
+}
+
+function cerrarConduccion() {
+    const overlay = document.getElementById('cond-overlay');
+    overlay.classList.remove('abierto');
+    overlay.hidden = true;
+    if (!document.querySelector('.plan-overlay.abierto')) document.body.classList.remove('plan-abierto');
+    if (COND_TICK) { clearInterval(COND_TICK); COND_TICK = null; }
+    if (COND_VOZ) { try { COND_VOZ.stop(); } catch (e) {} COND_VOZ = null; }
+    condPantallaLibre();
+    ventanaCerrada('cond');
+}
+
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && document.getElementById('cond-overlay').classList.contains('abierto')) {
+        cerrarConduccion();
+    }
+});
+
 document.addEventListener('click', function (e) {
     const caja = document.getElementById('ali-sugerencias');
     if (!caja || caja.hidden) return;
