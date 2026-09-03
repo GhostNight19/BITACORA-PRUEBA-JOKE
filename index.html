@@ -571,10 +571,10 @@
         .cond-fila { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: baseline; }
         .cond-rot { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.08em;
             text-transform: uppercase; color: #9fb2ce; }
-        .cond-est { font-size: 1.5rem; font-weight: 900; line-height: 1.15; }
-        .cond-est.chica { font-size: 1.1rem; color: #cfe3ff; }
-        .cond-hora { font-size: 1.6rem; font-weight: 900; font-variant-numeric: tabular-nums; }
-        .cond-hora.chica { font-size: 1.15rem; }
+        .cond-est { font-size: 2.35rem; font-weight: 900; line-height: 1.08; letter-spacing: -0.01em; }
+        .cond-est.chica { font-size: 1.15rem; color: #9fb2ce; font-weight: 850; }
+        .cond-hora { font-size: 2.35rem; font-weight: 900; font-variant-numeric: tabular-nums; line-height: 1.08; }
+        .cond-hora.chica { font-size: 1.05rem; color: #9fb2ce; }
         .cond-hora.tarde { color: #ff9aa8; }
         .cond-hora.bien { color: #8fd3b0; }
         .cond-sep { height: 1px; background: #2b3a58; }
@@ -628,7 +628,8 @@
 
         @media (max-width: 720px) {
             .cond-vel { font-size: 2.9rem; }
-            .cond-est { font-size: 1.3rem; }
+            .cond-est { font-size: 1.85rem; }
+            .cond-hora { font-size: 1.85rem; }
             .cond-acciones { grid-template-columns: 1fr; }
         }
         /* <<< MODO CONDUCCION <<< */
@@ -3220,6 +3221,75 @@ function pautaTrenesDeServicio(texto, prefijoPrevio) {
 
 /* ----------------------------------------------------------- interpretar -- */
 
+// Cuando la pauta viene de una foto, el OCR deja horas rotas: "14c45" por los
+// dos puntos leidos como letra, o "2155" sin separador. Se arreglan solo las que
+// no dejan dudas; lo demas se deja tal cual, a la vista, en vez de inventarlo.
+const PAUTA_CAMPOS_HORA = ['apertura', 'traslado', 'inicio', 'terminoServicio',
+                           'trasladoRegreso', 'entrega', 'fin'];
+
+function pautaHoraOCR(txt) {
+    const s = String(txt == null ? '' : txt).trim();
+    if (!s) return s;
+
+    const bien = s.match(/^(\d{1,2})\s*:\s*(\d{2})$/);
+    if (bien) return pautaHoraValida(bien[1], bien[2]) || s;
+
+    // Un solo caracter en lugar de los dos puntos: 14c45, 14.45, 14-45.
+    const separador = s.match(/^(\d{1,2})[^\d\s](\d{2})$/);
+    if (separador) return pautaHoraValida(separador[1], separador[2]) || s;
+
+    // Cuatro digitos seguidos: 2155. Con tres no se toca, porque "100" tanto
+    // puede ser 1:00 como un 11:00 al que se le perdio un digito.
+    const pegado = s.match(/^(\d{2})(\d{2})$/);
+    if (pegado) return pautaHoraValida(pegado[1], pegado[2]) || s;
+
+    return s;
+}
+
+// Lo que el OCR dejó ilegible y se completó leyendo la pauta original. Cada
+// hora anotada aquí coincide además con el catálogo del gráfico, que es una
+// fuente aparte: no es una suposición, es una lectura contrastada.
+// Formato: fecha -> número de turno -> campo -> hora.
+const PAUTA_CORRECCIONES = {
+    '2026-09-04': {
+        '2':  { fin: '11:00' },
+        '21': { apertura: '9:05' },
+        '22': { apertura: '9:45', inicio: '9:45' },
+        '26': { apertura: '11:00', inicio: '11:00' },
+        '36': { fin: '1:35' },
+        '37': { fin: '1:35' },
+        '47': { apertura: '9:30' },
+        // El OCR leyó 12:45 donde la foto y el catálogo dicen 11:45: aquí sí se
+        // pisa lo leído, porque hay dos fuentes que coinciden contra una.
+        '10': { fin: '11:45', terminoServicio: '11:45', forzar: ['fin', 'terminoServicio'] }
+    }
+};
+
+// Solo rellena lo que quedó vacío o ilegible: nunca pisa una hora que se leyó
+// bien, para que una corrección vieja no tape un cambio real de la pauta.
+function pautaCorregirTurno(fecha, turno) {
+    const porTurno = PAUTA_CORRECCIONES[fecha];
+    if (!porTurno || !turno.turno) return;
+    const arreglos = porTurno[turno.turno];
+    if (!arreglos) return;
+
+    const forzar = arreglos.forzar || [];
+    Object.keys(arreglos).forEach(function (campo) {
+        if (campo === 'forzar') return;
+        if (forzar.indexOf(campo) >= 0 || !/\d{1,2}:\d{2}/.test(String(turno[campo] || ''))) {
+            turno[campo] = arreglos[campo];
+            if (!turno.corregidos) turno.corregidos = [];
+            turno.corregidos.push(campo);
+        }
+    });
+}
+
+function pautaHoraValida(h, m) {
+    const hh = parseInt(h, 10), mm = parseInt(m, 10);
+    if (!isFinite(hh) || !isFinite(mm) || hh > 23 || mm > 59) return '';
+    return hh + ':' + String(mm).padStart(2, '0');
+}
+
 const PAUTA_SECCIONES = [
     { clave: 'descanso',   etiqueta: 'Descanso',         re: /^DESCANSO$/ },
     { clave: 'licencia',   etiqueta: 'Licencia médica',  re: /^LICENCIA MEDICA$/ },
@@ -3358,8 +3428,10 @@ function pautaInterpretarHoja(hoja) {
             descanso: /^DESCANSO$/.test(pautaNorm(servicio))
         };
         Object.keys(campos).forEach(function (k) {
-            turno[k] = campos[k] < 0 ? '' : celda(f, campos[k]);
+            const bruto = campos[k] < 0 ? '' : celda(f, campos[k]);
+            turno[k] = PAUTA_CAMPOS_HORA.indexOf(k) >= 0 ? pautaHoraOCR(bruto) : bruto;
         });
+        pautaCorregirTurno(hoja.fecha, turno);
 
         turnos.push(turno);
         previo = turno;
@@ -3917,7 +3989,24 @@ function pautaRenderizar() {
 }
 
 function pautaPieHTML(pauta) {
-    return `<div class="pauta-pie">Pauta del ${escHtml(pauta.titulo)}${pauta.archivo ? ' · ' + escHtml(pauta.archivo) : ''} · ${pauta.turnos.length} turnos leídos.</div>`;
+    // Las pautas que llegan como foto traen horas que el OCR no alcanza a leer.
+    // No se inventan: se avisa cuáles hay que mirar en el original.
+    const rotos = pauta.turnos
+        .filter(t => t.turno && !t.descanso && (!/\d{1,2}:\d{2}/.test(t.apertura || '') ||
+                                 !/\d{1,2}:\d{2}/.test(t.fin || '')))
+        .map(t => t.turno);
+    const completados = pauta.turnos.filter(t => t.corregidos && t.corregidos.length).map(t => t.turno);
+
+    return `<div class="pauta-pie">Pauta del ${escHtml(pauta.titulo)}${pauta.archivo ? ' · ' + escHtml(pauta.archivo) : ''} · ${pauta.turnos.length} turnos leídos.` +
+        (completados.length
+            ? `<br>Horario completado a mano en ${completados.length}
+               ${completados.length === 1 ? 'turno' : 'turnos'} (${escHtml(completados.join(', '))}),
+               porque el archivo venía de una foto.`
+            : '') +
+        (rotos.length
+            ? `<br>⚠ Horario ilegible en ${rotos.length} ${rotos.length === 1 ? 'turno' : 'turnos'}
+               (${escHtml(rotos.join(', '))}): revísalos en la pauta original.`
+            : '') + `</div>`;
 }
 
 /* -------------------------------------------------- volcar a la bitácora -- */
@@ -4110,6 +4199,9 @@ const PREV_ESTACIONES = {"L1":[["San Rosendo",-37.263557,-72.727845],["Buenuraqu
 
 const PREV_ARCHIVO   = 'prevenciones/boletin.json';
 const PREV_AVISO_M   = 500;    // metros de anticipación del aviso
+const PREV_SENTIDO_VENTANA   = 15000;  // ms de historia para deducir el sentido
+const PREV_SENTIDO_MIN_KM    = 0.03;   // movimiento mínimo para darlo por bueno
+const PREV_SENTIDO_VIGENCIA  = 45000;  // ms que sigue valiendo ese sentido
 const PREV_PASADA_M  = 300;    // cuánto sigue a la vista después de salir de la zona
 const PREV_VIA_MAX_M = 400;    // más lejos que esto de la vía, el GPS no sirve
 const PREV_LISTA_KM  = 15;     // cuántos km hacia adelante lista el panel
@@ -4125,7 +4217,8 @@ let PREV_BOLETINES = [];
 let PREV_GPS = {
     watchId: null, lat: null, lon: null, precision: null,
     linea: '', pk: null, distVia: null, sentido: 0, ts: 0, error: '',
-    velocidad: null                 // km/h, cuando el equipo la entrega
+    velocidad: null,                // km/h, cuando el equipo la entrega
+    sentidoTs: 0                    // cuándo se dedujo el sentido de un movimiento real
 };
 let PREV_HISTORIA = [];        // últimos PK, para deducir el sentido
 let PREV_MANUAL = { activo: false, linea: 'L2', pk: 0, sentido: 1 };
@@ -4504,13 +4597,25 @@ function prevUbicar(lat, lon) {
 
 function prevRegistrarPosicion(linea, pk, ts) {
     PREV_HISTORIA.push({ linea: linea, pk: pk, ts: ts });
-    if (PREV_HISTORIA.length > 6) PREV_HISTORIA.shift();
+    // La ventana es de tiempo, no de cantidad: con actualizaciones espaciadas
+    // seis lecturas pueden cubrir medio minuto o dos segundos.
+    while (PREV_HISTORIA.length > 2 && ts - PREV_HISTORIA[0].ts > PREV_SENTIDO_VENTANA) {
+        PREV_HISTORIA.shift();
+    }
+    if (PREV_HISTORIA.length > 20) PREV_HISTORIA.shift();
 
     const mismos = PREV_HISTORIA.filter(h => h.linea === linea);
     if (mismos.length < 2) return PREV_GPS.sentido;
     const d = mismos[mismos.length - 1].pk - mismos[0].pk;
-    if (Math.abs(d) < 0.05) return PREV_GPS.sentido;   // detenido: se conserva
+    if (Math.abs(d) < PREV_SENTIDO_MIN_KM) return PREV_GPS.sentido;   // detenido: se conserva
+
+    PREV_GPS.sentidoTs = ts;
     return d > 0 ? 1 : -1;
+}
+
+// Un sentido deducido hace rato ya no sirve para decidir qué quedó atrás.
+function prevSentidoFirme() {
+    return !!PREV_GPS.sentidoTs && (Date.now() - PREV_GPS.sentidoTs) < PREV_SENTIDO_VIGENCIA;
 }
 
 function prevIniciarGPS() {
@@ -4555,6 +4660,7 @@ function prevIniciarGPS() {
 function prevDetenerGPS() {
     if (PREV_GPS.watchId !== null) navigator.geolocation.clearWatch(PREV_GPS.watchId);
     PREV_GPS.watchId = null;
+    PREV_GPS.sentidoTs = 0;
     PREV_HISTORIA = [];
     prevActualizar();
 }
@@ -4562,11 +4668,12 @@ function prevDetenerGPS() {
 function prevPosicionActual() {
     if (PREV_MANUAL.activo) {
         return { linea: PREV_MANUAL.linea, pk: PREV_MANUAL.pk,
-                 sentido: PREV_MANUAL.sentido, dist: 0, manual: true };
+                 sentido: PREV_MANUAL.sentido, dist: 0, manual: true, firme: true };
     }
     if (PREV_GPS.pk === null) return null;
     return { linea: PREV_GPS.linea, pk: PREV_GPS.pk,
-             sentido: PREV_GPS.sentido, dist: PREV_GPS.distVia, manual: false };
+             sentido: PREV_GPS.sentido, dist: PREV_GPS.distVia, manual: false,
+             firme: prevSentidoFirme() };
 }
 
 /* ------------------------------------------------------------ proximidad -- */
@@ -4577,7 +4684,11 @@ function prevPosicionActual() {
 //   'pasada' : ya se salió, hace N metros
 // Devuelve null si el tramo no es de esta línea o no se puede ubicar.
 function prevDistanciaA(p, pos) {
-    const sentido = pos.sentido || 1;
+    const sentido = pos.sentido || 0;
+    // Si no se sabe hacia dónde va el tren —recién partiendo, marchando lento o
+    // con el GPS espaciado— se avisa de los dos lados. Vale más un aviso de
+    // sobra que quedarse callado hasta tener la zona encima.
+    const firme = pos.firme !== undefined ? pos.firme : prevSentidoFirme();
     let mejor = null;
 
     p.tramos.forEach(function (t) {
@@ -4586,6 +4697,9 @@ function prevDistanciaA(p, pos) {
         let estado, km;
         if (pos.pk >= t.desde && pos.pk <= t.hasta) {
             estado = 'dentro'; km = 0;
+        } else if (!sentido || !firme) {
+            estado = 'antes';
+            km = pos.pk < t.desde ? t.desde - pos.pk : pos.pk - t.hasta;
         } else if (sentido > 0) {
             estado = pos.pk < t.desde ? 'antes' : 'pasada';
             km = estado === 'antes' ? t.desde - pos.pk : pos.pk - t.hasta;
@@ -6702,7 +6816,7 @@ function condCorridasDelTurno(nombre, fecha) {
                 const ubi = (idx[condClave(nom)] || []).find(x => x.linea === linea) ||
                             (idx[condClave(nom)] || [])[0] || null;
                 paradas.push({
-                    nombre: nom, hora: String(h).slice(0, 5),
+                    nombre: nom, hora: String(h).slice(0, 5), fila: i,
                     min: aliHoraServicio(h), pk: ubi ? ubi.pk : null
                 });
             });
@@ -6736,7 +6850,7 @@ function condCorridaDeNumero(num) {
             if (!h) return;
             const ubi = (idx[condClave(nom)] || []).find(x => x.linea === linea) ||
                         (idx[condClave(nom)] || [])[0] || null;
-            paradas.push({ nombre: nom, hora: String(h).slice(0, 5),
+            paradas.push({ nombre: nom, hora: String(h).slice(0, 5), fila: k,
                            min: aliHoraServicio(h), pk: ubi ? ubi.pk : null });
         });
         if (paradas.length < 2) continue;
@@ -6804,12 +6918,33 @@ function condCorridaActual() {
     return COND && COND.iCorrida >= 0 ? COND.corridas[COND.iCorrida] : null;
 }
 
+// El itinerario ya dice hacia dónde va el tren: no hay para qué deducirlo del
+// GPS. De Coronel a Concepción el PK baja; de Concepción a Coronel sube.
+function condSentido(c) {
+    if (!c) return 0;
+    const con = c.paradas.filter(p => p.pk !== null);
+    if (con.length < 2) return 0;
+    const d = con[con.length - 1].pk - con[0].pk;
+    return d === 0 ? 0 : (d > 0 ? 1 : -1);
+}
+
+// La posición como la ve el modo conducción: la del GPS, pero con el sentido
+// del itinerario y dado por seguro.
+function condPosicion() {
+    const pos = prevPosicionActual();
+    if (!pos) return null;
+    const s = condSentido(condCorridaActual());
+    return s ? Object.assign({}, pos, { sentido: s, firme: true }) : pos;
+}
+
 function condTick() {
     if (!COND || COND.iCorrida < 0) return;
     const c = condCorridaActual();
-    const pos = prevPosicionActual();
+    const pos = condPosicion();
     const pk = pos ? pos.pk : null;
     condAnotarPK(pk);
+    // El aviso bajo el reloj usa el mismo sentido que el modo conducción.
+    if (pos && pos.sentido) { PREV_GPS.sentido = pos.sentido; PREV_GPS.sentidoTs = Date.now(); }
     const v = condVelocidad();
     const ahora = condAhora();
 
@@ -7037,8 +7172,14 @@ function condListaHTML() {
             : '') +
         '</div>';
 
-    // Abrirlo a mirar no debería dejar rastro: de aquí se borra y se sale.
     const marcado = condCuentaMarcas(null);
+    if (marcado) {
+        html += '<div class="cond-acciones" style="margin-top:12px">' +
+            '<button type="button" class="cond-bt principal" onclick="condPasarABitacora()">' +
+            '📋 Pasar todo a la bitácora</button></div>';
+    }
+
+    // Abrirlo a mirar no debería dejar rastro: de aquí se borra y se sale.
     html += '<div class="cond-acciones" style="margin-top:12px">' +
         '<button type="button" class="cond-bt alerta" onclick="condBorrarDia(true)">' +
         '🗑 Borrar y salir</button>' +
@@ -7142,7 +7283,7 @@ function condMarchaHTML() {
     const c = condCorridaActual();
     const ahora = condAhora();
     const v = condVelocidad();
-    const pos = prevPosicionActual();
+    const pos = condPosicion();
     const p = c.paradas[COND.iParada];
     const sig = c.paradas[COND.iParada + 1];
     const m = condMarca(c.numero, COND.iParada);
@@ -7240,7 +7381,9 @@ function condMarchaHTML() {
             : '') +
         (terminal ? '' : '<button type="button" class="cond-bt" onclick="condVolverALista()">↩ Servicios</button>') +
         (condCuentaMarcas(c.numero)
-            ? '<button type="button" class="cond-bt alerta" onclick="condBorrarServicio(&quot;' +
+            ? '<button type="button" class="cond-bt" onclick="condPasarABitacora(&quot;' +
+              escAttr(c.numero) + '&quot;)">📋 Pasar a la bitácora</button>' +
+              '<button type="button" class="cond-bt alerta" onclick="condBorrarServicio(&quot;' +
               escAttr(c.numero) + '&quot;)">🗑 Borrar este servicio</button>'
             : '') +
         '</div>';
@@ -7292,6 +7435,92 @@ function condAbrirJustificacion() {
         tipo: (m.atrasoLlegada !== undefined && COND.iParada > 0) ? 'llegada' : 'salida'
     };
     condRenderizar();
+}
+
+/* ------------------------------------------------- pasar a la bitácora ----- */
+
+// Lo marcado en el viaje se vuelca a una tarjeta de la bitácora de siempre:
+// horario programado, estado de cada estación y el motivo del atraso. De ahí
+// sale el informe que se manda a los jefes de servicio.
+function condTarjetaDeCorrida(c) {
+    const pauta = (typeof PAUTAS !== 'undefined' ? PAUTAS : []).find(p => p.fecha === COND.fecha);
+    const dia = (pauta && pauta.dia) || 'LV';
+    const info = (baseDatosTrenes[dia] || {})[c.numero];
+
+    serviceCount++;
+    const id = serviceCount;
+    crearEstructuraTarjeta(id);
+
+    document.getElementById('dia-' + id).value = dia;
+    document.getElementById('tren-num-' + id).value = c.numero;
+
+    // La tripulación sale de la pauta, del turno donde va este tren.
+    if (pauta) {
+        const e = pautaTurnosDe(pauta, COND.nombre).find(x => (x.turno.trenes || []).indexOf(c.numero) >= 0);
+        if (e) {
+            document.getElementById('maquinista-' + id).value = e.turno.maquinista || '';
+            document.getElementById('ayudante-' + id).value = e.turno.ayudante || '';
+        }
+    }
+
+    document.getElementById('route-' + id).value = c.ruta;
+    updateTable(id, c.ruta);
+    if (info) {
+        info.horarios.forEach(function (hora, i) {
+            const input = document.getElementById('time-row-' + id + '-' + i);
+            if (input && hora !== null) input.value = hora;
+        });
+    }
+
+    // Estado y motivo de cada parada que quedó marcada en el viaje.
+    const marcas = COND.marcas[c.numero] || {};
+    let conEstado = 0;
+    c.paradas.forEach(function (pp, k) {
+        const m = marcas[k];
+        if (!m || (!m.salida && !m.llegada)) return;
+        const fila = 'row-' + id + '-' + (pp.fila !== undefined ? pp.fila : k);
+        const atraso = k === 0 ? (m.atraso || 0) : (m.atrasoLlegada || m.atraso || 0);
+        setStatus(fila, atraso > 0 ? 'late' : 'ontime');
+        conEstado++;
+
+        if (atraso > 0) {
+            const real = k === 0 ? m.salida : (m.llegada || m.salida);
+            const obs = document.getElementById('obs-' + fila);
+            if (obs) {
+                obs.value = (m.motivo ? m.motivo + ' · ' : '') +
+                            'real ' + real + ' (+' + atraso + ' min)' + (m.manual ? ' · marca manual' : '');
+                actualizarDetalleAtraso(fila);
+            }
+        }
+    });
+
+    actualizarCampoConductor(id);
+    actualizarAvisosDescenso(id);
+    pautaMarcarTarjeta(id, '🚦 Conducción · ' + c.numero);
+    pautaMinimizarTarjeta(id);
+    return { id: id, conEstado: conEstado };
+}
+
+function condPasarABitacora(numero) {
+    const lista = numero
+        ? COND.corridas.filter(c => c.numero === numero)
+        : COND.corridas.filter(c => condCuentaMarcas(c.numero) > 0);
+
+    if (!lista.length) {
+        pautaToast('Todavía no hay horas marcadas para pasar.');
+        return;
+    }
+
+    const primerId = serviceCount + 1;
+    let marcadas = 0;
+    lista.forEach(function (c) { marcadas += condTarjetaDeCorrida(c).conEstado; });
+    guardarEstado();
+
+    cerrarConduccion();
+    const card = document.getElementById('card-' + primerId);
+    if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    pautaToast('📋 ' + lista.length + (lista.length === 1 ? ' servicio' : ' servicios') +
+               ' en la bitácora · ' + marcadas + ' estaciones marcadas');
 }
 
 /* ---------------------------------------------------------- navegación ----- */
@@ -7417,7 +7646,8 @@ function abrirConduccion() {
     if (input && !input.value) {
         try { input.value = localStorage.getItem(GRAF_LLAVE_NOMBRE) || ''; } catch (e) {}
     }
-    document.getElementById('cond-form').hidden = false;
+    // Con el turno ya elegido no se vuelve a pedir el apellido.
+    document.getElementById('cond-form').hidden = !!COND;
     const cuerpo = document.getElementById('cond-cuerpo');
     if (cuerpo && !COND) cuerpo.innerHTML = '';
     overlay.hidden = false;

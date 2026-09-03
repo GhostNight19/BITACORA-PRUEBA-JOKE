@@ -102,6 +102,41 @@ retoma donde iba, con las paradas ya marcadas.
 
 ---
 
+## Pasar a la bitácora
+
+Con el viaje marcado aparece **📋 Pasar a la bitácora**: dentro de un servicio
+pasa ese tren, y en la lista **📋 Pasar todo a la bitácora** pasa los que tengan
+horas anotadas.
+
+Se crea una tarjeta de la bitácora de siempre con:
+
+- el número del tren, la ruta y la tripulación de la pauta;
+- el horario programado de cada estación;
+- **A hora** o **Atraso** en cada parada marcada;
+- en las atrasadas, la observación con el motivo, la hora real y los minutos
+  (por ejemplo `Espera de tren · real 20:32 (+2 min)`).
+
+De ahí sale el informe que se manda a los jefes de servicio, con el mismo
+formato de siempre.
+
+---
+
+## El sentido de marcha
+
+Las prevenciones se avisan a 500 m **en el sentido de marcha**, y para eso hay
+que saber hacia dónde va el tren. Antes se deducía solo del GPS, y si la lectura
+quedaba vieja —marchando lento, recién partiendo o con el equipo actualizando
+espaciado— el aviso podía llegar con la zona encima.
+
+Ahora:
+
+- En **Modo Conducción** el sentido lo da el itinerario del servicio, que ya sabe
+  si va de Coronel a Concepción o al revés. No se adivina nada.
+- En **Prevenciones**, si el sentido no es confiable, se avisa de los dos lados.
+  Vale más un aviso de sobra que quedarse callado.
+
+---
+
 ## Lo que todavía no hace
 
 - No manda el reporte a ninguna parte: por ahora queda guardado en el teléfono.
