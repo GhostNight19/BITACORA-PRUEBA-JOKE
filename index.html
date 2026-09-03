@@ -355,7 +355,9 @@
 
         /* ===== MI GRÁFICO ===== */
         .graf-btn { background-color: #0f766e; color: #fff; }
+        /* >>> MODO CONDUCCION >>> */
         .cond-btn { background-color: #1d2b45; color: #fff; }
+        /* <<< MODO CONDUCCION <<< */
         .graf-form { grid-template-columns: 1fr; }
         .graf-form .plan-fila { grid-template-columns: minmax(0,1fr) auto; }
         .graf-auto { position: relative; }
@@ -492,6 +494,7 @@
         .ali-cambio { margin-top: 9px; padding: 8px 11px; border-radius: 9px; background: #e7f0ff; border: 1px solid #adc8f0; color: #14459c; font-size: 0.8rem; font-weight: 750; line-height: 1.45; }
         .ali-igual { width: 100%; margin-top: 4px; min-height: 44px; padding: 0 12px; border: 2px solid #9ec8b4; border-radius: 9px; background: #eef8f3; color: #0a5c42; font: inherit; font-weight: 850; font-size: 0.85rem; cursor: pointer; }
         .ali-igual:active { background: #ddf0e7; }
+        /* >>> MODO CONDUCCION >>> */
         /* ---- modo conducción: pantalla de cabina, legible de un vistazo ---- */
         .cond-panel { background: #0d1526; color: #eef3fb; max-width: 760px; }
         .cond-head { background: #0a1120; border-bottom: 1px solid #22304c; }
@@ -628,6 +631,7 @@
             .cond-est { font-size: 1.3rem; }
             .cond-acciones { grid-template-columns: 1fr; }
         }
+        /* <<< MODO CONDUCCION <<< */
 
         .ali-editor-acciones { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, auto); gap: 8px; margin-top: 12px; }
         .ali-guardar { min-height: 44px; padding: 0 14px; border: 2px solid #0a7d5a; border-radius: 8px; background: #0a7d5a; color: #fff; font: inherit; font-weight: 900; font-size: 0.85rem; cursor: pointer; }
@@ -671,7 +675,9 @@
         <button class="btn prev-btn" onclick="abrirPrevenciones()">⚠️ Prevenciones</button>
         <button class="btn graf-btn" onclick="abrirGrafico()">📅 Mi Gráfico</button>
         <button class="btn ali-btn" onclick="abrirAlistacion()">🕒 Mi Alistación</button>
+        <!-- >>> MODO CONDUCCION >>> -->
         <button class="btn cond-btn" onclick="abrirConduccion()">🚦 Modo Conducción</button>
+        <!-- <<< MODO CONDUCCION <<< -->
         <button class="btn secundario delete-all-btn" onclick="borrarTodo()">🗑️ Borrar Todo</button>
         <button class="btn secundario pdf-btn" onclick="descargarBitacoraPDF()">📄 Descargar Bitácora</button>
 
@@ -862,6 +868,7 @@
     </div>
 </div>
 
+<!-- >>> MODO CONDUCCION >>> -->
 <!-- ===== Modo Conducción: el turno arriba de la máquina ===== -->
 <div id="cond-overlay" class="plan-overlay cond-overlay" role="dialog" aria-modal="true"
      aria-labelledby="cond-titulo" hidden>
@@ -887,6 +894,7 @@
         <div class="cond-cuerpo" id="cond-cuerpo" aria-live="polite"></div>
     </div>
 </div>
+<!-- <<< MODO CONDUCCION <<< -->
 
 <!-- ===== Mi Alistación: horas trabajadas día a día ===== -->
 <div id="ali-overlay" class="plan-overlay" role="dialog" aria-modal="true" aria-labelledby="ali-titulo" hidden>
@@ -6577,6 +6585,7 @@ document.getElementById('ali-overlay').addEventListener('click', function (e) {
     if (e.target === this) cerrarAlistacion();
 });
 
+/* >>> MODO CONDUCCION >>> */
 /* ======================================================== MODO CONDUCCIÓN ==
    El turno arriba de la máquina. El GPS marca solo la salida y la llegada de
    cada estación; el maquinista no toca la pantalla salvo para justificar un
@@ -7028,6 +7037,17 @@ function condListaHTML() {
             : '') +
         '</div>';
 
+    // Abrirlo a mirar no debería dejar rastro: de aquí se borra y se sale.
+    const marcado = condCuentaMarcas(null);
+    html += '<div class="cond-acciones" style="margin-top:12px">' +
+        '<button type="button" class="cond-bt alerta" onclick="condBorrarDia(true)">' +
+        '🗑 Borrar y salir</button>' +
+        (marcado
+            ? '<button type="button" class="cond-bt" onclick="condBorrarDia(false)">' +
+              '↺ Borrar lo marcado (' + marcado + ')</button>'
+            : '<button type="button" class="cond-bt" onclick="cerrarConduccion()">✕ Salir</button>') +
+        '</div>';
+
     return html;
 }
 
@@ -7052,6 +7072,62 @@ function condAgregarServicio() {
     caja.value = '';
     condRenderizar();
     pautaToast('✅ ' + num + ' agregado (' + c.paradas[0].nombre + ' ' + c.paradas[0].hora + ')');
+}
+
+// Cuántas horas hay anotadas: sirve para avisar qué se pierde al borrar.
+function condCuentaMarcas(num) {
+    let n = 0;
+    const fuentes = num ? [COND.marcas[num] || {}] : Object.keys(COND.marcas).map(k => COND.marcas[k]);
+    fuentes.forEach(function (m) {
+        Object.keys(m).forEach(function (k) { if (m[k].salida || m[k].llegada) n++; });
+    });
+    return n;
+}
+
+// Borra lo marcado de un servicio y lo deja como si no se hubiera empezado.
+function condBorrarServicio(num) {
+    const n = condCuentaMarcas(num);
+    if (n && !confirm('Vas a borrar lo marcado del servicio ' + num + '.\n\n' +
+            n + (n === 1 ? ' hora anotada' : ' horas anotadas') +
+            ' con sus atrasos y motivos.\n\n¿Borrar?')) return;
+
+    delete COND.marcas[num];
+    if (condCorridaActual() && condCorridaActual().numero === num) {
+        COND.iParada = 0;
+        COND.enMarcha = false;
+        COND.movDesde = null;
+        COND.pkParado = null;
+        COND.justificando = null;
+    }
+    condGuardar();
+    condRenderizar();
+    pautaToast('🗑 Servicio ' + num + ' sin marcas');
+}
+
+// Borra el día completo. Es lo que se usa después de abrirlo solo a probar.
+function condBorrarDia(salir) {
+    const n = condCuentaMarcas(null);
+    const detalle = n
+        ? n + (n === 1 ? ' hora anotada' : ' horas anotadas') + ' con sus atrasos y motivos'
+        : 'los servicios agregados a mano';
+    if (!confirm('Vas a borrar el registro de hoy de ' + COND.nombre + '.\n\n' +
+            'Se pierde: ' + detalle + '.\n\n¿Borrar?')) return;
+
+    const todo = condLeer();
+    delete todo[COND.nombre + '|' + COND.fecha];
+    try { localStorage.setItem(COND_LLAVE, JSON.stringify(todo)); } catch (e) {}
+
+    COND.marcas = {};
+    COND.extras = [];
+    COND.corridas = COND.datos.corridas.slice();
+    COND.iCorrida = -1;
+    COND.iParada = 0;
+    COND.enMarcha = false;
+    COND.justificando = null;
+
+    if (salir) { cerrarConduccion(); pautaToast('🗑 Registro de hoy borrado'); return; }
+    condRenderizar();
+    pautaToast('🗑 Registro de hoy borrado');
 }
 
 function condQuitarServicio(num) {
@@ -7163,6 +7239,10 @@ function condMarchaHTML() {
             ? '<button type="button" class="cond-bt" onclick="condAbrirJustificacion()">🎤 Motivo del atraso</button>'
             : '') +
         (terminal ? '' : '<button type="button" class="cond-bt" onclick="condVolverALista()">↩ Servicios</button>') +
+        (condCuentaMarcas(c.numero)
+            ? '<button type="button" class="cond-bt alerta" onclick="condBorrarServicio(&quot;' +
+              escAttr(c.numero) + '&quot;)">🗑 Borrar este servicio</button>'
+            : '') +
         '</div>';
 
     // ---- el recorrido completo
@@ -7367,6 +7447,7 @@ document.addEventListener('keydown', function (e) {
         cerrarConduccion();
     }
 });
+/* <<< MODO CONDUCCION <<< */
 
 document.addEventListener('click', function (e) {
     const caja = document.getElementById('ali-sugerencias');

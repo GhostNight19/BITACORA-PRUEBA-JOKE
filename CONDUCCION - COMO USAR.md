@@ -13,7 +13,24 @@ eso se puede dictar.
    su hora de salida.
 3. Se toca el servicio que se va a hacer. Ya no hay que tocar nada más.
 
+Arriba de todo va el **estado del GPS**. Si el teléfono no ha dado permiso, sale
+en rojo con un botón **«Activar ubicación»**; cuando ya está tomando, muestra la
+línea, el PK y la precisión.
+
 La pantalla queda encendida sola mientras el modo está abierto (Wake Lock).
+
+## Servicios que no vienen en la pauta
+
+El turno del día no siempre es todo lo que se hace. Al final de la lista hay un
+campo **«¿Vas a hacer otro servicio?»**: se escribe el número del tren y se
+agrega. Si ese número no tiene itinerario guardado, lo avisa en vez de agregarlo
+vacío.
+
+Los servicios agregados quedan guardados y vuelven solos si se cierra la app. Se
+quitan con la ✕ que aparece junto al número.
+
+Lo mismo sirve cuando la pauta del día todavía no está cargada o cuando alguien
+no aparece en ella: la lista parte vacía y se arma a mano.
 
 ---
 
@@ -92,3 +109,23 @@ retoma donde iba, con las paradas ya marcadas.
 - El aviso de prevención es visual; no suena ni habla.
 - «Laja» no tiene coordenadas en el trazado guardado, así que en los servicios
   que llegan hasta allá esa parada hay que marcarla a mano.
+
+---
+
+## Borrar lo marcado
+
+Al final de la lista de servicios hay dos botones:
+
+- **🗑 Borrar y salir** — borra el registro del día completo y cierra el modo.
+  Es el que se usa cuando se abrió solo a mirar y no se está en servicio.
+- **↺ Borrar lo marcado (n)** — borra las horas del día pero deja el modo
+  abierto. Si no hay nada marcado, en su lugar aparece **✕ Salir**.
+
+Dentro de un servicio en curso está además **🗑 Borrar este servicio**, que
+limpia solo ese tren y lo deja como si no se hubiera empezado.
+
+Los tres preguntan antes y dicen qué se pierde:
+
+> Vas a borrar el registro de hoy de B. Bustamante.
+> Se pierde: 2 horas anotadas con sus atrasos y motivos.
+> ¿Borrar?
