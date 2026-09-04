@@ -29,6 +29,7 @@ except ImportError:  # pragma: no cover
 
 BASE = Path(__file__).resolve().parent
 ORIGEN = BASE / "pautas_excel"
+MANUAL = BASE / "pautas_manual"     # pautas transcritas a mano desde una foto
 DESTINO = BASE / "pautas" / "pautas.json"
 
 MESES = {
@@ -132,6 +133,24 @@ def main():
     unicas = {}
     for hoja in sorted(hojas, key=lambda h: (ORIGEN / h["archivo"]).stat().st_mtime):
         unicas[hoja["fecha"]] = hoja
+
+    # Las transcritas a mano entran solo donde no hay Excel: en cuanto llega el
+    # archivo de verdad para ese dia, manda el Excel.
+    for ruta in sorted(MANUAL.glob("*.json")) if MANUAL.exists() else []:
+        hoja = json.loads(ruta.read_text(encoding="utf-8"))
+        fecha = hoja.get("fecha", "")
+        if not fecha:
+            print("  ! %s: sin fecha; se omite." % ruta.name)
+            continue
+        if fecha in unicas:
+            print("  = %s  ->  %s  ya viene en Excel, se ignora la transcripcion." % (ruta.name, fecha))
+            continue
+        hoja.setdefault("archivo", ruta.stem)
+        hoja["origen"] = "imagen"
+        unicas[fecha] = hoja
+        print("  + %s  ->  %s  (transcrita de imagen, %d filas)" % (
+            ruta.name, fecha, len(hoja.get("filas", []))))
+
     hojas = sorted(unicas.values(), key=lambda h: h["fecha"])
 
     DESTINO.parent.mkdir(parents=True, exist_ok=True)
