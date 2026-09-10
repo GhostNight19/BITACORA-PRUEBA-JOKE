@@ -238,3 +238,74 @@ En la tarjeta sale la marca **«Doble turno 3 + 20»**, y en el PDF queda escrit
 Las nocturnas de un doble turno se cuentan sobre los tramos de la pauta —de la
 presentación al término del servicio de cada uno—, porque el catálogo del
 gráfico solo conoce uno de los dos turnos.
+
+
+---
+
+## Horas Turno: lo que se trabaja fuera del turno propio
+
+La jornada se parte en dos contra el **turno propio** —el del gráfico, el que de
+verdad te correspondía—:
+
+Con **doble turno** se paga **solo la diferencia de horas** contra el turno
+propio. El sobretiempo del turno propio no se cobra aparte: la única cifra del
+día son las Hrs Turno.
+
+En un día normal, en cambio, sigue mandando el exceso sobre 7:30.
+
+### Abrir antes
+
+Turno propio de **07:30 a 16:55**. Le agregan además el turno de la mañana, que
+abre a las **03:25**.
+
+Se pagan las horas **desde la apertura real hasta la apertura propia**: de 03:25
+a 07:30, o sea **4:05 de Hrs Turno**. Las horas del turno de la mañana que van
+después de las 07:30 no se cuentan de nuevo, porque ya están dentro del turno
+propio.
+
+Su propio turno dura 9:25 y pasa de 7:30, pero ese sobretiempo **no se paga**
+en un doble turno. El total del día son las **4:05**, nada más.
+
+### Cerrar después
+
+Turno propio de **15:20 a 20:40**. Le agregan uno que cierra a las **00:00**.
+
+Se pagan las horas **desde el cierre propio hasta el cierre real**: de 20:40 a
+00:00, o sea **3:20 = 3,33 horas**. Total del día: **3:20**.
+
+### Por qué el turno propio y no la pauta
+
+Con doble turno la pauta muestra la jornada completa —de la apertura más
+temprana al cierre más tardío—, pero la referencia para separar dentro y fuera
+tiene que ser el turno del gráfico. Si se usara la pauta, todo quedaría
+«dentro» y no se pagaría nada.
+
+
+---
+
+## Horas nocturnas
+
+Se cuenta el tramo que cae entre las **23:00 y las 07:00**, desde el **inicio
+del servicio** hasta el **cierre real**.
+
+Dos precisiones que hacen toda la diferencia:
+
+- **No parte en la apertura.** El turno que se presenta a las 03:25 pero empieza
+  a mover a las 04:55 paga desde las 04:55: de 04:55 a 07:00 son **2:05 = 2,08**.
+  La presentación y el traslado de ida no se cuentan.
+- **Termina en la hora real, no en la programada.** Si el turno cerraba a las
+  20:30 pero se terminó a la 01:35, la noche se paga hasta esa hora: de 23:00 a
+  01:35 son **2:35 = 2,58**.
+
+Contrastado contra la alistación de agosto de 2026, los seis días con nocturnas
+dan exacto:
+
+| Turno | Ventana que se cuenta | Resultado |
+|---|---|---|
+| 1 | 04:55 → 10:55 | 2,08 |
+| 7 y 8 | 04:45 → 11:25 | 2,25 |
+| 26 | 11:00 → 23:45 | 0,75 |
+| 40 | 13:00 → 01:35 | 2,58 |
+| 51 | 05:45 → 11:30 | 1,25 |
+
+Las nocturnas van aparte: no suman al total de horas extra.
