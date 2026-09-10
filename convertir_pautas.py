@@ -122,7 +122,21 @@ def main():
     hojas = []
     for ruta in archivos:
         filas = leer_hoja(ruta)
-        fecha = fecha_de_las_filas(filas) or fecha_del_nombre(ruta.stem)
+        dentro = fecha_de_las_filas(filas)
+        nombre = fecha_del_nombre(ruta.stem)
+
+        # Cuando la pauta se arma copiando la del dia anterior, a veces queda la
+        # fecha vieja en el encabezado. El nombre del archivo lo pone una
+        # persona a proposito, asi que ante la duda manda el nombre, pero se
+        # avisa para que nadie se entere tarde.
+        if dentro and nombre and dentro != nombre:
+            print("  ! %s: el encabezado dice %s y el nombre del archivo dice %s."
+                  % (ruta.name, dentro, nombre))
+            print("    Se usa %s (el del nombre). Revisa el encabezado del Excel." % nombre)
+            fecha = nombre
+        else:
+            fecha = dentro or nombre
+
         if not fecha:
             print("  ! %s: no se pudo deducir la fecha; se omite." % ruta.name)
             continue
