@@ -309,3 +309,31 @@ dan exacto:
 | 51 | 05:45 → 11:30 | 1,25 |
 
 Las nocturnas van aparte: no suman al total de horas extra.
+
+
+## Manejo
+
+El manejo sale solo, de los servicios que la pauta le puso ese día. Se cuenta
+desde la primera salida hasta la última llegada: una espera en el andén no lo
+corta, porque no es descanso mientras no llegue a la hora seguida. Recién con
+más de una hora entre un servicio y el siguiente empieza un bloque nuevo, y
+cada bloque tiene un máximo normal de 5 horas.
+
+Solo cuenta donde la pauta lo pone de **maquinista**. De ayudante no hay manejo.
+Los días sin pauta publicada se calculan con el turno del gráfico.
+
+En la tarjeta del día aparece el detalle bloque por bloque con los trenes, el
+descanso que hubo entre un bloque y otro, y si algún servicio no tiene
+itinerario guardado se avisa, porque en ese caso el total queda corto. El total
+del mes suma solo los días ya registrados.
+
+### Horas extra de manejo
+
+Son las que pasan de **5 horas seguidas dentro de un bloque**, y se suman solas
+a la alistación. Si entre un servicio y otro descansó más de una hora, el bloque
+se corta y el manejo vuelve a contar desde cero: un día de 7:08 repartido en dos
+bloques no deja nada, y uno de 7:08 seguidas deja 2:08.
+
+El casillero manual queda para los días que no salieron como estaban escritos.
+Solo se pide el motivo cuando lo escrito a mano pasa de lo que explica el
+itinerario.

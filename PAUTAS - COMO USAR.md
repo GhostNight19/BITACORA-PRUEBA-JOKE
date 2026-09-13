@@ -21,6 +21,10 @@ sin tener que cargar nada desde el teléfono.
    (Sirven tal como salen del lector de imágenes; el nombre del archivo puede
    ser cualquiera, la fecha se lee del encabezado de la planilla.)
 
+   Un mismo archivo puede traer **varios días, una hoja por día**. Cada hoja
+   entra por su cuenta con la fecha de su propio encabezado. También sirve
+   subirlo así desde el teléfono con «Subir pauta».
+
 2. Ejecuta el conversor:
 
 ```bash

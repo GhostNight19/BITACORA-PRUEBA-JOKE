@@ -91,18 +91,27 @@ def fecha_del_nombre(nombre):
         return ""
 
 
-def leer_hoja(ruta):
+def leer_hojas(ruta):
+    """Devuelve [(nombre de la hoja, filas)] de TODAS las hojas del Excel.
+
+    Hay pautas que llegan de a tres en un mismo archivo, una hoja por dia
+    ("SABADO 12", "DOMINGO 13", "LUNES 14"). Cada hoja trae su propia fecha en
+    el encabezado, asi que se leen todas y cada una entra por su cuenta.
+    """
     wb = openpyxl.load_workbook(ruta, data_only=True)
-    ws = wb[wb.sheetnames[0]]
-    filas = []
-    for fila in ws.iter_rows(values_only=True):
-        celdas = [celda_a_texto(v) for v in fila]
-        while celdas and celdas[-1] == "":
-            celdas.pop()
-        filas.append(celdas)
-    while filas and not any(filas[-1]):
-        filas.pop()
-    return filas
+    hojas = []
+    for ws in wb.worksheets:
+        filas = []
+        for fila in ws.iter_rows(values_only=True):
+            celdas = [celda_a_texto(v) for v in fila]
+            while celdas and celdas[-1] == "":
+                celdas.pop()
+            filas.append(celdas)
+        while filas and not any(filas[-1]):
+            filas.pop()
+        if filas:
+            hojas.append((ws.title, filas))
+    return hojas
 
 
 def main():
@@ -121,31 +130,44 @@ def main():
 
     hojas = []
     for ruta in archivos:
-        filas = leer_hoja(ruta)
-        dentro = fecha_de_las_filas(filas)
+        leidas = leer_hojas(ruta)
+        varias = len(leidas) > 1
         nombre = fecha_del_nombre(ruta.stem)
 
-        # Cuando la pauta se arma copiando la del dia anterior, a veces queda la
-        # fecha vieja en el encabezado. El nombre del archivo lo pone una
-        # persona a proposito, asi que ante la duda manda el nombre, pero se
-        # avisa para que nadie se entere tarde.
-        if dentro and nombre and dentro != nombre:
-            print("  ! %s: el encabezado dice %s y el nombre del archivo dice %s."
-                  % (ruta.name, dentro, nombre))
-            print("    Se usa %s (el del nombre). Revisa el encabezado del Excel." % nombre)
-            fecha = nombre
-        else:
-            fecha = dentro or nombre
+        for titulo, filas in leidas:
+            dentro = fecha_de_las_filas(filas)
+            # Con varias hojas en un archivo el nombre no puede describirlas a
+            # todas: manda la fecha del encabezado de cada hoja. Si la hoja no
+            # la trae, se prueba con su propio nombre ("SABADO 12" no alcanza,
+            # pero "12 de septiembre" si).
+            propia = fecha_del_nombre(titulo) if varias else ""
+            etiqueta = "%s [%s]" % (ruta.name, titulo) if varias else ruta.name
 
-        if not fecha:
-            print("  ! %s: no se pudo deducir la fecha; se omite." % ruta.name)
-            continue
-        hojas.append({"archivo": ruta.name, "fecha": fecha, "filas": filas})
-        print("  + %s  ->  %s  (%d filas)" % (ruta.name, fecha, len(filas)))
+            if varias:
+                fecha = dentro or propia
+            elif dentro and nombre and dentro != nombre:
+                # Cuando la pauta se arma copiando la del dia anterior, a veces
+                # queda la fecha vieja en el encabezado. El nombre del archivo lo
+                # pone una persona a proposito, asi que ante la duda manda el
+                # nombre, pero se avisa para que nadie se entere tarde.
+                print("  ! %s: el encabezado dice %s y el nombre del archivo dice %s."
+                      % (ruta.name, dentro, nombre))
+                print("    Se usa %s (el del nombre). Revisa el encabezado del Excel." % nombre)
+                fecha = nombre
+            else:
+                fecha = dentro or nombre
+
+            if not fecha:
+                print("  ! %s: no se pudo deducir la fecha; se omite." % etiqueta)
+                continue
+            hojas.append({"archivo": ruta.name, "fecha": fecha, "filas": filas,
+                          "_orden": (ruta.stat().st_mtime, titulo)})
+            print("  + %s  ->  %s  (%d filas)" % (etiqueta, fecha, len(filas)))
 
     # Si hay dos archivos con la misma fecha, gana el ultimo modificado.
     unicas = {}
-    for hoja in sorted(hojas, key=lambda h: (ORIGEN / h["archivo"]).stat().st_mtime):
+    for hoja in sorted(hojas, key=lambda h: h["_orden"]):
+        del hoja["_orden"]
         unicas[hoja["fecha"]] = hoja
 
     # Las transcritas a mano entran solo donde no hay Excel: en cuanto llega el
