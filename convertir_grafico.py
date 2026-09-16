@@ -81,11 +81,17 @@ def clave_nombre(texto):
     return re.sub(r"[^A-Z0-9]", "", sin_acentos(texto).upper())
 
 
-def aplicar_correcciones(filas):
-    """Cada bloque de parejas trae su propia fila de nombres y sus propios dias."""
+def aplicar_correcciones(filas, mes=""):
+    """Cada bloque de parejas trae su propia fila de nombres y sus propios dias.
+
+    Las correcciones son de un dia concreto, asi que solo se buscan en el
+    grafico de ese mes: en los demas no faltan, es que no son de ahi.
+    """
     hechas, sin_ubicar = [], []
 
     for fecha, persona, valor in CORRECCIONES:
+        if mes and not fecha.startswith(mes):
+            continue
         objetivo = clave_nombre(persona)
         columna = None
         aplicada = False
@@ -140,6 +146,31 @@ def mes_del_grafico(hojas, nombre_archivo):
     return ""
 
 
+def clave_de_hoja(nombre, filas, ya_leidas):
+    """A cual de las tres hojas corresponde esta: el grafico del mes, los turnos
+    de lunes a viernes o los del fin de semana.
+
+    Cada mes llega con los nombres de hoja que quiso quien armo el archivo
+    ("Grafico Septiembre" pero tambien "OCTUBRE 2026", "Lunes - Viernes" pero
+    tambien "L A V"), asi que se mira el nombre y, si no alcanza, la primera
+    fila. Lo que no es ninguna de las tres se deja fuera: la hoja de practicas y
+    licencias, por ejemplo, la app no la usa.
+    """
+    nom = sin_acentos(nombre).strip().upper()
+    cabecera = sin_acentos(" ".join(str(c) for c in (filas[0] if filas else []))).upper()
+    plano = nom.replace("-", "").replace(" ", "")
+
+    if "PRACTICA" in nom or "PRACTICA" in cabecera:
+        return ""
+    if "LUNES" in nom or "LUNES" in cabecera or plano in ("LAV", "LV"):
+        return "LV"
+    if "SABADO" in cabecera or "FEST" in nom or plano.startswith("SD"):
+        return "SDF"
+    if "GRAFICO" not in ya_leidas and (nom.startswith("GRAFICO") or cabecera.startswith("GRAFICO")):
+        return "GRAFICO"
+    return ""
+
+
 def main():
     if not ORIGEN.exists():
         ORIGEN.mkdir(parents=True)
@@ -161,14 +192,11 @@ def main():
         principal = ""
         for nombre in wb.sheetnames:
             filas = leer_hoja(wb[nombre])
-            clave = sin_acentos(nombre).strip().upper()
-            if clave.startswith("GRAFICO"):
-                clave = "GRAFICO"
+            clave = clave_de_hoja(nombre, filas, hojas)
+            if not clave:
+                continue
+            if clave == "GRAFICO":
                 principal = nombre
-            elif "LUNES" in clave:
-                clave = "LV"
-            elif clave.replace("-", "").replace(" ", "") == "SDF":
-                clave = "SDF"
             hojas[clave] = filas
 
         if "GRAFICO" not in hojas:
@@ -180,7 +208,7 @@ def main():
             print("  ! %s: no se pudo deducir el mes; se omite." % ruta.name)
             continue
 
-        hechas, sin_ubicar = aplicar_correcciones(hojas["GRAFICO"])
+        hechas, sin_ubicar = aplicar_correcciones(hojas["GRAFICO"], mes)
         for linea in hechas:
             print("    ~ correccion: %s" % linea)
         for linea in sin_ubicar:
