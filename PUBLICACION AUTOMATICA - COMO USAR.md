@@ -1,46 +1,61 @@
-# Actualización automática de la Bitácora
+# Subir la Bitácora a GitHub con un doble clic
 
-La publicación queda preparada para hacerse con un doble clic.
+Hay dos botones, uno para cada versión:
 
-## Primera vez
+| Botón | Sube a | Página |
+|---|---|---|
+| **`SUBIR A GITHUB - CON CONDUCCION.cmd`** | `GhostNight19/BITACORA-PRUEBA-JOKE` | https://ghostnight19.github.io/BITACORA-PRUEBA-JOKE/ |
+| **`SUBIR A GITHUB - SIN CONDUCCION.cmd`** | `GhostNight19/bitacorappefe-sur` | https://ghostnight19.github.io/bitacorappefe-sur/ |
 
-1. Abre **`ACTUALIZAR Y SUBIR A GITHUB.cmd`**.
-2. Pega la dirección HTTPS del repositorio, por ejemplo:
+La versión **con** Modo Conducción sube esta carpeta entera, igual que se
+hacía a mano: la app, los JSON, los Excel, los instructivos y los scripts.
+La versión **sin** Modo Conducción sube solo la carpeta `SIN CONDUCCION`, que
+es la que usan todos.
 
-   `https://github.com/usuario/repositorio.git`
+## Cada actualización
 
-3. Presiona Enter para usar la rama `main`.
-4. GitHub puede abrir el navegador para iniciar sesión. Esto ocurre solamente
-   cuando Git necesita autorizar este computador.
+1. Deja los archivos nuevos en su carpeta: pautas en `pautas_excel`, boletines
+   en `boletines_excel` y el gráfico en `graficos_excel`.
+2. Haz doble clic en el botón de la versión que quieras subir, o en los dos.
 
-La configuración se guarda en `publicacion-github.json`. Solo guarda la
-dirección y la rama; no guarda contraseñas ni tokens.
+Cada botón hace todo el proceso:
 
-## Cada actualización futura
+1. Lee los Excel y arma `pautas/pautas.json`, `prevenciones/boletin.json` y
+   `grafico/grafico.json`.
+2. Arma la carpeta `SIN CONDUCCION`.
+3. Trae lo último que haya en GitHub, incluido lo que se haya subido a mano
+   por la página.
+4. Muestra la lista de archivos que cambian.
+5. Los sube a GitHub con tu cuenta.
 
-1. Deja el gráfico nuevo en **`graficos_excel`**.
-2. Si también hay pautas o boletines nuevos, déjalos en `pautas_excel` o
-   `boletines_excel`.
-3. Haz doble clic en **`ACTUALIZAR Y SUBIR A GITHUB.cmd`**.
+GitHub Pages publica el cambio en uno o dos minutos. Si no había nada nuevo,
+el botón lo dice y no sube nada.
 
-El botón realiza todo este proceso:
+## Acceso
 
-1. Convierte los Excel en archivos JSON.
-2. Actualiza `grafico/grafico.json`, `pautas/pautas.json` y
-   `prevenciones/boletin.json`.
-3. Genera la carpeta `SIN CONDUCCION` lista para publicar.
-4. Descarga cualquier cambio reciente del repositorio.
-5. Guarda la actualización en Git.
-6. La sube a GitHub.
+Los botones entran a GitHub con la sesión de **GitHub CLI** (`gh`) que ya está
+iniciada en este computador con la cuenta **GhostNight19**. No piden usuario
+ni contraseña, y no guardan ninguna clave en esta carpeta.
 
-Los archivos Excel originales no se suben. El repositorio recibe la aplicación
-lista y sus JSON. Si GitHub Pages publica desde la rama `main`, la página se
-actualiza automáticamente después del envío.
+Si algún día la sesión se cierra, abre una terminal y escribe:
 
-## Cambiar de repositorio
+```
+gh auth login
+```
 
-Edita `publicacion-github.json` y reemplaza `repositorio` o `rama`. También
-puedes borrar ese archivo para que el botón vuelva a pedir ambos datos.
+Sin `gh`, Git usa su propio administrador de credenciales: la primera vez abre
+el navegador para autorizar y después ya no pregunta.
 
-La carpeta oculta `.publicacion-github` es una copia de trabajo automática. No
-edites archivos allí: se reemplazan en cada publicación.
+## Bueno saber
+
+- Los botones **agregan y actualizan** archivos; nunca borran nada de GitHub.
+  Si quieres sacar un archivo del repositorio, hazlo desde la página.
+- Lo que no se sube nunca: la carpeta `SIN CONDUCCION` al repositorio con
+  conducción, los archivos temporales de Excel (`~$...`) y los que empiezan
+  con `_`.
+- La copia de trabajo de Git vive en
+  `%LOCALAPPDATA%\SyncroRed EFESUR\publicacion-con` y `...\publicacion-sin`.
+  Es desechable: si algo se enreda, se puede borrar y el botón la vuelve a
+  descargar.
+- Para revisar qué subiría sin subir nada, desde PowerShell:
+  `.\publicar-github.ps1 -Destino sin -SinSubir` (o `-Destino con`).

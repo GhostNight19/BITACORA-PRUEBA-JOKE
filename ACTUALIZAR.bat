@@ -42,9 +42,9 @@ echo.
 echo ================================================================
 echo   LISTO
 echo.
-echo   Sube al repositorio la carpeta "SIN CONDUCCION" completa.
-echo   Si tambien usas la version con Modo Conduccion, sube ademas
-echo   las carpetas pautas, prevenciones, grafico y personal de aqui.
+echo   Para subir a GitHub usa los botones:
+echo     SUBIR A GITHUB - SIN CONDUCCION.cmd   (la que usan todos)
+echo     SUBIR A GITHUB - CON CONDUCCION.cmd   (la de prueba)
 echo ================================================================
 echo.
 pause

@@ -1,6 +1,13 @@
 [CmdletBinding()]
 param(
-    [switch]$SoloGenerar
+    # con = la version de prueba, con Modo Conduccion (toda esta carpeta)
+    # sin = la version que usan todos (la carpeta SIN CONDUCCION)
+    [Parameter(Mandatory = $true)]
+    [ValidateSet('con', 'sin')]
+    [string]$Destino,
+
+    # Hace todo menos subir: sirve para revisar que cambiaria en GitHub.
+    [switch]$SinSubir
 )
 
 Set-StrictMode -Version 3.0
@@ -8,9 +15,34 @@ $ErrorActionPreference = 'Stop'
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 $Raiz = Split-Path -Parent $MyInvocation.MyCommand.Path
-$ConfigPath = Join-Path $Raiz 'publicacion-github.json'
-$CarpetaPublicable = Join-Path $Raiz 'SIN CONDUCCION'
-$CopiaGit = Join-Path $Raiz '.publicacion-github'
+$Rama = 'main'
+
+# Cada boton sube a su propio repositorio. GitHub Pages publica los dos desde
+# la rama main, asi que basta con que el cambio llegue ahi.
+$Destinos = @{
+    con = @{
+        Nombre      = 'CON MODO CONDUCCION'
+        Repositorio = 'https://github.com/GhostNight19/BITACORA-PRUEBA-JOKE.git'
+        Pagina      = 'https://ghostnight19.github.io/BITACORA-PRUEBA-JOKE/'
+        Origen      = $Raiz
+    }
+    sin = @{
+        Nombre      = 'SIN MODO CONDUCCION'
+        Repositorio = 'https://github.com/GhostNight19/bitacorappefe-sur.git'
+        Pagina      = 'https://ghostnight19.github.io/bitacorappefe-sur/'
+        Origen      = Join-Path $Raiz 'SIN CONDUCCION'
+    }
+}
+$D = $Destinos[$Destino]
+
+# La copia de trabajo de Git vive fuera de esta carpeta: asi no se sube a si
+# misma cuando se publica la version con Modo Conduccion, que es la carpeta
+# entera.
+$CopiaGit = Join-Path $env:LOCALAPPDATA ('SyncroRed EFESUR\publicacion-' + $Destino)
+
+# Lo que nunca va a GitHub desde esta carpeta.
+$CarpetasFuera = @('SIN CONDUCCION', '__pycache__', '.git', '.publicacion-github')
+$ArchivosFuera = @('~$*', 'publicacion-github.json', '_*', '*.tmp')
 
 function Titulo([string]$Texto) {
     Write-Host ''
@@ -20,11 +52,18 @@ function Titulo([string]$Texto) {
 }
 
 function Ejecutar([string]$Programa, [string[]]$Argumentos, [string]$Descripcion) {
-    Write-Host ('  > ' + $Descripcion) -ForegroundColor Gray
-    & $Programa @Argumentos
-    if ($LASTEXITCODE -ne 0) {
+    if (-not (Probar $Programa $Argumentos $Descripcion)) {
         throw "$Descripcion fallo (codigo $LASTEXITCODE)."
     }
+}
+
+# Git escribe su avance por stderr, y Windows PowerShell lo tomaria como un
+# error: lo que manda es el codigo de salida.
+function Probar([string]$Programa, [string[]]$Argumentos, [string]$Descripcion) {
+    $ErrorActionPreference = 'Continue'
+    Write-Host ('  > ' + $Descripcion) -ForegroundColor Gray
+    & $Programa @Argumentos | Out-Host
+    return ($LASTEXITCODE -eq 0)
 }
 
 function Buscar-Python {
@@ -39,144 +78,138 @@ function Buscar-Python {
     throw 'No se encontro Python. Instala Python 3 y vuelve a intentarlo.'
 }
 
-function Leer-Configuracion {
-    if (-not (Test-Path -LiteralPath $ConfigPath)) {
-        Titulo 'CONFIGURACION INICIAL DE GITHUB'
-        Write-Host 'Esto se pide una sola vez.'
-        Write-Host 'Ejemplo: https://github.com/usuario/repositorio.git'
-        $Repositorio = (Read-Host 'Pega la direccion HTTPS del repositorio').Trim()
-        if ($Repositorio -notmatch '^https://github\.com/[^/\s]+/[^/\s]+(?:\.git)?$') {
-            throw 'La direccion no parece un repositorio de GitHub valido.'
-        }
-        $Rama = (Read-Host 'Rama que publica el sitio [main]').Trim()
-        if (-not $Rama) { $Rama = 'main' }
-        if ($Rama -notmatch '^[A-Za-z0-9._/-]+$') {
-            throw 'El nombre de la rama contiene caracteres no permitidos.'
-        }
-        [ordered]@{
-            repositorio = $Repositorio
-            rama = $Rama
-        } | ConvertTo-Json | Set-Content -LiteralPath $ConfigPath -Encoding UTF8
-        Write-Host ('Configuracion guardada en ' + (Split-Path -Leaf $ConfigPath)) -ForegroundColor Green
-    }
+# Git entra a GitHub con la sesion de GitHub CLI (gh) si esta iniciada: es la
+# misma cuenta y no pregunta nada. Si no hay gh, usa el administrador de
+# credenciales de Git, que la primera vez abre el navegador para autorizar.
+function Opciones-Acceso {
+    # Windows PowerShell trata como error lo que gh escribe en stderr: aca
+    # solo interesa si respondio bien o no.
+    $ErrorActionPreference = 'Continue'
+    $Gh = Get-Command gh -ErrorAction SilentlyContinue
+    if (-not $Gh) { return @() }
+    & $Gh.Source auth status --hostname github.com 2>&1 | Out-Null
+    if ($LASTEXITCODE -ne 0) { return @() }
+    $Ayudante = "!'" + ($Gh.Source -replace '\\', '/') + "' auth git-credential"
+    return @('-c', 'credential.https://github.com.helper=', '-c', ('credential.https://github.com.helper=' + $Ayudante))
+}
 
-    $Config = Get-Content -LiteralPath $ConfigPath -Raw -Encoding UTF8 | ConvertFrom-Json
-    if (-not $Config.repositorio -or -not $Config.rama) {
-        throw 'publicacion-github.json debe contener repositorio y rama.'
+function Autor {
+    $ErrorActionPreference = 'Continue'
+    $Gh = Get-Command gh -ErrorAction SilentlyContinue
+    if ($Gh) {
+        $Login = [string](& $Gh.Source api user --jq .login 2>&1)
+        $okLogin = $LASTEXITCODE -eq 0
+        $Id = [string](& $Gh.Source api user --jq .id 2>&1)
+        if ($okLogin -and $LASTEXITCODE -eq 0 -and $Login -match '^[A-Za-z0-9-]+$' -and $Id -match '^\d+$') {
+            return @{ Nombre = $Login.Trim(); Correo = ($Id.Trim() + '+' + $Login.Trim() + '@users.noreply.github.com') }
+        }
     }
-    if ([string]$Config.repositorio -notmatch '^https://github\.com/[^/\s]+/[^/\s]+(?:\.git)?$') {
-        throw 'El repositorio guardado no es una direccion HTTPS valida de GitHub.'
-    }
-    if ([string]$Config.rama -notmatch '^[A-Za-z0-9._/-]+$') {
-        throw 'La rama guardada contiene caracteres no permitidos.'
-    }
-    return $Config
+    return @{ Nombre = 'SyncroRed EFESUR'; Correo = 'syncrored@users.noreply.github.com' }
+}
+
+function Copiar-Version {
+    Write-Host '  > Copiar la version nueva' -ForegroundColor Gray
+    $Argumentos = @($D.Origen, $CopiaGit, '/E', '/R:2', '/W:1', '/NFL', '/NDL', '/NJH', '/NJS', '/NP',
+                    '/XD') + $CarpetasFuera + @('/XF') + $ArchivosFuera
+    & robocopy @Argumentos | Out-Null
+    # robocopy avisa con codigos 0 a 7 cuando copio bien; 8 o mas es error.
+    if ($LASTEXITCODE -ge 8) { throw "No se pudo copiar la version (robocopy $LASTEXITCODE)." }
+    $global:LASTEXITCODE = 0
 }
 
 try {
     Set-Location -LiteralPath $Raiz
-    Titulo 'SYNCRORED EFESUR - GENERAR DATOS'
+    Titulo ('SYNCRORED EFESUR - ' + $D.Nombre)
 
+    # ---------------------------------------------------- generar los datos --
     $Python = Buscar-Python
     $Pasos = @(
-        @{ Archivo = 'convertir_pautas.py'; Texto = 'Actualizar pautas/pautas.json' },
-        @{ Archivo = 'convertir_boletin.py'; Texto = 'Actualizar prevenciones/boletin.json' },
-        @{ Archivo = 'convertir_grafico.py'; Texto = 'Actualizar grafico/grafico.json' },
-        @{ Archivo = 'generar_sin_conduccion.py'; Texto = 'Preparar la version para publicar' }
+        @{ Archivo = 'convertir_pautas.py'; Texto = 'Leer las pautas diarias' },
+        @{ Archivo = 'convertir_boletin.py'; Texto = 'Leer los boletines de via' },
+        @{ Archivo = 'convertir_grafico.py'; Texto = 'Leer el grafico del mes' },
+        @{ Archivo = 'generar_sin_conduccion.py'; Texto = 'Armar la version sin Modo Conduccion' }
     )
-
     foreach ($Paso in $Pasos) {
         $Script = Join-Path $Raiz $Paso.Archivo
-        if (-not (Test-Path -LiteralPath $Script)) {
-            throw ('No se encontro ' + $Paso.Archivo)
-        }
-        $Argumentos = @($Python.Prefijo) + @('-X', 'utf8', $Script)
-        Ejecutar $Python.Programa $Argumentos $Paso.Texto
+        if (-not (Test-Path -LiteralPath $Script)) { throw ('No se encontro ' + $Paso.Archivo) }
+        Ejecutar $Python.Programa (@($Python.Prefijo) + @('-X', 'utf8', $Script)) $Paso.Texto
+    }
+    if (-not (Test-Path -LiteralPath (Join-Path $D.Origen 'index.html'))) {
+        throw ('No se encontro index.html en ' + $D.Origen)
     }
 
-    if (-not (Test-Path -LiteralPath (Join-Path $CarpetaPublicable 'index.html'))) {
-        throw 'No se genero SIN CONDUCCION\index.html.'
-    }
-
-    if ($SoloGenerar) {
-        Titulo 'DATOS GENERADOS'
-        Write-Host 'No se envio nada a GitHub porque se uso -SoloGenerar.' -ForegroundColor Yellow
-        exit 0
-    }
-
-    $Config = Leer-Configuracion
+    # ------------------------------------------------------ subir a GitHub --
     $Git = Get-Command git -ErrorAction SilentlyContinue
-    if (-not $Git) {
-        throw 'No se encontro Git. Instala Git for Windows y vuelve a intentarlo.'
-    }
+    if (-not $Git) { throw 'No se encontro Git. Instala Git for Windows y vuelve a intentarlo.' }
+    $Acceso = @(Opciones-Acceso)
+    $G = $Git.Source
 
-    Titulo 'ACTUALIZAR REPOSITORIO DE GITHUB'
+    Titulo ('SUBIR A GITHUB - ' + $D.Nombre)
 
     if (-not (Test-Path -LiteralPath (Join-Path $CopiaGit '.git'))) {
-        if (Test-Path -LiteralPath $CopiaGit) {
-            $RutaCompleta = [System.IO.Path]::GetFullPath($CopiaGit)
-            $RaizCompleta = [System.IO.Path]::GetFullPath($Raiz)
-            if (-not $RutaCompleta.StartsWith($RaizCompleta + [System.IO.Path]::DirectorySeparatorChar)) {
-                throw 'La carpeta temporal de publicacion esta fuera del proyecto.'
-            }
-            Remove-Item -LiteralPath $CopiaGit -Recurse -Force
-        }
-        Ejecutar $Git.Source @('clone', '--branch', [string]$Config.rama, '--single-branch', [string]$Config.repositorio, $CopiaGit) 'Descargar el repositorio por primera vez'
+        if (Test-Path -LiteralPath $CopiaGit) { Remove-Item -LiteralPath $CopiaGit -Recurse -Force }
+        New-Item -ItemType Directory -Force -Path (Split-Path -Parent $CopiaGit) | Out-Null
+        Ejecutar $G ($Acceso + @('clone', '--branch', $Rama, '--single-branch', $D.Repositorio, $CopiaGit)) 'Descargar el repositorio (solo la primera vez)'
     }
     else {
-        $Origin = (& $Git.Source -C $CopiaGit remote get-url origin).Trim()
-        if ($LASTEXITCODE -ne 0) { throw 'No se pudo leer el repositorio configurado.' }
-        if ($Origin.TrimEnd('/') -ne ([string]$Config.repositorio).TrimEnd('/')) {
-            Ejecutar $Git.Source @('-C', $CopiaGit, 'remote', 'set-url', 'origin', [string]$Config.repositorio) 'Actualizar la direccion del repositorio'
+        Ejecutar $G @('-C', $CopiaGit, 'remote', 'set-url', 'origin', $D.Repositorio) 'Revisar la direccion del repositorio'
+    }
+
+    $Quien = Autor
+    Ejecutar $G @('-C', $CopiaGit, 'config', 'user.name', $Quien.Nombre) 'Firmar con la cuenta de GitHub'
+    Ejecutar $G @('-C', $CopiaGit, 'config', 'user.email', $Quien.Correo) 'Firmar con la cuenta de GitHub'
+    Ejecutar $G @('-C', $CopiaGit, 'config', 'core.quotepath', 'false') 'Nombres con tilde legibles'
+
+    # La copia es desechable: siempre se parte de lo que hay hoy en GitHub,
+    # incluido lo que se haya subido a mano por la pagina.
+    for ($Intento = 1; $Intento -le 2; $Intento++) {
+        Ejecutar $G ($Acceso + @('-C', $CopiaGit, 'fetch', 'origin', $Rama)) 'Traer lo ultimo de GitHub'
+        Ejecutar $G @('-C', $CopiaGit, 'reset', '--hard', ('origin/' + $Rama)) 'Dejar la copia igual a GitHub'
+        Ejecutar $G @('-C', $CopiaGit, 'clean', '-fdq') 'Limpiar restos de una subida anterior'
+
+        Copiar-Version
+        Ejecutar $G @('-C', $CopiaGit, 'add', '-A') 'Preparar los cambios'
+
+        & $G -C $CopiaGit diff --cached --quiet
+        if ($LASTEXITCODE -eq 0) {
+            Titulo 'NO HAY NADA NUEVO'
+            Write-Host 'GitHub ya tiene exactamente esta version. No se subio nada.' -ForegroundColor Yellow
+            exit 0
         }
 
-        # Esta carpeta es una copia automatica y descartable. Si una ejecucion
-        # anterior se interrumpio, se limpia antes de volver a generar cambios.
-        Ejecutar $Git.Source @('-C', $CopiaGit, 'reset', '--hard', 'HEAD') 'Preparar la copia local'
-        Ejecutar $Git.Source @('-C', $CopiaGit, 'clean', '-fd') 'Limpiar archivos temporales de la copia'
-        Ejecutar $Git.Source @('-C', $CopiaGit, 'checkout', [string]$Config.rama) 'Seleccionar la rama de publicacion'
-        Ejecutar $Git.Source @('-C', $CopiaGit, 'pull', '--rebase', 'origin', [string]$Config.rama) 'Recibir cambios nuevos de GitHub'
+        Write-Host ''
+        Write-Host '  Cambios que se van a subir:' -ForegroundColor White
+        & $G -C $CopiaGit diff --cached --stat=90 | ForEach-Object { Write-Host ('    ' + $_) }
+        Write-Host ''
+
+        if ($SinSubir) {
+            Titulo 'PRUEBA TERMINADA'
+            Write-Host 'Se uso -SinSubir: no se envio nada a GitHub.' -ForegroundColor Yellow
+            exit 0
+        }
+
+        $Mensaje = 'Actualizacion ' + (Get-Date -Format 'yyyy-MM-dd HH:mm')
+        Ejecutar $G @('-C', $CopiaGit, 'commit', '-q', '-m', $Mensaje) 'Guardar la actualizacion'
+
+        if (Probar $G ($Acceso + @('-C', $CopiaGit, 'push', 'origin', $Rama)) 'Subir a GitHub') { break }
+        # Si alguien subio algo por la pagina justo ahora, se vuelve a partir
+        # desde lo ultimo y se intenta una vez mas.
+        if ($Intento -eq 2) { throw 'GitHub no acepto la subida.' }
+        Write-Host '  GitHub tenia algo mas nuevo; se vuelve a intentar.' -ForegroundColor Yellow
     }
 
-    Write-Host '  > Copiar la version generada' -ForegroundColor Gray
-    Get-ChildItem -LiteralPath $CarpetaPublicable -Force | ForEach-Object {
-        Copy-Item -LiteralPath $_.FullName -Destination $CopiaGit -Recurse -Force
-    }
-
-    if (-not (& $Git.Source -C $CopiaGit config user.name)) {
-        Ejecutar $Git.Source @('-C', $CopiaGit, 'config', 'user.name', 'SyncroRed EFESUR') 'Configurar el nombre de los cambios'
-    }
-    if (-not (& $Git.Source -C $CopiaGit config user.email)) {
-        Ejecutar $Git.Source @('-C', $CopiaGit, 'config', 'user.email', 'syncrored@users.noreply.github.com') 'Configurar el correo de los cambios'
-    }
-
-    Ejecutar $Git.Source @('-C', $CopiaGit, 'add', '-A') 'Preparar los archivos modificados'
-    & $Git.Source -C $CopiaGit diff --cached --quiet
-    $HayCambios = $LASTEXITCODE -ne 0
-
-    if ($HayCambios) {
-        $Mensaje = 'Actualizacion automatica ' + (Get-Date -Format 'yyyy-MM-dd HH:mm')
-        Ejecutar $Git.Source @('-C', $CopiaGit, 'commit', '-m', $Mensaje) 'Guardar la actualizacion'
-    }
-    else {
-        Write-Host '  No hay archivos nuevos; se comprobara igualmente GitHub.' -ForegroundColor Yellow
-    }
-
-    Ejecutar $Git.Source @('-C', $CopiaGit, 'push', 'origin', [string]$Config.rama) 'Subir la actualizacion a GitHub'
-    $Revision = (& $Git.Source -C $CopiaGit rev-parse --short HEAD).Trim()
-
-    Titulo 'PUBLICACION TERMINADA'
-    Write-Host ('Repositorio: ' + $Config.repositorio) -ForegroundColor Green
-    Write-Host ('Rama:       ' + $Config.rama) -ForegroundColor Green
-    Write-Host ('Revision:   ' + $Revision) -ForegroundColor Green
+    $Revision = (& $G -C $CopiaGit rev-parse --short HEAD).Trim()
+    Titulo 'SUBIDA TERMINADA'
+    Write-Host ('Repositorio: ' + $D.Repositorio) -ForegroundColor Green
+    Write-Host ('Revision:    ' + $Revision) -ForegroundColor Green
+    Write-Host ('Pagina:      ' + $D.Pagina) -ForegroundColor Green
     Write-Host ''
-    Write-Host 'GitHub ya recibio los JSON y la version nueva del sitio.' -ForegroundColor Green
-    Write-Host 'Si usas GitHub Pages, el cambio normalmente aparece en pocos minutos.'
+    Write-Host 'GitHub Pages publica el cambio en uno o dos minutos.'
     exit 0
 }
 catch {
     Write-Host ''
     Write-Host ('ERROR: ' + $_.Exception.Message) -ForegroundColor Red
-    Write-Host 'No se informo una publicacion terminada. Corrige el dato indicado y vuelve a ejecutar.' -ForegroundColor Yellow
+    Write-Host 'No se subio nada a medias. Corrige lo indicado y vuelve a intentarlo.' -ForegroundColor Yellow
     exit 1
 }

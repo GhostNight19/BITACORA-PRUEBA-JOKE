@@ -38,7 +38,7 @@ no aparece en ella: la lista parte vacía y se arma a mano.
 
 | | |
 |---|---|
-| Arriba | La **prevención más grave dentro de 500 m**: restricción, distancia, PK y motivo |
+| Arriba | La **prevención más grave dentro de 650 m**: restricción, distancia, PK y motivo |
 | Al centro | La **velocidad** en km/h, el número del tren y si está detenido o en marcha |
 | Debajo | De dónde salió y **la estación siguiente con su horario** |
 | Abajo | El recorrido completo, con la hora real de cada parada y su atraso |
@@ -123,7 +123,7 @@ formato de siempre.
 
 ## El sentido de marcha
 
-Las prevenciones se avisan a 500 m **en el sentido de marcha**, y para eso hay
+Las prevenciones se avisan a 650 m **en el sentido de marcha**, y para eso hay
 que saber hacia dónde va el tren. Antes se deducía solo del GPS, y si la lectura
 quedaba vieja —marchando lento, recién partiendo o con el equipo actualizando
 espaciado— el aviso podía llegar con la zona encima.
