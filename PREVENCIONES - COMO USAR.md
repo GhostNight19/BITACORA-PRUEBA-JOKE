@@ -28,7 +28,7 @@ son trabajos con vía fuera de servicio, no prevenciones de circulación.
 ## Qué hace
 
 **El aviso bajo el reloj.** Aparece solo cuando queda una prevención dentro de
-**650 m** en el sentido de marcha. Muestra la distancia, la gravedad, la
+**1000 m** en el sentido de marcha. Muestra la distancia, la gravedad, la
 restricción, la vía y el PK. Se pinta según la gravedad (rojo ≤15 km/h, naranjo
 ≤30, azul otras restricciones, gris los avisos de solo toque pito).
 
@@ -40,7 +40,7 @@ El aviso pasa por tres momentos:
 
 | Momento | Se ve | |
 |---|---|---|
-| Se acerca | `420 m` | cuenta hacia atrás desde los 650 m |
+| Se acerca | `420 m` | cuenta hacia atrás desde los 1000 m |
 | Se está dentro | `EN ZONA` | la franja late |
 | Ya se pasó | `◀ 90 m` | atenuada y con el borde punteado |
 
@@ -110,7 +110,7 @@ que es su horario).
 
 - El trazado está muestreado **cada 500 m**. El PK sale de interpolar entre esos
   puntos, así que tiene un margen del orden de la decena de metros en recta y
-  algo más en curva. Para un aviso a 650 m sirve; no es un sistema de
+  algo más en curva. Para un aviso a 1000 m sirve; no es un sistema de
   señalización.
 - La **vía** se deduce del movimiento, no de la vía física: las dos vías van
   paralelas a pocos metros y el GPS no las distingue. Si el tren está detenido,

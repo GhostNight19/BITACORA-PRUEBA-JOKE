@@ -38,7 +38,7 @@ no aparece en ella: la lista parte vacía y se arma a mano.
 
 | | |
 |---|---|
-| Arriba | La **prevención más grave dentro de 650 m**: restricción, distancia, PK y motivo |
+| Arriba | La **prevención más grave dentro de 1000 m**: restricción, distancia, PK y motivo |
 | Al centro | La **velocidad** en km/h, el número del tren y si está detenido o en marcha |
 | Debajo | De dónde salió y **la estación siguiente con su horario** |
 | Abajo | El recorrido completo, con la hora real de cada parada y su atraso |
@@ -123,7 +123,7 @@ formato de siempre.
 
 ## El sentido de marcha
 
-Las prevenciones se avisan a 650 m **en el sentido de marcha**, y para eso hay
+Las prevenciones se avisan a 1000 m **en el sentido de marcha**, y para eso hay
 que saber hacia dónde va el tren. Antes se deducía solo del GPS, y si la lectura
 quedaba vieja —marchando lento, recién partiendo o con el equipo actualizando
 espaciado— el aviso podía llegar con la zona encima.
@@ -164,3 +164,30 @@ Los tres preguntan antes y dicen qué se pierde:
 > Vas a borrar el registro de hoy de B. Bustamante.
 > Se pierde: 2 horas anotadas con sus atrasos y motivos.
 > ¿Borrar?
+
+## Cruces en falla
+
+Cuando avisan que un paso a nivel quedó en falla (barrera atropellada, sin
+protección), se marca con el botón **⚠ Cruces** de la cabecera:
+
+1. Elige la línea: L1 (19 cruces) o L2 (28 cruces).
+2. Toca el cruce.
+3. Elige la vía por la que avisaron la falla: **Vía 1**, **Vía 2** o
+   **Ambas vías**. Donde los trenes van por una sola vía en los dos sentidos
+   sale solo esa opción:
+   - L1: entre Hualqui y La Leonera, **Vía única**; Bilbao y La Unión, **Vía 4**.
+   - L2: Desiderio Sanhueza, **Vía 4** (del andén de Concepción al empalme);
+     Chepe, **Vía única** (hasta el PK 0,72 los dos sentidos van por la vía 1).
+
+Desde ese momento el cruce se avisa como una prevención más, **crítica**:
+aparece a 1000 m, bajo el reloj y en la pantalla de marcha, solo a los trenes
+que van por esa vía. Queda también arriba en el panel de Prevenciones.
+
+El botón muestra cuántos cruces hay en falla. Cada uno se quita con
+**Quitar** cuando lo reparan, y si nadie lo quita se borra solo a las 24 horas.
+La marca queda en este teléfono: no se comparte con los demás.
+
+Los PK salen de los listados de cruces de EFE. En L2 el listado trae el
+kilómetro y los postes ("PK 16 P. 15-17"), que es lo que se muestra; para avisar
+se usa el punto donde se marcó cada cruce con GPS en terreno, que coincide con
+el listado a menos de 100 m. Esto existe solo en la versión con Modo Conducción.
