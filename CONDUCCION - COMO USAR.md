@@ -168,7 +168,10 @@ Los tres preguntan antes y dicen qué se pierde:
 ## Cruces en falla
 
 Cuando avisan que un paso a nivel quedó en falla (barrera atropellada, sin
-protección), se marca con el botón **⚠ Cruces** de la cabecera:
+protección), se marca con el botón **🚧 Cruces** de la cabecera, o con el botón
+**🚧 Cruces** del menú principal, que existe también en la versión sin Modo
+Conducción. Es el mismo registro: lo que se marca en uno aparece en el otro.
+Ver `PREVENCIONES - COMO USAR.md`.
 
 1. Elige la línea: L1 (19 cruces) o L2 (28 cruces).
 2. Toca el cruce.
@@ -180,8 +183,10 @@ protección), se marca con el botón **⚠ Cruces** de la cabecera:
      Chepe, **Vía única** (hasta el PK 0,72 los dos sentidos van por la vía 1).
 
 Desde ese momento el cruce se avisa como una prevención más, **crítica**:
-aparece a 1000 m, bajo el reloj y en la pantalla de marcha, solo a los trenes
-que van por esa vía. Queda también arriba en el panel de Prevenciones.
+aparece a 1000 m, bajo el reloj y en la pantalla de marcha, **en los dos
+sentidos**, porque el cruce atraviesa las dos vías. La vía que se marcó queda
+anotada como dato ("Falla vía 1"). Queda también arriba en el panel de
+Prevenciones.
 
 El botón muestra cuántos cruces hay en falla. Cada uno se quita con
 **Quitar** cuando lo reparan, y si nadie lo quita se borra solo a las 24 horas.
@@ -190,4 +195,4 @@ La marca queda en este teléfono: no se comparte con los demás.
 Los PK salen de los listados de cruces de EFE. En L2 el listado trae el
 kilómetro y los postes ("PK 16 P. 15-17"), que es lo que se muestra; para avisar
 se usa el punto donde se marcó cada cruce con GPS en terreno, que coincide con
-el listado a menos de 100 m. Esto existe solo en la versión con Modo Conducción.
+el listado a menos de 100 m.

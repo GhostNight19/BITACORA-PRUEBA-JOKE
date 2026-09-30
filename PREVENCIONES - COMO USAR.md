@@ -140,3 +140,30 @@ revisión; al ejecutarlo lo dice en pantalla:
 Lo mismo entre archivos distintos del mismo día: si en `boletines_excel` están
 el `243` y el `243-B`, gana el `243-B` aunque el otro se haya copiado después.
 No hace falta borrar el archivo viejo.
+
+## Cruces en falla
+
+Cuando avisan por radio que un paso a nivel quedó en falla (barrera
+atropellada, sin protección), se marca con el botón **🚧 Cruces** del menú:
+
+1. Elige la línea: L1 (19 cruces) o L2 (28 cruces).
+2. Toca el cruce.
+3. Elige la vía por la que avisaron la falla: **Vía 1**, **Vía 2** o **Ambas
+   vías**. Donde los trenes van por una sola vía en los dos sentidos sale solo
+   esa opción (vía única entre Hualqui y La Leonera y en Chepe; vía 4 en
+   Bilbao, La Unión y Desiderio Sanhueza por L2).
+
+Desde ese momento el cruce se avisa como una prevención **crítica**, igual que
+las del boletín: a 1000 m y bajo el reloj. Se avisa **en los dos sentidos**,
+cualquiera sea la vía que se marcó: el cruce atraviesa las dos vías y la
+precaución hay que tomarla igual. La vía queda anotada como dato ("Falla vía 1").
+También aparece arriba en el panel de Prevenciones, en "Cruces en falla".
+
+El botón muestra cuántos cruces hay en falla. Cada uno se quita con **Quitar**
+cuando lo reparan, y si nadie lo quita se borra solo a las 24 horas. La marca
+queda en el teléfono donde se hizo: no se comparte con los demás.
+
+Los PK salen de los listados de cruces de EFE. En L1 el listado trae el
+kilómetro con decimales; en L2 trae el kilómetro y los postes ("PK 16 P. 15-17"),
+que es lo que se muestra, y para avisar se usa el punto donde se marcó cada
+cruce con GPS en terreno.
