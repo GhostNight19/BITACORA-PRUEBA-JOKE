@@ -141,6 +141,24 @@ Lo mismo entre archivos distintos del mismo día: si en `boletines_excel` están
 el `243` y el `243-B`, gana el `243-B` aunque el otro se haya copiado después.
 No hace falta borrar el archivo viejo.
 
+## Quitar una línea que ya no corre
+
+Cuando tráfico avisa que una línea del boletín ya no está vigente ("la 50 ya
+terminó"), se quita desde el panel de Prevenciones:
+
+- Escribe el número en **"Quitar una línea que tráfico dio por terminada"** y
+  toca **Quitar** (o Enter). Sirve aunque la línea todavía no esté en su
+  horario.
+- O toca **Quitar** en la tarjeta de esa prevención. Cada tarjeta muestra su
+  **N°** de línea del boletín.
+
+Una línea quitada deja de avisarse y de aparecer en las listas, esté o no
+dentro de su horario. Queda abajo, en **"Quitadas de este boletín"**, con un
+botón **Volver a mostrar** por si fue un error.
+
+Vale solo para ese boletín: cuando entra el del día siguiente, vuelven a
+aparecer todas sus líneas. Lo que se quita queda en el teléfono donde se hizo.
+
 ## Qué vías se avisan
 
 El tren de pasajeros va por la vía 1, la 2 o la 4, y la app sabe por cuál va
