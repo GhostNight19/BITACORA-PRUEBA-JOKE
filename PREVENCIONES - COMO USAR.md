@@ -141,6 +141,21 @@ Lo mismo entre archivos distintos del mismo día: si en `boletines_excel` están
 el `243` y el `243-B`, gana el `243-B` aunque el otro se haya copiado después.
 No hace falta borrar el archivo viejo.
 
+## Qué vías se avisan
+
+El tren de pasajeros va por la vía 1, la 2 o la 4, y la app sabe por cuál va
+según el sentido de marcha. Por eso:
+
+- **Vía 1, vía 2, vía 4, ambas vías, principal, puente, cruce, "vía 1 y 2"**:
+  se avisan según corresponda al sentido de marcha.
+- **Enlaces** entre vías (por ejemplo Ag.1-Ag.3 en La Leonera): se avisan en
+  los dos sentidos, porque el tren los cruza al cambiar de vía.
+- **Vías secundarias** (la vía 8-B de Concepción, la vía 20 y el patio de
+  El Arenal, desviadores, variantes): **no se avisan en marcha**. Siguen en el
+  listado del panel, marcadas como "vía secundaria".
+- **Solo carga** ("sin tráfico de carga"): no se avisa al tren de pasajeros.
+  También queda en el listado, marcada como "solo carga".
+
 ## Cruces en falla
 
 Cuando avisan por radio que un paso a nivel quedó en falla (barrera
