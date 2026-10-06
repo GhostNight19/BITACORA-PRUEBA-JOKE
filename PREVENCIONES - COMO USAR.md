@@ -159,6 +159,29 @@ botón **Volver a mostrar** por si fue un error.
 Vale solo para ese boletín: cuando entra el del día siguiente, vuelven a
 aparecer todas sus líneas. Lo que se quita queda en el teléfono donde se hizo.
 
+## Agregar una prevención que dictó tráfico
+
+Si tráfico dicta una prevención que no viene en el boletín, se agrega en el
+panel con **"➕ Agregar una prevención que dictó tráfico"**:
+
+| Campo | Qué poner |
+|---|---|
+| Línea | L1 o L2 |
+| Vía | Vía 1, Vía 2, Ambas vías o Vía 4 |
+| Desde PK | kilómetro y poste, como en el boletín ("12" y "10" = 12 P. 10) |
+| Hasta PK | igual; si se deja vacío, es un punto |
+| Velocidad | en km/h, si hay restricción de velocidad |
+| Toque pito | marcar si lo pide |
+| Desde las / Hasta las | horario; si se deja vacío, vale todo el día |
+| Motivo | opcional |
+
+Queda arriba en **"Agregadas por tráfico"** con su número (A1, A2...) y se avisa
+igual que las del boletín: a 1000 m, bajo el reloj y en el Modo Conducción,
+según la vía. Se quita con **Quitar** en su tarjeta. Igual que las quitadas,
+vale solo para el boletín de ese día y queda en el teléfono donde se agregó.
+En L2, un PK 69, 70 o 71 se toma del eje compartido de Concepción, como en el
+boletín.
+
 ## Qué vías se avisan
 
 El tren de pasajeros va por la vía 1, la 2 o la 4, y la app sabe por cuál va
