@@ -173,7 +173,7 @@ panel con **"➕ Agregar una prevención que dictó tráfico"**:
 | Velocidad | en km/h, si hay restricción de velocidad |
 | Toque pito | marcar si lo pide |
 | Desde las / Hasta las | horario; si se deja vacío, vale todo el día |
-| Motivo | opcional |
+| Motivo o restricción | lo que dictó tráfico. Si dejas en blanco la velocidad y el toque pito, es lo que muestra el aviso (ej. "Bajada de pantógrafo") |
 
 Queda arriba en **"Agregadas por tráfico"** con su número (A1, A2...) y se avisa
 igual que las del boletín: a 1000 m, bajo el reloj y en el Modo Conducción,
