@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Conversor del BOLETIN DE VIA C (Excel) -> prevenciones/boletin.json
+                                          prevenciones/boletin_buhq.json
 
 Uso:
     python convertir_boletin.py
@@ -12,6 +13,13 @@ aplicacion al abrirse (y lo que hay que subir al repositorio).
 Igual que con las pautas, el script NO interpreta el boletin: vuelca la hoja
 tal cual (filas de texto) y toda la lectura -tramos, PK, horarios, vias- la
 hace el propio index.html.
+
+Hay dos boletines distintos, que pueden traer el mismo folio y la misma fecha:
+  - el de los SECTORES CTC (Hualqui-Talcahuano y Concepcion-Coronel)
+      -> prevenciones/boletin.json
+  - el del SECTOR BUENURAQUI-HUALQUI
+      -> prevenciones/boletin_buhq.json
+Cual es cual se ve en el titulo de la hoja (o, si no, en el nombre del archivo).
 
 Solo se conserva la parte util: desde "NOTIFICACION DE FAENAS EN EL INICIO DEL
 RECORRIDO" hasta antes de "PROGRAMACION DE CORTADAS". Las cortadas son trabajos
@@ -32,6 +40,7 @@ except ImportError:  # pragma: no cover
 BASE = Path(__file__).resolve().parent
 ORIGEN = BASE / "boletines_excel"
 DESTINO = BASE / "prevenciones" / "boletin.json"
+DESTINO_BUHQ = BASE / "prevenciones" / "boletin_buhq.json"
 
 MESES = {
     "enero": 1, "febrero": 2, "marzo": 3, "abril": 4, "mayo": 5, "junio": 6,
@@ -97,6 +106,18 @@ def folio_de_las_filas(filas, nombre):
                         return v
     m = re.match(r"\s*(\d+[-A-Za-z]*)", nombre)
     return m.group(1) if m else ""
+
+
+def tipo_de_boletin(filas, nombre):
+    """'BUHQ' para el boletin del sector Buenuraqui-Hualqui; 'CTC' para el resto."""
+    for fila in filas[:6]:
+        for celda in fila:
+            t = sin_acentos(celda).upper()
+            if "BOLETIN" in t and "BUENURAQUI" in t:
+                return "BUHQ"
+            if "BOLETIN" in t and "CTC" in t:
+                return "CTC"
+    return "BUHQ" if "BUENURAQUI" in sin_acentos(nombre).upper() else "CTC"
 
 
 def orden_folio(folio):
@@ -170,34 +191,38 @@ def main():
         if not fecha:
             print("  ! %s: no se pudo deducir la fecha; se omite." % ruta.name)
             continue
+        tipo = tipo_de_boletin(filas, ruta.stem)
         hojas.append({
             "archivo": ruta.name,
+            "tipo": tipo,
             "fecha": fecha,
             "folio": folio or folio_de_las_filas(filas, ruta.stem),
             "filas": filas,
         })
-        print("  + %s  ->  %s  folio %s  (%d filas utiles)" % (
-            ruta.name, fecha, hojas[-1]["folio"], len(filas)))
-
-    # Un boletin por fecha: gana la ultima revision del folio y, en empate,
-    # el archivo copiado mas tarde.
-    unicas = {}
-    for hoja in sorted(hojas, key=lambda h: (orden_folio(h["folio"]),
-                                             (ORIGEN / h["archivo"]).stat().st_mtime)):
-        unicas[hoja["fecha"]] = hoja
-    hojas = sorted(unicas.values(), key=lambda h: h["fecha"])
+        print("  + %s  ->  %s  %s folio %s  (%d filas utiles)" % (
+            ruta.name, "BU-HQ" if tipo == "BUHQ" else "CTC  ", fecha, hojas[-1]["folio"], len(filas)))
 
     DESTINO.parent.mkdir(parents=True, exist_ok=True)
-    DESTINO.write_text(
-        json.dumps({"version": 1,
-                    "generado": datetime.now().strftime("%Y-%m-%d %H:%M"),
-                    "boletines": hojas},
-                   ensure_ascii=False, separators=(",", ":")),
-        encoding="utf-8",
-    )
-    print("\nListo: %s  (%d boletines, %.0f KB)" % (
-        DESTINO.relative_to(BASE), len(hojas), DESTINO.stat().st_size / 1024))
-    print("Ahora sube al repositorio: prevenciones/boletin.json")
+    for tipo, destino in (("CTC", DESTINO), ("BUHQ", DESTINO_BUHQ)):
+        # Un boletin por fecha (de cada tipo): gana la ultima revision del folio
+        # y, en empate, el archivo copiado mas tarde.
+        unicas = {}
+        for hoja in sorted((h for h in hojas if h["tipo"] == tipo),
+                           key=lambda h: (orden_folio(h["folio"]),
+                                          (ORIGEN / h["archivo"]).stat().st_mtime)):
+            unicas[hoja["fecha"]] = hoja
+        del_tipo = sorted(unicas.values(), key=lambda h: h["fecha"])
+
+        destino.write_text(
+            json.dumps({"version": 1,
+                        "generado": datetime.now().strftime("%Y-%m-%d %H:%M"),
+                        "boletines": del_tipo},
+                       ensure_ascii=False, separators=(",", ":")),
+            encoding="utf-8",
+        )
+        print("\nListo: %s  (%d boletines, %.0f KB)" % (
+            destino.relative_to(BASE), len(del_tipo), destino.stat().st_size / 1024))
+    print("Ahora sube al repositorio: prevenciones/boletin.json y prevenciones/boletin_buhq.json")
 
 
 if __name__ == "__main__":

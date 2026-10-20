@@ -1,8 +1,19 @@
 # Prevenciones (prueba)
 
 Esta carpeta es la bitácora completa —con Mis Turnos y el planificador— más un
-apartado nuevo: **⚠️ Prevenciones**, que lee el Boletín de Vía C y avisa la
+apartado nuevo: **⚠️ Prevenciones**, que lee los boletines de vía C y avisa la
 prevención que se viene según dónde está el tren.
+
+Son dos boletines, y la app usa los dos a la vez:
+
+| Boletín | Tramo | Archivo |
+|---|---|---|
+| **Vía C (sectores CTC)** | Hualqui–Talcahuano (L1) y Concepción–Coronel (L2) | `prevenciones/boletin.json` |
+| **BU-HQ** | Buenuraqui–Hualqui (L1, al sur de Hualqui) | `prevenciones/boletin_buhq.json` |
+
+Arriba del panel de Prevenciones hay dos botones, **Boletín Vía C** y **Boletín
+BU-HQ**: eligen cuál se mira (sus vigentes, quitar y agregar líneas). El aviso
+bajo el reloj y el Modo Conducción toman los dos, cada uno en su tramo.
 
 ---
 
@@ -10,14 +21,21 @@ prevención que se viene según dónde está el tren.
 
 Igual que las pautas, es un archivo y un comando:
 
-1. Deja el Excel del boletín en la carpeta **`boletines_excel`**.
+1. Deja el Excel del boletín en la carpeta **`boletines_excel`** (el de Vía C, el
+   de BU-HQ o los dos).
 2. Ejecuta:
 
 ```bash
 python convertir_boletin.py
 ```
 
-3. Sube al repositorio **`prevenciones/boletin.json`**.
+3. Sube al repositorio **`prevenciones/boletin.json`** y
+   **`prevenciones/boletin_buhq.json`** (los botones SUBIR A GITHUB suben toda la
+   carpeta).
+
+El conversor distingue cada boletín por su título ("SECTORES CTC" o "SECTOR
+BUENURAQUI-HUALQUI"): los dos pueden traer el mismo folio el mismo día y no se
+pisan.
 
 El script se queda solo con la parte útil: desde *NOTIFICACIÓN DE FAENAS EN EL
 INICIO DEL RECORRIDO* hasta antes de *PROGRAMACIÓN DE CORTADAS*. Las cortadas
@@ -223,3 +241,20 @@ Los PK salen de los listados de cruces de EFE. En L1 el listado trae el
 kilómetro con decimales; en L2 trae el kilómetro y los postes ("PK 16 P. 15-17"),
 que es lo que se muestra, y para avisar se usa el punto donde se marcó cada
 cruce con GPS en terreno.
+
+---
+
+## Boletín BU-HQ (Buenuraqui–Hualqui)
+
+Usa el mismo kilometraje de L1, contado desde San Rosendo (Gomero ~15, Talcamávida
+~23, Unihue ~29, Quilacoya ~36, Hualqui ~46,7). Todo el tramo es **vía única**:
+lo que dice *TODAS* o *PRINCIPAL* se avisa en los dos sentidos, y en el panel la
+vía sale como **VÍA ÚNICA**. Las vías *LOCAL* y los *DESVÍOS* de los patios no se
+avisan en marcha (los EMU no pueden entrar a las locales entre San Rosendo y
+Quilacoya). *MARCHA DE EMERGENCIA* se avisa como crítica.
+
+**Ubicación estimada.** El tramo al sur de Hualqui todavía no está mapeado con GPS.
+Mientras tanto, el PK del trazado se ajustó con los patios que da el propio
+boletín (Gomero 15,40 · Talcamávida 22,88 · Unihue 29/9-10 · Quilacoya 36,60). El
+aviso puede adelantarse o atrasarse unos cientos de metros; cuando llegue el mapeo
+con la app de Mapeo de Vía, se reemplaza por el medido.

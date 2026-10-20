@@ -10,7 +10,7 @@ echo.
 echo   Antes de correr esto, deja los archivos nuevos en su carpeta:
 echo.
 echo     pautas_excel      las pautas diarias (.xlsx)
-echo     boletines_excel   los boletines de via C (.xlsx)
+echo     boletines_excel   los boletines de via C: CTC y BU-HQ (.xlsx)
 echo     graficos_excel    el grafico del mes (.xlsx)
 echo.
 echo ----------------------------------------------------------------
