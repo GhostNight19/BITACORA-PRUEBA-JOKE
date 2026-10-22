@@ -233,6 +233,11 @@ cualquiera sea la vía que se marcó: el cruce atraviesa las dos vías y la
 precaución hay que tomarla igual. La vía queda anotada como dato ("Falla vía 1").
 También aparece arriba en el panel de Prevenciones, en "Cruces en falla".
 
+También se llega desde cada servicio: al lado del nombre de cada estación hay un
+botón chico (barrera con la X del cruce). Abre los cruces de la línea de ese
+servicio (L2 si la ruta es Concepción–Coronel, L1 en las demás) y deja marcado
+como **próximo** el primer cruce que viene después de esa estación.
+
 El botón muestra cuántos cruces hay en falla. Cada uno se quita con **Quitar**
 cuando lo reparan, y si nadie lo quita se borra solo a las 24 horas. La marca
 queda en el teléfono donde se hizo: no se comparte con los demás.
